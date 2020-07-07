@@ -10,9 +10,11 @@ comments: false
 
 <!-- more -->
 
+
+
 ## 步骤
 
-```shell
+````shell
 $ cd ~/.ssh
 
 # 为个人账号生成 SSH Key
@@ -23,41 +25,52 @@ $ cat ~/.ssh/id_rsa_personal.pub
 
 # 测试 SSH Key
 $ ssh -T git@github_wei
+# 出现这个代表没问题了：You've successfully authenticated, but GitHub does not provide shell access.
 
-# 把Key加到SSH agent上，因为不是使用默认的.ssh/id_rsa，所以需要告诉 SSH agent新Key的位置
-$ ssh-add ~/.ssh/id_rsa_personal
+# 把 Key 加到 SSH agent 上，因为不是使用默认的.ssh/id_rsa，所以需要告诉 SSH agent 新 Key 的位置
 
-# 配置.ssh/config，先ls看看有没有config文件，没有就要touch config
+\$ ssh-add ~/.ssh/id_rsa_personal
+
+# 配置.ssh/config，先 ls 看看有没有 config 文件，没有就要 touch config
+
 #default github
 Host github.com
-  HostName github.com
-  IdentityFile ~/.ssh/id_rsa
+HostName github.com
+IdentityFile ~/.ssh/id_rsa
 
 Host github_wei
-  HostName github.com
-  IdentityFile ~/.ssh/id_rsa_personal
-```
+HostName github.com
+IdentityFile ~/.ssh/id_rsa_personal
+
+````
 
 之后通过使用别名`github_wei`来明确说明使用`id_rsa_personal`的`SSH key`来连接`github`
 
-```shell
+
+
 # clone到本地
+
 $ git clone git@github_wei:xxxx/test.git
 
+
+
 # push到github上去
+
 $ git remote add origin git@github_wei:xxxx/test.git
 $ git push origin master
-```
+````
 
 也可以通过特定的`repo`下执行下面的命令
 
-```shell
+​```shell
 $ git config user.name 'newname'
 $ git config user.email 'newemail'
 
 # git config --global --unset user.name 取消全局设置
 # git config --global --unset user.email 取消全局设置
 ```
+
+
 
 ## 在用个人账号 pull,push 操作时出现的问题
 
@@ -84,6 +97,8 @@ $ git fetch origin    //获取远程更新
 $ git merge origin/master //把更新的内容合并到本地分支
 ```
 
+
+
 然后在 merge 的时候发现
 
 ```shell
@@ -100,3 +115,13 @@ $ git pull origin master --allow-unrelated-histories
 # 有冲突，解决，再add commit git pull git push…
 $ git push --set-upstream origin master
 ```
+
+
+
+```shell
+$ permission denied (publickey)
+```
+
+**原因：** ssh key过期失效或者没有ssh key
+
+**解决：** 重新生成一个新的ssh key ，然后将这个ssh key添加到github账户上面。即重走一次步骤。
