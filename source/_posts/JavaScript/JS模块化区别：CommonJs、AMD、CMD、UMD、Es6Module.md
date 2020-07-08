@@ -13,10 +13,15 @@ comments: false
 
 <!-- more -->
 
+
+
 ## JS-模块化进程
+
 Js在模块化上有经历一个越来越好的过程，目的是更好的封装模块，引用模块
 
 原始的开发方式 -> CommonJs -> AMD -> CMD -> UMD -> Es6Module
+
+
 
 ## 原始的开发方式
 
@@ -33,6 +38,8 @@ Js在模块化上有经历一个越来越好的过程，目的是更好的封装
 1. 网络问题：文件太多了，请求次数就会多，加载时间自然而然多！
 
 突然想起最开始自己写的代码，都是原生js，或者使用jq，当时就经常会遇到重名、顺序，还有万恶的堵塞问题，嘤嘤嘤，模块化快出现！
+
+
 
 ## CommonJs
 
@@ -73,7 +80,10 @@ var mb = require('./moduleB')
 mb.bar()
 ```
 
+
+
 ## AMD
+
 ### 使用场景、加载方式
 主要运行于浏览器端（Require.js实现）
 
@@ -112,7 +122,10 @@ require(['moduleA'], function(a) {
 <script src="js/require.js" data-main="js/index"></script>
 ```
 
+
+
 ## CMD
+
 ### 使用场景、加载方式
 主要在浏览器运行，也可以在node.js运行（主要是Sea.js推广中形成的）
 
@@ -153,6 +166,8 @@ seajs.use('moduleA.js', function(ma) {
 <script src="./js/index.js"></script>
 ```
 
+
+
 ## UMD
 
 ### 使用场景
@@ -190,7 +205,10 @@ if (typeof define === 'function' && define.amd) {
 
 3、如果以上两种都没有，设定为原始的代码规范
 
+
+
 ## Es6Module
+
 ### 注意的几个点
 1、同时兼容node环境，可以和CommonJs混合使用。
 
@@ -226,6 +244,7 @@ if (typeof define === 'function' && define.amd) {
     // other code
 </script>
 ```
+
 
 
 ## 名词区别
@@ -292,7 +311,10 @@ import { stat, exists, readFile } from 'fs';
 
 上面代码的实质是从fs模块加载 3 个方法，其他方法不加载。这种加载称为“编译时加载”或者静态加载，即 ES6 可以在编译时就完成模块加载，效率要比 CommonJS 模块的加载方式高
 
+
+
 ## 总结
+
 | -                | CommonJs                           | AMD                            | CMD                     | ES6                                                          |
 | ---------------- | ---------------------------------- | ------------------------------ | ----------------------- | ------------------------------------------------------------ |
 | 使用场景         | 服务器端:Nodejs                    | 浏览器端:Require.js            | 服务器浏览器皆可:Sea.js | 服务器浏览器皆可,还可以和CommonJs混用                        |

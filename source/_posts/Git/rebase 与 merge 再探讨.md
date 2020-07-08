@@ -1,0 +1,55 @@
+---
+title:  rebase 与 merge 再探讨
+date: 2020-07-08 15:08:37
+categories:
+- Git
+tags:
+comments: false
+---
+
+## 前言
+
+今天遇到了 rebase 和 merge 的问题，跟着网上的教程亲自打了一遍，看了一年前自己写的文章，又有了新的感悟，再次记录。
+
+<!-- more -->
+
+
+
+## git rebase 与 git merge 区别
+
+- `git rebase` 可以翻译成 [变基]，即重新设置基线。通过把当前分支的 commit 放到公共分支的最后面，将分叉的分支重新合并，整理成直线。需要注意，合并时当前分支所有基于原分支提交点之后的 commit 号不管有没有与公共分支冲突，都会重新生成。 
+<img src="https://img.youpin.mi-img.com/jianyu/b27e22cfabc255217b23eae787e959be.jpeg?w=332&amp;h=218" alt="image"  />
+- `git merge` 会按提交时间顺序将公共分支的 commit 插到当前分支上，且会将两个分支的最新一次 commit 点合并成一个新的 merge commit 。最终的分支树呈现非线性直线形式。 
+<img src="https://img.youpin.mi-img.com/jianyu/047c506c6ed7bc1895a285ec2bba5321.jpeg?w=584&amp;h=400" alt="image" style="zoom:67%;" />
+
+
+
+## 合并分支方法
+
+- 功能分支
+    - 合并主分支时 
+      - git pull --rebase origin master
+      - 如有冲突，解决冲突
+          - git add .
+          - git rebase --continue
+      - git push -f
+    - 在主分支合并功能分支前，合并 commit 号
+        - git rebase -i HEAD~2（数字代表自己在功能分支提交了多少次）
+        - 进入编辑后，检查是否是需要合并的 commit 号，将第二条及以下的 commit 的 pick 改成 s，保存
+        - 进入合并 commit 号编辑，编辑输入合并的 commit 记录 
+        - git push -f
+- 主分支
+  - git merge 功能分支
+  - git push
+- 其他指令
+    - git rebase –abort 放弃一次合并
+    - git log --graph --pretty=oneline --abbrev-commit 查看log树结构
+
+
+
+## 参考文章
+
+[你真的懂git rebase吗？](https://www.jianshu.com/p/6960811ac89c)
+
+[git rebase 还是 merge的使用场景最通俗的解释](https://www.jianshu.com/p/4079284dd970)
+
