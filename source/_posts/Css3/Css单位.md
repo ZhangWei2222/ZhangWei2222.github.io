@@ -1,16 +1,14 @@
 ---
-title: Css 单位
+title: CSS 单位
 date: 2017-08-18 15:15:47
 categories:
-- Css3
-tags:
-- 单位
-comments: false
+- CSS3
+comments: true
 ---
 
 ## 前言
 
-除了平时经常使用的 px 、rem，Css 其实还提供了很多单位，接下来看一看吧~
+除了平时经常使用的 px 、rem，CSS 其实还提供了很多单位，接下来看一看吧~
 
 <!-- more -->
 
@@ -27,13 +25,59 @@ comments: false
 - 本质是等比缩放
 - 使用：根元素 html 中写固定像素或百分比：1rem = 16px，再在具体元素上设置rem
 
+```css
+<div>
+    我是父元素div
+</div>
+
+html {
+    font-size: 10px;
+    }
+div {
+    font-size: 4rem; /* 40px */
+    width: 30rem;  /* 300px */
+    height: 30rem;
+    border: solid 1px black;
+}
+```
+
 
 
 ## em
 
 - **相对于父元素** 文字大小
-  - 如果父元素设置了字体大小，1em = 1/父元素文字大小；没有设置，则使用浏览器 body 默认字体大小 16px
-  - 如果自身设置了字体大小，em 相对于自身，1em = 1/自身字体大小
+  - 如果父元素设置了字体大小，1em = 1\*父元素文字大小；没有设置，则使用浏览器 body 默认字体大小 16px
+  - 如果自身设置了字体大小，em 相对于自身，1em = 1\*自身字体大小
+
+```css
+<div>
+    我是父元素div
+    <p>
+        我是子元素p
+        <span>我是孙元素span</span>
+    </p>
+</div>
+
+div {
+  font-size: 40px;
+  width: 10em; /* 400px */
+  height: 10em; /* 400px */
+  border: solid 1px black;
+}
+p {
+  font-size: 0.5em; /* 20px */ 
+  width: 10em; /* 200px */
+  height: 10em;
+  border: solid 1px red;
+}
+span {
+  font-size: 0.5em;  /* 12px chrome设置的最小字体大小为12px */ 
+  width: 10em; /* 120px */ 
+  height: 10em;
+  border: solid 1px blue;
+  display: block;
+}
+```
 
 
 

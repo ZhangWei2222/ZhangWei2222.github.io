@@ -2,9 +2,8 @@
 title: css媒体查询
 date: 2017-08-18 15:15:47
 categories:
-- Css3
-tags:
-comments: false
+- CSS3
+comments: true
 ---
 
 ### 1.语法

@@ -2,10 +2,10 @@
 title: css3实现网页平滑过渡效果
 date: 2017-10-17 15:15:47
 categories:
-- Css3
+- CSS3
 tags:
 - 动画
-comments: false
+comments: true
 ---
 
 ### 一、如何用纯css判断盒子被选中？

@@ -2,9 +2,8 @@
 title: Canvas 与 SVG
 date: 2019-08-30 17:14:37
 categories:
-- Css3
-tags:
-comments: false
+- CSS3
+comments: true
 ---
 
 曾在项目中使用过SVG进行流程控制，还挺有趣的；Canvas也试过，使用途径非常广。以下做一些区别。

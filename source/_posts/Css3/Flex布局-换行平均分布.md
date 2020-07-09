@@ -5,7 +5,7 @@ categories:
 - CSS3
 tags:
 - Flex
-comments: false
+comments: true
 ---
 
 有一个需求：多个盒子需要换行布局，单纯使用 `flex` 的属性，会发现没有办法平均分布，中间会缺，记录一种解决思路

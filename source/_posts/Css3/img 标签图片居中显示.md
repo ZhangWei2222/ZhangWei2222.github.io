@@ -3,7 +3,7 @@ title: img 标签图片居中显示
 date: 2020-04-27 11:48:37
 categories:
 - CSS3
-comments: false
+comments: true
 ---
 使用 `object-fit 属性`
 

@@ -2,9 +2,8 @@
 title: 学会使用box-sizing布局
 date: 2017-09-09 15:15:47
 categories:
-- Css3
-tags:
-comments: false
+- CSS3
+comments: true
 ---
 
 ### 盒子模型

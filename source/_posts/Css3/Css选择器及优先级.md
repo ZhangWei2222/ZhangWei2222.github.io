@@ -1,10 +1,9 @@
 ---
-title: Css选择器及优先级
+title: CSS选择器及优先级
 date: 2019-03-05 09:15:37
 categories:
 - CSS3
-tags:
-comments: false
+comments: true
 ---
 
 ## 前言
@@ -65,12 +64,12 @@ comments: false
 某个类的状态
 
 - 链接伪类
-- 【:link】
+  - 【:link】
   - 【:visited】
 - 动态伪类
 
   - 【:focus】
-- 【:hover】
+  - 【:hover】
   - 【:active】
 - 静态伪类
 
@@ -94,3 +93,12 @@ DOM 不存在的元素，只在 CSS 中用来渲染，添加一些特殊效果
 单冒号 => CSS3 伪类，双冒号 => CSS3 伪元素
 
 > 在 CSS3 中引入伪元素不再允许使用单冒号的写法，因此以后在某元素前后插入内容，**要用双引号**。
+
+
+
+## 扩展
+
+**一个 div,position 设置为 absolute ,再用 JS 设置 div.style.position=""，这时 div 的表现？怎么去判断？**
+
+被 js 覆盖，因为 js 会把样式写在 style 的属性，是内联元素，覆盖掉了。
+

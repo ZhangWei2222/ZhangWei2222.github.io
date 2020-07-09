@@ -3,9 +3,7 @@ title:  Display 属性
 date: 2019-03-04 12:12:37
 categories:
 - CSS3
-tags:
-- Display
-comments: false
+comments: true
 ---
 
 ## 前言
@@ -80,3 +78,4 @@ display 属性值有： inherit、none、inline、block、inline-block、list-it
 
 - **行内块元素**
 - 融合了 inline 和 block 特性，即是内联元素，又可以设置宽高
+- 应用场景：行内排列且需要设置大小的需求，比如：网页的导航栏、把 a 标签做成按钮

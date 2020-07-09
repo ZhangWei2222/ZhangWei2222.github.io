@@ -1,10 +1,9 @@
 ---
-title:  BFC
+title: BFC
 date: 2019-03-07 18:12:37
 categories:
-- Css3
-tags:
-comments: false
+- CSS3
+comments: true
 ---
 
 ## 定义
@@ -32,3 +31,10 @@ comments: false
 2. position 的值不是 static 或者 relative
 3. overflow 的值不是 visible
 4. display 的值是 inline-block、table-cell、flex、table-caption 或者 inline-flex
+
+
+
+## 补充参考文章
+
+[10 分钟理解 BFC 原理](https://zhuanlan.zhihu.com/p/25321647)
+
