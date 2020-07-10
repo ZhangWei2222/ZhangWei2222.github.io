@@ -14,6 +14,8 @@ comments: false
 
 <!-- more -->
 
+
+
 ## HTTP 生命过程
 
 ![koa2-77 019](https://user-images.githubusercontent.com/8216630/42408395-9efe19ca-81fe-11e8-9a6e-3dc5b1896dca.jpeg)
@@ -27,6 +29,8 @@ comments: false
   - 书查查询
 - http 响应
   - 响应操作
+
+
 
 ## Koa.js 的 HTTP 旅程
 

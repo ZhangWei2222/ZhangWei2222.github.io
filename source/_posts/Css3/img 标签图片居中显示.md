@@ -9,9 +9,8 @@ comments: true
 
 ```css
 .img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100px;
+    height: 100px;
     object-fit: cover; // 保证图片覆盖容器的宽高
 }
 ```
