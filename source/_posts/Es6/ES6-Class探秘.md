@@ -3,7 +3,7 @@ title:  ES6-Class探秘
 date: 2019-05-27 16:27:37
 categories:
 - Es6
-comments: false
+comments: true
 ---
 
 ## 前言
@@ -152,7 +152,7 @@ person.sayName(); //zhangwei
 
 ### 不存在变量提升
 
-即类使用在在，定义在后会报错的。原因和继承相关，必须保证子类在父类之后定义。
+即类使用在前，定义在后会报错的。原因和继承相关，必须保证子类在父类之后定义。
 
 
 

@@ -3,7 +3,7 @@ title: ES6-import…form、import()区别
 date: 2019-05-28 11:47:37
 categories:
 - Es6
-comments: false
+comments: true
 ---
 
 ## 前言

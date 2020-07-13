@@ -3,7 +3,7 @@ title:  ES6-新特性
 date: 2019-03-14 15:32:37
 categories:
 - Es6
-comments: false
+comments: true
 ---
 
 ## 1、let const
@@ -271,7 +271,7 @@ function myRequest(obj) {
 
 - es7提出的语法糖，Await和Async其实就是**promise的封装**
 - **async 的用法**
-- **作为一个关键字放到函数前面**，用于表示函数是一个异步函数，因此该函数的执行不会阻塞后面代码的执行
+  - **作为一个关键字放到函数前面**，用于表示函数是一个异步函数，因此该函数的执行不会阻塞后面代码的执行
 - **async 函数内部的实现原理**
   - 如果async 函数中有返回一个值 ,当调用该函数时，**内部会调用 Promise.resolve() 方法把它转化成一个promise 对象作为返回**，可以使用 **then方法**  获取到promise 返回值
   - 如果函数**内部抛出错误**，就会**调用 Promise.reject() 返回一个 promise 对象**，可以使用 **catch 方法**  获取到promise 返回值

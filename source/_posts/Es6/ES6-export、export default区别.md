@@ -3,7 +3,7 @@ title:  ES6-export、export default区别
 date: 2019-05-28 09:12:37
 categories:
 - Es6
-comments: false
+comments: true
 ---
 
 ## 前言

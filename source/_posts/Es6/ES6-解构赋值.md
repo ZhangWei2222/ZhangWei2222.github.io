@@ -3,7 +3,7 @@ title: ES6-解构赋值
 date: 2019-06-11 19:29:37
 categories:
 - Es6
-comments: false
+comments: true
 ---
 
 ## 前言
@@ -14,6 +14,8 @@ const {MWP} = M;
 ```
 
 <!-- more -->
+
+
 
 ## 什么是解构赋值
 
@@ -27,6 +29,7 @@ let b = 2;
 现在可以
 let [a, b] = [1, 2];
 ```
+
 
 
 ## 数组的解构赋值-注意点
