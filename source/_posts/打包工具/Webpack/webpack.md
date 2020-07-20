@@ -5,7 +5,7 @@ categories:
 - 打包工具
 tags:
 - Webpack
-comments: false
+comments: true
 ---
 
 ### 一、Hello Webpack

@@ -5,7 +5,7 @@ categories:
 - 打包工具
 tags:
 - Gulp
-comments: false
+comments: true
 ---
 
 ## gulp安装
