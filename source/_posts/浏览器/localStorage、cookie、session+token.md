@@ -5,7 +5,7 @@ categories:
 - 浏览器
 tags:
 - 存储
-comments: false
+comments: true
 ---
 
 ## Cookie、sessionStorage、localStorage 区别
@@ -161,3 +161,9 @@ function delCookie(name)  {
 }  
 //使用示例  setCookie("name","hayden");  alert(getCookie("name"));  
 ```
+
+
+
+##补充：
+
+sessionStorage 只在同个标签页共享，如果把网址复制粘贴到新打开的标签页里面，不共享。体现在项目中，父页面以搜索条件设置 sessionStorage，不同的新开的子页面返回到父页面时，能拿到其打开前的父页面设置的 sessionStorage，不覆盖

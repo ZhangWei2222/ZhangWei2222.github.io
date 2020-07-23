@@ -3,8 +3,7 @@ title: cors跨域
 date: 2019-11-18 14:43:37
 categories:
 - 浏览器
-tags:
-comments: false
+comments: true
 ---
 
 实现 CORS 通信的关键是服务器。只要服务器实现了 CORS 接口，就可以跨源通信，即为了**解决跨域问题**。
