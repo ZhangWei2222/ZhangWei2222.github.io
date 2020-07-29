@@ -3,7 +3,7 @@ title: 使用 koa2-cors 跨域
 date: 2020-04-28 20:38:37
 categories:
 - Koa2
-comments: false
+comments: true
 ---
 
 介绍使用 koa2-cors 进行跨域的配置

@@ -3,7 +3,7 @@ title: Node.js-path模块中 path.resolve() 和 path.join() 的区别
 date: 2020-04-28 11:29:37
 categories:
 - Node.js
-comments: false
+comments: true
 ---
 
 ### path 模块的引入

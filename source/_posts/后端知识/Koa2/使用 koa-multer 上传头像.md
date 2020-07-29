@@ -3,7 +3,7 @@ title: 使用 koa-multer 上传头像
 date: 2020-04-28 10:34:37
 categories:
 - Koa2
-comments: false
+comments: true
 ---
 
 上传头像的原理是：
