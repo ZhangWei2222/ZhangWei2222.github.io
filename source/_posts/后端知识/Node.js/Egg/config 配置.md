@@ -1,0 +1,64 @@
+---
+title: Egg-config 配置
+date: 2020-08-18 17:46:37
+categories:
+- Node.js
+tags:
+- Egg
+comments: true
+---
+
+Egg 框架支持根据环境来加载配置，定义多个环境的配置文件，记录定义多个环境配置文件的方式
+
+<!-- more -->
+
+```
+config
+|- config.default.js
+|- config.prod.js
+|- config.unittest.js
+`- config.local.js
+```
+
+
+
+### 运行环境
+
+通过 `EGG_SERVER_ENV` 环境变量来指定运行环境，可以在 `package.json` 的 `scripts` 指定
+
+```json
+"scripts": {
+  "dev": "EGG_SERVER_ENV=local egg-bin dev",
+  "local": "EGG_SERVER_ENV=local npm run start",
+  "staging": "EGG_SERVER_ENV=staging egg-scripts start --workers=8",
+}
+```
+
+
+
+### 配置文件
+
+在根目录新建 `config` 文件夹
+
+- 默认配置文件：`config/config.default.js`
+   默认配置文件在所有环境中都会被加载
+- 环境配置文件：`config/config.{env}.js`
+
+例如：创建常用的环境配置文件
+
+| 配置文件        | 描述         |
+| --------------- | ------------ |
+| config.local.js | 本地环境配置 |
+| config.dev.js   | 开发环境配置 |
+| config.prod.js  | 生产环境配置 |
+
+环境配置文件会覆盖默认配置文件中同名配置项
+
+
+
+### 参考文章
+
+- [Egg Config](https://www.jianshu.com/p/8e4a06b3e30c)
+
+- [Egg Config 配置](https://www.w3cschool.cn/eggjslesson/eggjslesson-2sil35ye.html)
+
