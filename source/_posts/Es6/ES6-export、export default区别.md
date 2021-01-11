@@ -42,3 +42,14 @@ export default function isTest(str) {
 1. 在一个文件或模块中，export、import可以有多个，export default仅有一个
 1. 通过export方式导出，在导入时要加{}，export default不用
 1. export可以直接导出变量表达式，export default不行
+
+```js
+export { fun1, fun2, fun3, ......} // 导出
+import { fun1, fun2, fun3, ......} from "a.js" // 引入
+fun1(2), fun2(2), fun3(2) // 使用
+
+export default { fun1, fun2, fun3, ......} // 导出
+import fun from "a.js" // 引入
+fun.fun1(2), fun.fun2(2), fun.fun3(2) // 使用
+```
+
