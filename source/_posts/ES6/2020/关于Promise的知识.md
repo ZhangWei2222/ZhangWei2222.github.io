@@ -2,7 +2,7 @@
 title: 关于Promise的知识
 date: 2020-01-02 14:51:37
 categories:
-- Es6
+- ES6
 comments: true
 ---
 
