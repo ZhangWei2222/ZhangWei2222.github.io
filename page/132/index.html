@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%85%B3%E4%BA%8E%E8%B4%AD%E7%89%A9%E8%BD%A6%E6%B7%BB%E5%8A%A0%E6%8C%89%E9%92%AE%E7%9A%84%E5%8A%A8%E7%94%BB/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/shopcart-list%E8%B4%AD%E7%89%A9%E8%BD%A6%E5%88%97%E8%A1%A8%E9%A1%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%85%B3%E4%BA%8E%E8%B4%AD%E7%89%A9%E8%BD%A6%E6%B7%BB%E5%8A%A0%E6%8C%89%E9%92%AE%E7%9A%84%E5%8A%A8%E7%94%BB/" itemprop="url">关于购物车添加按钮的动画</a></h1>
+                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/shopcart-list%E8%B4%AD%E7%89%A9%E8%BD%A6%E5%88%97%E8%A1%A8%E9%A1%B5/" itemprop="url">shopcart-list购物车列表页</a></h1>
         
 
         <div class="post-meta">
@@ -369,7 +369,369 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.6k 字
+                  1.7k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+需要使用better-scroll进行列表内容滚动绑定
+使用vue2的transition动画过渡处理动画
+使用子组件cartcontrol处理购物车的添加删除操作cartcontrol.vue购物车操作按钮
+
+1234567&lt;!--transition是vue2的动画格式--&gt;&lt
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/shopcart-list%E8%B4%AD%E7%89%A9%E8%BD%A6%E5%88%97%E8%A1%A8%E9%A1%B5/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/shopcart.vue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/shopcart.vue/" itemprop="url">shopcart.vue</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-09T15:15:47+08:00">
+                2017-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.7k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          html代码
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556&lt;template&gt;&lt;!--vue的render渲染需要有一个
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/shopcart.vue/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/split,formatDate,store,util%E7%BB%84%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/split,formatDate,store,util%E7%BB%84%E4%BB%B6/" itemprop="url">split,formatDate,store,util组件</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-09T15:15:47+08:00">
+                2017-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.5k 字
                 </span>
               
 
@@ -408,16 +770,12 @@
       
         
           
-          html代码
-
-生成一个动画小球的div,并且生成五个小球,五个是为了生成一定数量的小球来作为操作使用,按照小球动画的速度,一般来说五个也可以保证有足够的小球数量来运行动画
-动画的内容分别是外层和内层,外层控制动画小球的轨道和方向,内层控制动画小球的运行状态
-动画使用vue的js钩子实现
-因为小球动
+          split组件(vue)的代码split组件因为常使用,所以单独独立出来,并且结构相当简单.
+12345678910111213141516&lt;template&gt;  &lt;div class&#x3D;&quot;split&quot;&gt;&lt;&#x2F;div&gt;&lt;&
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%85%B3%E4%BA%8E%E8%B4%AD%E7%89%A9%E8%BD%A6%E6%B7%BB%E5%8A%A0%E6%8C%89%E9%92%AE%E7%9A%84%E5%8A%A8%E7%94%BB/#more" rel="contents">
+            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/split,formatDate,store,util%E7%BB%84%E4%BB%B6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -468,7 +826,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%93%81%E5%8C%BA%E5%9F%9Fgoods.vue/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/stylus%E7%9B%B8%E5%85%B3%E5%92%8C1%E5%83%8F%E7%B4%A0%E8%BE%B9%E6%A1%86%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -487,7 +845,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%93%81%E5%8C%BA%E5%9F%9Fgoods.vue/" itemprop="url">商品区域goods.vue</a></h1>
+                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/stylus%E7%9B%B8%E5%85%B3%E5%92%8C1%E5%83%8F%E7%B4%A0%E8%BE%B9%E6%A1%86%E9%97%AE%E9%A2%98/" itemprop="url">stylus相关和1像素边框问题</a></h1>
         
 
         <div class="post-meta">
@@ -552,7 +910,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3.1k 字
+                  1.4k 字
                 </span>
               
 
@@ -568,7 +926,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  14 分钟
+                  6 分钟
                 </span>
               
             </div>
@@ -591,17 +949,14 @@
       
         
           
-          2017-09-09技术点:
-
-定义了2个wrapper,分别是menu-wrapper和foods-wrapper,对应当前页面的架构,左右两边的区域
-v-if和v-show的选择使用
-v-for传递索引
-vue传递原生事件$event
-使用stylus的mixin处理一些border和img的问
+          1像素边框问题1像素边框问题其实就是Dpr的比例问题,例如 Retina屏设置1px边框，实际显示2px,因为Dpr是2,所以会显示为2px
+目前这里用的是伪元素 + transform 实现:
+伪元素:总结伪类与伪元素
+12::after 在某元素之后插入某些内容::before 在某元素之前插入
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%93%81%E5%8C%BA%E5%9F%9Fgoods.vue/#more" rel="contents">
+            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/stylus%E7%9B%B8%E5%85%B3%E5%92%8C1%E5%83%8F%E7%B4%A0%E8%BE%B9%E6%A1%86%E9%97%AE%E9%A2%98/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -652,7 +1007,7 @@ vue传递原生事件$event
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85%E9%A1%B5food.vue/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/vue%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C%E9%85%8D%E7%BD%AE%E5%92%8C%E5%BC%B9%E5%B1%82css%20sticky%20footer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -671,7 +1026,7 @@ vue传递原生事件$event
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85%E9%A1%B5food.vue/" itemprop="url">商品详情页food.vue</a></h1>
+                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/vue%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C%E9%85%8D%E7%BD%AE%E5%92%8C%E5%BC%B9%E5%B1%82css%20sticky%20footer/" itemprop="url">vue动画效果配置和弹层css sticky footer</a></h1>
         
 
         <div class="post-meta">
@@ -736,7 +1091,7 @@ vue传递原生事件$event
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3.1k 字
+                  1.4k 字
                 </span>
               
 
@@ -752,7 +1107,7 @@ vue传递原生事件$event
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  14 分钟
+                  5 分钟
                 </span>
               
             </div>
@@ -775,379 +1130,17 @@ vue传递原生事件$event
       
         
           
-          主体结构html代码
-1234567&lt;template&gt;  &lt;transition name&#x3D;&quot;move&quot;&gt;  &lt;!--要实现这个商品详情页的内容滚动,所以需要有一个显示标志和一个dom绑定--&gt;  &lt;div v-show&#x
+          vue动画效果配置有两种方式:
+
+一种是css方式需要注意 4 个(CSS)类名在 enter/leave 的过渡中切换:
+
+
+v-enter: 定义进入过渡的开始状态。在元素被插入时生效，在下一个帧移除。
+v-enter-active: 定义进入过渡的结束状态。在元素被插入时生效，在 transi
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85%E9%A1%B5food.vue/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%AE%B6%E9%A1%B5%E9%9D%A2seller.vue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%AE%B6%E9%A1%B5%E9%9D%A2seller.vue/" itemprop="url">商家页面seller.vue</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-09T15:15:47+08:00">
-                2017-09-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  2.7k 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  13 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          主体结构html代码
-1234567891011121314151617181920212223&lt;div class&#x3D;&quot;seller&quot; ref&#x3D;&quot;seller&quot;&gt;    &lt;div class&#x3D;&quot;sell
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%AE%B6%E9%A1%B5%E9%9D%A2seller.vue/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%A4%B4%E9%83%A8%E7%BB%84%E4%BB%B6header.vue/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%A4%B4%E9%83%A8%E7%BB%84%E4%BB%B6header.vue/" itemprop="url">头部组件header.vue</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-09T15:15:47+08:00">
-                2017-09-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  2.8k 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  14 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-弹层制作 vue动画效果配置和弹层css sticky footer原理
-使用css sticky footer技术
-vue的v-for遍历
-vue的v-show和事件监听
-vue动画处理
-
-
-header和公告栏制作
-text-overflow:ellipsis的使用
-font-size:0和v
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%A4%B4%E9%83%A8%E7%BB%84%E4%BB%B6header.vue/#more" rel="contents">
+            <a class="btn" href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/vue%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C%E9%85%8D%E7%BD%AE%E5%92%8C%E5%BC%B9%E5%B1%82css%20sticky%20footer/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1189,7 +1182,7 @@ font-size:0和v
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/131/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/131/">131</a><span class="page-number current">132</span><a class="page-number" href="/page/133/">133</a><span class="space">&hellip;</span><a class="page-number" href="/page/140/">140</a><a class="extend next" rel="next" href="/page/133/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/131/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/131/">131</a><span class="page-number current">132</span><a class="page-number" href="/page/133/">133</a><span class="space">&hellip;</span><a class="page-number" href="/page/141/">141</a><a class="extend next" rel="next" href="/page/133/">&gt;</a>
   </nav>
 
 
@@ -1239,7 +1232,7 @@ font-size:0和v
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">696</span>
+                  <span class="site-state-item-count">701</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1261,7 +1254,7 @@ font-size:0和v
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-count">70</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1328,7 +1321,7 @@ font-size:0和v
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">458.3k</span>
+    <span title="Site words total count">465.2k</span>
   
 </div>
   <div id="sitetime"></div>
