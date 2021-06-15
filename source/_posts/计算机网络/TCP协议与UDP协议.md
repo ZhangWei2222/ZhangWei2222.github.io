@@ -6,7 +6,7 @@ categories:
 tags:
 - TCP
 - UDP
-comments: false
+comments: true
 ---
 
 ## 前言

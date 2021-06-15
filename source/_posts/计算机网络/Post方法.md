@@ -5,7 +5,7 @@ categories:
 - 计算机网络
 tags:
 - Post
-comments: false
+comments: true
 ---
 
 ## 如何**设置传输的数据的格式**
