@@ -31,7 +31,7 @@ comments: true
 
 #### TCP的包头结构
 
-![图片](G:\ZhangWei2222.github.io\source\_posts\计算机网络\TCP协议与UDP协议.assets\640)
+![图片](https://mmbiz.qpic.cn/mmbiz_png/gH31uF9VIibRn1aTIUxxEF1TrY9OM5OTa762ic1NDA46iatH8kzqyw8016xdURTbYVsZprQdWxES6sgL8nfTxmXIA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 - 源端口 16位
 - 目标端口 16位
@@ -47,7 +47,7 @@ comments: true
 
 #### UDP的包头结构
 
-![图片](G:\ZhangWei2222.github.io\source\_posts\计算机网络\TCP协议与UDP协议.assets\640)
+![图片](https://mmbiz.qpic.cn/mmbiz_png/gH31uF9VIibRn1aTIUxxEF1TrY9OM5OTaIbgO1D2CX8SKKUQwujyAhMdrOgCHDJ9bpxHZd9GYEjmIzyhRc7Ys1w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 - 源端口 16位
 - 目的端口 16位
