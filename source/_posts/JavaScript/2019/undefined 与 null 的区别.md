@@ -56,5 +56,10 @@ undefined == false //false
 
 null == true //false
 null == false //false
+
+null == undefined // true
+null === undefined //false
+
+NaN == NaN // 存在 NaN 则返回 false 
 ```
 

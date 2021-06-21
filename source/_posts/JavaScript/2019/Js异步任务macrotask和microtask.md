@@ -15,35 +15,60 @@ comments: true
 
 ## Js运行机制（刷新三观）
 
-众所周知，JS是单线程的，主线程拥有一个执行栈和一个任务队列
+众所周知，JS是单线程的
 
-主线程依次执行同步代码
+- 任务进入执行栈，判断是同步任务还是异步任务
 
-当异步任务有结果时，把事件放入任务队列
+- 主线程依次执行同步代码
 
-当主线程的同步代码执行完毕了，又会依次地从任务队列取事件，执行异步任务的回调——event loop（事件循环）
+- 当异步任务有结果时，把事件放入任务队列
+
+- 当主线程的同步代码执行完毕了，又会依次地从任务队列取事件，执行异步任务的回调
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/gH31uF9VIibSNwS2EBDtHnxMysjAib2yvIiasUT3CvmQkgiaF81VfzQicNuatqbUIcT01iccddryMSgGmTNr8OLUFmvg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:80%;" />
 
  **但是重点来了**
 
 任务队列分成tasks 和 microtasks，在每次事件循环中，tasks只会取一个执行，执行完成会检查microtasks队列，并把里面所有的任务都执行完毕。
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/gH31uF9VIibSNwS2EBDtHnxMysjAib2yvIh75NUHZic4J4n5mPSe5jcMcWtsO0LuhRDuqdHVWicqejmPAI8NLLjuKw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+上述过程不断重复就是 event loop（事件循环）
 
 
 
 ## API
 
 ### macrotasks(tasks)
-- setTimeout
--  setInterval
--  setImmediate
--  I/O
--  requestAnimationFrame
--  UI rendering
+
+宏任务的时间粒度比较大，执行的时间间隔是不能精确控制的，对一些高实时性的需求就不太符合
+
+常见的宏任务有：
+
+- script (可以理解为外层同步代码)
+
+- setTimeout/setInterval
+
+- UI rendering/UI事件
+
+- postMessage、MessageChannel
+
+- setImmediate、I/O（Node.js）
+
+- requestAnimationFrame
+
+  
 
 ### microtasks
-- process.nextTick,
-- Promise
+
+一个需要异步执行的函数，执行时机是在主函数执行结束之后、当前宏任务结束之前
+
+常见的微任务有：
+
+- process.nextTick（Node.js）
+- Promise.then
 - MutationObserver
-- Object.observe
+- Object.observe（已废弃；Proxy 对象替代）
 
 ```javascript
 console.log(1);
@@ -96,4 +121,6 @@ console.log(5);
 // 5 1 2 3 4
 //如果有多个process.nextTick语句（不管它们是否嵌套），将全部在当前"执行栈"执行
 ```
+
+![image-20210621153407573](https://img.youpin.mi-img.com/luban/ov77d438tag_22026080841624261854957.png)![image-20210621153407573](https://img.youpin.mi-img.com/luban/ea5tb0rt2f_22026080841624261854900.png)
 
