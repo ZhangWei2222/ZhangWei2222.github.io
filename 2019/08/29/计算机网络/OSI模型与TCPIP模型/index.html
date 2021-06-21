@@ -87,7 +87,7 @@
 <meta property="og:description" content="前言介绍两大模型与它们的区别">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-08-29T07:36:37.000Z">
-<meta property="article:modified_time" content="2021-06-15T06:29:12.697Z">
+<meta property="article:modified_time" content="2021-06-16T04:02:53.615Z">
 <meta property="article:author" content="Wei Zhang">
 <meta name="twitter:card" content="summary">
 
@@ -375,7 +375,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  611 字
+                  692 字
                 </span>
               
 
@@ -438,13 +438,13 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>为用户的<strong>应用程序</strong>提供 <strong>网络服务</strong></td>
+<td>为用户的<strong>应用程序</strong>提供 <strong>网络服务</strong><br />在应用层交互的数据单元我们称之为报文</td>
 <td>应用层</td>
 <td>应用层</td>
-<td>网络服务协议：<strong>HTTP，HTTPS</strong>，FTP，POP3、SMTP等</td>
+<td>网络服务协议：<strong>HTTP，HTTPS，DNS</strong>，FTP，POP3、SMTP（电子邮件系统）等</td>
 </tr>
 <tr>
-<td>把数据转换为 与 <strong>接收者</strong> 的 <strong>系统格式兼容并适合传输</strong> 的 格式</td>
+<td>把数据转换为 与 <strong>接收者</strong> 的 <strong>系统格式兼容并适合传输</strong> 的 格式<br />向上为应用层提供服务，向下接收来自会话层的服务</td>
 <td>表示层</td>
 <td></td>
 <td>Telnet, Rlogin, SNMP, Gopher</td>
@@ -456,13 +456,13 @@
 <td>SMTP, DNS</td>
 </tr>
 <tr>
-<td>将<strong>下层接收到的数据</strong>进行<strong>分段和传输</strong>，到达目的地址后再进行<strong>重组</strong>（这一层数据叫做段）<br />使用 <strong>TCP 或 UDP</strong> 等，为上层协议提供<strong>端对端</strong>的 可靠和透明的<strong>数据传输服务</strong>，包括处理<strong>差错控制和流量控制</strong>等问题（端 指的是 端口号）</td>
+<td>主要任务是为两台主机进程之间的通信提供服务，处理数据包错误、数据包次序，以及其他一些关键传输问题<br />将<strong>下层接收到的数据</strong>进行<strong>分段和传输</strong>，到达目的地址后再进行<strong>重组</strong>（这一层数据叫做段）</td>
 <td>传输层</td>
 <td>传输层</td>
 <td><strong>TCP, UDP</strong></td>
 </tr>
 <tr>
-<td>IP协议层：通过IP寻址<strong>建立两个节点之间的连接</strong>，为<strong>分组</strong>选择合适的<strong>路由和交换节点</strong>，正确的传送至目的处</td>
+<td>IP协议层：通过IP寻址<strong>建立两个节点之间的连接</strong>，为<strong>分组</strong>选择合适的<strong>路由和交换节点</strong>，正确的传送至目的处<br />在发送数据时，网络层把传输层产生的报文或用户数据报封装成分组和包，向下传输到数据链路层</td>
 <td>网络层</td>
 <td>网络层</td>
 <td><strong>IP,</strong> ICMP, <strong>ARP</strong>（将IP地址解析成对应的MAC地址）, RARP, AKP, UUCP<br /><strong>路由器</strong></td>
@@ -470,7 +470,7 @@
 <tr>
 <td>将比特组合成字节,再将字节组合成<strong>帧</strong><br />决定<strong>访问介质的方式</strong><br /><strong>差错检测</strong>，确保数据的可靠传输</td>
 <td>数据链路层</td>
-<td>数据链路层</td>
+<td>网络接口层</td>
 <td>FDDI, Ethernet, Arpanet, PDN, SLIP, PPP<br /><strong>交换机</strong></td>
 </tr>
 <tr>
@@ -615,7 +615,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">705</span>
+                  <span class="site-state-item-count">723</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -720,7 +720,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">474.9k</span>
+    <span title="Site words total count">482.4k</span>
   
 </div>
   <div id="sitetime"></div>

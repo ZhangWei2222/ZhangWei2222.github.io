@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/01/28/JavaScript/2021/4.%20V8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/03/09/Vue/2021/5.%20Vue2-diff%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/01/28/JavaScript/2021/4.%20V8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" itemprop="url">js-V8垃圾回收</a></h1>
+                <a class="post-title-link" href="/2021/03/09/Vue/2021/5.%20Vue2-diff%E7%AE%97%E6%B3%95/" itemprop="url">Vue2-diff算法</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-28T11:26:37+08:00">
-                2021-01-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-09T19:42:47+08:00">
+                2021-03-09
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaScript</span>
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
                   </a>
                 </span>
 
@@ -371,7 +371,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.3k 字
+                  2.4k 字
                 </span>
               
 
@@ -387,7 +387,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  10 分钟
                 </span>
               
             </div>
@@ -409,22 +409,11 @@
 
       
         
-          
-          内存管理介绍JavaScript中的垃圾收集
-程序的运行需要内存，只要程序要求，操作系统就必须提供内存
-
-JavaScript使用自动内存管理，这被称为“垃圾回收机制”（garbage collector）
-
-优点是可以简化开发、节省代码
-
-缺点是无法完整的掌握内存的分配与回收的具体过程
-
-
-Nod
-          ...
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>当 dom 发生更改时候，Vue 会用虚拟 dom 进行 diff 算法，diff 算法采用的是同层的树节点比较的方式，时间复杂度只有O(n)，是一种相当高效的算法。diff 的过程就是调用了名为 patch 的函数（ patch 机制），它的主要功能是比对两个 VNode 节点，将「差异」更新到视图上。</p>
+<p>Vue2 的 diff 算法，参考了 snabbdom.js ，使用的是 双端比较算法。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/01/28/JavaScript/2021/4.%20V8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/#more" rel="contents">
+            <a class="btn" href="/2021/03/09/Vue/2021/5.%20Vue2-diff%E7%AE%97%E6%B3%95/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -475,7 +464,7 @@ Nod
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/01/28/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/%E6%8F%92%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/03/09/Vue/2021/4.%20Virtual%20DOM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -494,7 +483,7 @@ Nod
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/01/28/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/%E6%8F%92%E4%BB%B6/" itemprop="url">webpack-插件</a></h1>
+                <a class="post-title-link" href="/2021/03/09/Vue/2021/4.%20Virtual%20DOM/" itemprop="url">Virtual DOM</a></h1>
         
 
         <div class="post-meta">
@@ -507,8 +496,8 @@ Nod
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-28T11:08:36+08:00">
-                2021-01-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-09T19:25:47+08:00">
+                2021-03-09
               </time>
             
 
@@ -530,8 +519,189 @@ Nod
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
-                    <span itemprop="name">打包工具</span>
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  205 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Virtual DOM 是对真实 DOM 的抽象，用一个原生的 JS 对象去描述一个 DOM 节点，其关键属性有标签名、数据、子节点等。</p>
+<blockquote>
+<p>在 Vue.js 中，Virtual DOM 是用 <code>VNode</code> ，一个 Class 去描述，通过 VNode 的 elm 属性可以访问到对应的 Node</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/03/09/Vue/2021/4.%20Virtual%20DOM/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/03/02/JavaScript/this%20call%20apply%20bind/4.%20call%E3%80%81apply%E3%80%81bind%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/03/02/JavaScript/this%20call%20apply%20bind/4.%20call%E3%80%81apply%E3%80%81bind%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0/" itemprop="url">call、apply模拟实现</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-03-02T21:44:48+08:00">
+                2021-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
                   </a>
                 </span>
 
@@ -577,7 +747,7 @@ Nod
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  4 分钟
+                  6 分钟
                 </span>
               
             </div>
@@ -599,15 +769,15 @@ Nod
 
       
         
-          
-          webpack 插件webpack的工作机制是基于事件流，将各个插件串联起来，而核心就是tapable对象
-
-tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子函数的发布与订阅，控制着webpack的插件系。webpack的本质就是一系列的插件运行。
-开发we
-          ...
+          <h2 id="模拟思路"><a href="#模拟思路" class="headerlink" title="模拟思路"></a>模拟思路</h2><ol>
+<li>将当前函数设置为 call、apply 对象的属性</li>
+<li>执行该属性</li>
+<li>删除该属性</li>
+<li>返回值</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/01/28/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/%E6%8F%92%E4%BB%B6/#more" rel="contents">
+            <a class="btn" href="/2021/03/02/JavaScript/this%20call%20apply%20bind/4.%20call%E3%80%81apply%E3%80%81bind%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -658,7 +828,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/01/13/Vue3/2021/4.%20watch/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/02/24/JavaScript/this%20call%20apply%20bind/2.%20this%E6%8C%87%E5%90%91%E7%BB%83%E4%B9%A0%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -677,7 +847,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/01/13/Vue3/2021/4.%20watch/" itemprop="url">Vue3-watch</a></h1>
+                <a class="post-title-link" href="/2021/02/24/JavaScript/this%20call%20apply%20bind/2.%20this%E6%8C%87%E5%90%91%E7%BB%83%E4%B9%A0%E9%A2%98/" itemprop="url">this指向练习题</a></h1>
         
 
         <div class="post-meta">
@@ -690,186 +860,8 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-13T14:42:47+08:00">
-                2021-01-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue3/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue3</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  595 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  2 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>watch 函数用来侦听特定的数据源，并在回调函数中执行副作用。默认情况是懒执行的，也就是说仅在侦听的源变更时才执行回调。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/01/13/Vue3/2021/4.%20watch/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/01/13/JavaScript/2021/3.%20!%E4%B8%8E!!/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/01/13/JavaScript/2021/3.%20!%E4%B8%8E!!/" itemprop="url">js-!与!!</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-13T14:26:37+08:00">
-                2021-01-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-24T09:35:48+08:00">
+                2021-02-24
               </time>
             
 
@@ -922,7 +914,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  124 字
+                  1.8k 字
                 </span>
               
 
@@ -938,7 +930,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  8 分钟
                 </span>
               
             </div>
@@ -960,14 +952,24 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
 
       
         
-          
-          ! ：可将变量转换成 boolean 类型，0、null、undefined和空字符串取反都为true，其余都为false。
-!! ：两个叹号表示把目标值转化为布尔值，相当于使用Boolean()方法
-12!!&quot;123&quot;  相当于是   Boolean(&quot;123&quo
-          ...
+          <p>普通方法和对象方法 this 指向结论：</p>
+<ol>
+<li><p>this的指向，是在函数被调用的时候确定的</p>
+</li>
+<li><p>函数调用时，看其是否被某个对象所拥有，假如被某个对象拥有，那么函数中的this，指向的是其拥有的对象</p>
+<blockquote>
+<p>例如：obj.fn()。fn() 函数被 obj 所拥有，那么 fn 里面的 this，指向的是 obj</p>
+</blockquote>
+</li>
+<li><p>如果函数独立调用，那么该函数内部的this，则指向undefined。在非严格模式中，当this指向undefined时，它会被自动指向全局对象。</p>
+<blockquote>
+<p>例如aaa() 是独立调用，那么aaa函数里面的this会指向undefined，在非严格模式下面指向的是全局对象</p>
+</blockquote>
+</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/01/13/JavaScript/2021/3.%20!%E4%B8%8E!!/#more" rel="contents">
+            <a class="btn" href="/2021/02/24/JavaScript/this%20call%20apply%20bind/2.%20this%E6%8C%87%E5%90%91%E7%BB%83%E4%B9%A0%E9%A2%98/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1018,7 +1020,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/01/13/Vue3/2021/3.%20reactive%E5%92%8CtoRefs/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/02/23/JavaScript/2021/8.%20ECMAScript/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1037,7 +1039,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/01/13/Vue3/2021/3.%20reactive%E5%92%8CtoRefs/" itemprop="url">Vue3-reactive和toRefs</a></h1>
+                <a class="post-title-link" href="/2021/02/23/JavaScript/2021/8.%20ECMAScript/" itemprop="url">ECMAScript</a></h1>
         
 
         <div class="post-meta">
@@ -1050,8 +1052,8 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-13T10:52:47+08:00">
-                2021-01-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-23T10:15:48+08:00">
+                2021-02-23
               </time>
             
 
@@ -1073,8 +1075,8 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue3/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue3</span>
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
                   </a>
                 </span>
 
@@ -1104,7 +1106,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  309 字
+                  116 字
                 </span>
               
 
@@ -1143,11 +1145,13 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
       
         
           
-          12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455&lt;template&gt;  &lt;div id&#x3D;&quot;app&quot;
+          ECMAScript 的类型分为语言类型和规范类型。
+ECMAScript 语言类型是开发者直接使用 ECMAScript 可以操作的。其实就是我们常说的Undefined, Null, Boolean, String, Number, 和 Object。
+而规范类型相当于 meta-values，
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2021/01/13/Vue3/2021/3.%20reactive%E5%92%8CtoRefs/#more" rel="contents">
+            <a class="btn" href="/2021/02/23/JavaScript/2021/8.%20ECMAScript/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1189,7 +1193,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/141/">141</a><a class="extend next" rel="next" href="/page/6/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/4/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/145/">145</a><a class="extend next" rel="next" href="/page/6/">&gt;</a>
   </nav>
 
 
@@ -1239,7 +1243,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">705</span>
+                  <span class="site-state-item-count">723</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1328,7 +1332,7 @@ tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子�
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">474.9k</span>
+    <span title="Site words total count">482.4k</span>
   
 </div>
   <div id="sitetime"></div>

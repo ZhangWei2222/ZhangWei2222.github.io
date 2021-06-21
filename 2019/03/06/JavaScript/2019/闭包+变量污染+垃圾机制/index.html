@@ -90,7 +90,7 @@
 <meta property="og:image" content="http://s3.mogucdn.com/mlcdn/c45406/190614_36fedfhi7ej7e0ab132859091i5dh_640x336.png">
 <meta property="og:image" content="http://s11.mogucdn.com/mlcdn/c45406/190614_12j493aebd76bke685483d16ek241_776x625.png">
 <meta property="article:published_time" content="2019-03-06T07:32:37.000Z">
-<meta property="article:modified_time" content="2020-08-14T06:32:45.574Z">
+<meta property="article:modified_time" content="2021-06-16T07:58:45.632Z">
 <meta property="article:author" content="Wei Zhang">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://s3.mogucdn.com/mlcdn/c45406/190614_8a498i8a2ihkh6gkdi3hgh4h05c5h_707x287.png">
@@ -433,26 +433,7 @@
 <p><strong>2、采用函数引用方式的setimeout调用</strong></p>
 <p>原生的setTimeout有一个缺陷，你传递的第一个函数不能带参数</p>
 <p>所以可以调用另一个函数来返回一个内部函数的调用，将这个内部函数对象的引用传递给settimeout函数。内部函数执行时需要的参数，在调用外部函数时传递给它。</p>
-<pre><code>function callLater(paramA, paramB, paramC) &#123;       
-  /*使用函数表达式创建并放回一个匿名内部函数的引用*/       
-  return (function () &#123;           
-    /*          
-    这个内部函数将被setTimeout函数执行；          
-    并且当它被执行时，          
-    它能够访问并操作外部函数传递过来的参数          
-    */           
-    paramA[paramB] = paramC;       
-  &#125;);   
-&#125;    
-/*  
-调用这个函数将在它的执行上下文中创建，并最终返回内部函数对象的引用  
-传递过来的参数，内部函数在最终被执行时，将使用外部函数的参数  
-返回的引用被赋予了一个变量  
-*/  
-var funcRef = callLater(elStyle, &quot;display&quot;, &quot;none&quot;);   
-/*调用setTimeout函数，传递内部函数的引用作为第一个参数*/   
-hideMenu = setTimeout(funcRef, 500); 
-</code></pre>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callLater</span>(<span class="params">paramA, paramB, paramC</span>) </span>&#123;       </span><br><span class="line">  <span class="comment">/*使用函数表达式创建并放回一个匿名内部函数的引用*/</span>       </span><br><span class="line">  <span class="keyword">return</span> (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;           </span><br><span class="line">    <span class="comment">/*          </span></span><br><span class="line"><span class="comment">    这个内部函数将被setTimeout函数执行；          </span></span><br><span class="line"><span class="comment">    并且当它被执行时，          </span></span><br><span class="line"><span class="comment">    它能够访问并操作外部函数传递过来的参数          </span></span><br><span class="line"><span class="comment">    */</span>           </span><br><span class="line">    paramA[paramB] = paramC;       </span><br><span class="line">  &#125;);   </span><br><span class="line">&#125;    </span><br><span class="line"><span class="comment">/*  </span></span><br><span class="line"><span class="comment">调用这个函数将在它的执行上下文中创建，并最终返回内部函数对象的引用  </span></span><br><span class="line"><span class="comment">传递过来的参数，内部函数在最终被执行时，将使用外部函数的参数  </span></span><br><span class="line"><span class="comment">返回的引用被赋予了一个变量  </span></span><br><span class="line"><span class="comment">*/</span>  </span><br><span class="line"><span class="keyword">var</span> funcRef = callLater(elStyle, <span class="string">&quot;display&quot;</span>, <span class="string">&quot;none&quot;</span>);   </span><br><span class="line"><span class="comment">/*调用setTimeout函数，传递内部函数的引用作为第一个参数*/</span>   </span><br><span class="line">hideMenu = <span class="built_in">setTimeout</span>(funcRef, <span class="number">500</span>); </span><br></pre></td></tr></table></figure>
 <p><strong>3、回调（return)</strong></p>
 <p><strong>4、访问私有函数和私有变量的公有函数</strong></p>
 <p>一个函数内部的私有变量，外部想要访问，可以通过其内部的方法，能通过作用链访问到变量</p>
@@ -682,7 +663,7 @@ hideMenu = setTimeout(funcRef, 500);
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">705</span>
+                  <span class="site-state-item-count">723</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -787,7 +768,7 @@ hideMenu = setTimeout(funcRef, 500);
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">474.9k</span>
+    <span title="Site words total count">482.4k</span>
   
 </div>
   <div id="sitetime"></div>
