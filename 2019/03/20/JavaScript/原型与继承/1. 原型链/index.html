@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://ae01.alicdn.com/kf/U46d8e0cda836428591167588dad26c42I.png">
 <meta property="og:image" content="http://api.fly63.com/vue_blog/public/Uploads/20200305/5e61062a0f0ec.jpg">
 <meta property="article:published_time" content="2019-03-20T02:35:37.000Z">
-<meta property="article:modified_time" content="2021-03-03T11:22:06.748Z">
+<meta property="article:modified_time" content="2021-06-22T02:14:22.208Z">
 <meta property="article:author" content="Wei Zhang">
 <meta property="article:tag" content="原型链">
 <meta name="twitter:card" content="summary">
@@ -379,7 +379,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  826 字
+                  816 字
                 </span>
               
 
@@ -438,7 +438,7 @@
 <p>我们可以通过 对象.__proto__ 查看对象的原型 </p>
 </blockquote>
 <h4 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h4><p>Object 本身是一个函数，由 Function 所创建，所以 <code>Object.__proto__</code> 的值是 <code>Function.prototype</code>，而 <code>Function.prototype</code> 的 <code>__proto__</code> 属性是 <code>Object.prototype</code>，里面存在着一些对象的方法和属性，例如最常见的 toString 方法</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span> -&gt; <span class="built_in">Function</span>.prototype -&gt; <span class="built_in">Object</span>.prototype -&gt; <span class="literal">null</span></span><br><span class="line">tsrot -&gt; Person.prototype -&gt; <span class="built_in">Object</span>.prototype -&gt; <span class="literal">null</span></span><br><span class="line">&#123;<span class="attr">name</span>: <span class="string">&#x27;zw&#x27;</span>&#125; -&gt; <span class="built_in">Function</span>.prototype -&gt; <span class="built_in">Object</span>.prototype -&gt; <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Person(对象) -&gt; <span class="built_in">Function</span>.prototype -&gt; <span class="built_in">Object</span>.prototype -&gt; <span class="literal">null</span></span><br><span class="line">person(实例) -&gt; Person.prototype -&gt; <span class="built_in">Object</span>.prototype -&gt; <span class="literal">null</span></span><br></pre></td></tr></table></figure>
 <h4 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h4><p>Array 也是一个函数对象，它的原型就是 Array.prototype。里面存在着一些数组的方法和属性，例如常见的 push，pop 等方法。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>] -&gt; <span class="built_in">Array</span>.prototype -&gt; <span class="built_in">Object</span>.prototype -&gt; <span class="literal">null</span></span><br></pre></td></tr></table></figure>
 <h4 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h4><p>Function 也是一个函数对象，但它有点特殊，它的原型就是一个 function 空函数。</p>
@@ -591,7 +591,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">723</span>
+                  <span class="site-state-item-count">727</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -696,7 +696,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">482.4k</span>
+    <span title="Site words total count">483.8k</span>
   
 </div>
   <div id="sitetime"></div>
