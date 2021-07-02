@@ -87,7 +87,7 @@
 <meta property="og:description" content="Cookie、sessionStorage、localStorage 区别">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-03-08T07:32:37.000Z">
-<meta property="article:modified_time" content="2020-07-23T08:15:22.757Z">
+<meta property="article:modified_time" content="2021-07-02T03:27:18.595Z">
 <meta property="article:author" content="Wei Zhang">
 <meta property="article:tag" content="存储">
 <meta name="twitter:card" content="summary">
@@ -376,7 +376,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.4k 字
+                  1.7k 字
                 </span>
               
 
@@ -392,7 +392,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5 分钟
+                  6 分钟
                 </span>
               
             </div>
@@ -469,24 +469,21 @@
 <ul>
 <li><p><strong>解决：</strong>设置domin</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.cookie = <span class="string">&#x27;key = value;path=/;domain=csdn.cn&#x27;</span></span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="http://www.csdn.cn/blog/a.html">www.csdn.cn/blog/a.html</a> 创建了cookie</p>
 <p><a target="_blank" rel="noopener" href="http://www.csdn.cn/blog/b.html">www.csdn.cn/blog/b.html</a> 就可以访问这个cookie页(同一目录)</p>
 <p><a target="_blank" rel="noopener" href="http://www.csdn.cn/blog/xyz/c.html">www.csdn.cn/blog/xyz/c.html</a> 也可以访问这个cookie页(字目录)</p>
 <p><a target="_blank" rel="noopener" href="http://www.csdn.cn/xx/d.html">www.csdn.cn/xx/d.html</a> 就不可以访问</p>
 </blockquote>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>webStorage</p>
 <ul>
-<li>webStorage<ul>
 <li><strong>不同浏览器无法共享</strong> loacalStorage 和 sessionStorage 的信息</li>
 <li><strong>相同浏览器的不同页面</strong>可以共享 <strong>localStorage</strong>（注意页面需要同域）</li>
 <li><strong>不同页面或标签页面无法共享</strong> <strong>sessionStorage</strong>，如果页面中包含多个 iframe标签且属于同源页面，那么他们之间是可以共享 seesionStorage的</li>
@@ -498,14 +495,14 @@
 <li>Cookie 保存在<strong>客户端</strong>，也就是浏览器端。每次往服务器发请求，都会在请求头里带着cookie，缺点显而易见，<strong>浪费流量、降低效率</strong></li>
 <li>Session 将用户信息保存在<strong>服务端</strong>，只需要<strong>往客户端的 Cookie</strong> 中保存一个 <strong>Session id</strong> 值就可以了。这样每次往服务器发请求，Cookie 的 size 很小，在服务端只需要根据 Cookie 传过来的 Session id 进行<strong>匹配session</strong>，从Session 中获取用户信息就可以了</li>
 </ol>
-<h2 id="Token-作用"><a href="#Token-作用" class="headerlink" title="Token 作用"></a>Token 作用</h2><h4 id="防止表单重复提交"><a href="#防止表单重复提交" class="headerlink" title="防止表单重复提交"></a>防止表单重复提交</h4><ol>
+<h2 id="Token-作用"><a href="#Token-作用" class="headerlink" title="Token 作用"></a>Token 作用</h2><h4 id="身份验证"><a href="#身份验证" class="headerlink" title="身份验证"></a>身份验证</h4><ol>
 <li>当客户端请求页面时，服务器会生成一个<strong>随机数 Token</strong>，并且将 Token 放置到 <strong>Session</strong> 当中</li>
 <li>然后将 Token <strong>发给客户端</strong>（一般通过构造 hidden 表单）</li>
 <li>下次客户端提交请求时，Token 会<strong>随着表单一起提交</strong>到服务器端</li>
 <li>（如果应用于“anti csrf攻击”，则）服务器端会对<strong>Token值进行验证</strong>，判断是否<strong>和 Session 中的 Token 值相等</strong></li>
 <li>若相等，则可以证明请求有效，不是伪造的</li>
 </ol>
-<h4 id="身份验证"><a href="#身份验证" class="headerlink" title="身份验证"></a>身份验证</h4><ol>
+<h4 id="防止表单重复提交"><a href="#防止表单重复提交" class="headerlink" title="防止表单重复提交"></a>防止表单重复提交</h4><ol>
 <li><p>服务器端第一次验证通过后，会将 <strong>Session</strong> 中的 <strong>Token 值更新</strong>下</p>
 </li>
 <li><p>若用户重复提交，<strong>第二次</strong>的验证判断将<strong>失败</strong>，因为用户提交的表单中的 Token 没变，但服务器端 <strong>Session 中 Token 已经改变了</strong></p>
@@ -585,8 +582,28 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">delCookie</span>(<span class="params">name</span>)  </span>&#123;      </span><br><span class="line">    <span class="keyword">var</span> exp = <span class="keyword">new</span> <span class="built_in">Date</span>();      </span><br><span class="line">    exp.setTime(exp.getTime() - <span class="number">1</span>);      </span><br><span class="line">    <span class="keyword">var</span> cval=getCookie(name);      </span><br><span class="line">    <span class="keyword">if</span>(cval!=<span class="literal">null</span>)          </span><br><span class="line">        <span class="built_in">document</span>.cookie= name + <span class="string">&quot;=&quot;</span>+cval+<span class="string">&quot;;</span></span><br><span class="line"><span class="string">    expires=&quot;</span>+exp.toGMTString();  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">//使用示例  setCookie(&quot;name&quot;,&quot;hayden&quot;);  alert(getCookie(&quot;name&quot;));  </span></span><br></pre></td></tr></table></figure>
 
 
-<p>##补充：</p>
-<p>sessionStorage 只在同个标签页共享，如果把网址复制粘贴到新打开的标签页里面，不共享。体现在项目中，父页面以搜索条件设置 sessionStorage，不同的新开的子页面返回到父页面时，能拿到其打开前的父页面设置的 sessionStorage，不覆盖</p>
+<h2 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h2><p>sessionStorage 只在同个标签页共享，如果把网址复制粘贴到新打开的标签页里面，不共享。体现在项目中，父页面以搜索条件设置 sessionStorage，不同的新开的子页面返回到父页面时，能拿到其打开前的父页面设置的 sessionStorage，不覆盖</p>
+<h2 id="扩展的前端存储方式-indexedDB"><a href="#扩展的前端存储方式-indexedDB" class="headerlink" title="扩展的前端存储方式 indexedDB"></a>扩展的前端存储方式 indexedDB</h2><p><code>indexedDB</code>是一种低级API，用于客户端存储大量结构化数据(包括, 文件/ blobs)。该API使用索引来实现对该数据的高性能搜索</p>
+<p>虽然 <code>Web Storage</code>对于存储较少量的数据很有用，但对于存储更大量的结构化数据来说，这种方法不太有用。<code>IndexedDB</code>提供了一个解决方案</p>
+<h4 id="优点："><a href="#优点：" class="headerlink" title="优点："></a>优点：</h4><ul>
+<li>储存量理论上没有上限</li>
+<li>所有操作都是异步的，相比 <code>LocalStorage</code> 同步操作性能更高，尤其是数据量较大时</li>
+<li>原生支持储存<code>JS</code>的对象</li>
+<li>是个正经的数据库，意味着数据库能干的事它都能干</li>
+</ul>
+<h4 id="缺点："><a href="#缺点：" class="headerlink" title="缺点："></a>缺点：</h4><ul>
+<li>操作非常繁琐</li>
+<li>本身有一定门槛</li>
+</ul>
+<p>关于<code>indexedDB</code>的使用基本使用步骤如下：</p>
+<ul>
+<li>打开数据库并且开始一个事务</li>
+<li>创建一个 <code>object store</code></li>
+<li>构建一个请求来执行一些数据库操作，像增加或提取数据等。</li>
+<li>通过监听正确类型的 <code>DOM</code> 事件以等待操作完成。</li>
+<li>在操作结果上进行一些操作（可以在 <code>request</code>对象中找到）</li>
+</ul>
+<p>关于使用<code>indexdb</code>的使用会比较繁琐，大家可以通过使用<code>Godb.js</code>库进行缓存，最大化的降低操作难度</p>
 
       
     </div>
@@ -724,7 +741,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">727</span>
+                  <span class="site-state-item-count">750</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -795,7 +812,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie%E3%80%81sessionStorage%E3%80%81localStorage-%E5%8C%BA%E5%88%AB"><span class="nav-text">Cookie、sessionStorage、localStorage 区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-html-%E4%B8%8E-b-html-%E9%80%9A%E4%BF%A1"><span class="nav-text">a.html 与 b.html 通信</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie-%E4%B8%8E-Session-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">Cookie 与 Session 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Token-%E4%BD%9C%E7%94%A8"><span class="nav-text">Token 作用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B2%E6%AD%A2%E8%A1%A8%E5%8D%95%E9%87%8D%E5%A4%8D%E6%8F%90%E4%BA%A4"><span class="nav-text">防止表单重复提交</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-text">身份验证</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Localstorage%E5%A4%AA%E9%95%BF%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="nav-text">Localstorage太长怎么办</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalStorage-webStorage-%E4%BD%BF%E7%94%A8%E6%97%B6%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">LocalStorage(webStorage)使用时需要注意的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie-%E5%8F%82%E6%95%B0"><span class="nav-text">Cookie 参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie-%E8%AF%BB%E5%86%99"><span class="nav-text">Cookie 读写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE"><span class="nav-text">设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96"><span class="nav-text">读取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-text">删除</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie%E3%80%81sessionStorage%E3%80%81localStorage-%E5%8C%BA%E5%88%AB"><span class="nav-text">Cookie、sessionStorage、localStorage 区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a-html-%E4%B8%8E-b-html-%E9%80%9A%E4%BF%A1"><span class="nav-text">a.html 与 b.html 通信</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie-%E4%B8%8E-Session-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">Cookie 与 Session 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Token-%E4%BD%9C%E7%94%A8"><span class="nav-text">Token 作用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-text">身份验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B2%E6%AD%A2%E8%A1%A8%E5%8D%95%E9%87%8D%E5%A4%8D%E6%8F%90%E4%BA%A4"><span class="nav-text">防止表单重复提交</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Localstorage%E5%A4%AA%E9%95%BF%E6%80%8E%E4%B9%88%E5%8A%9E"><span class="nav-text">Localstorage太长怎么办</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LocalStorage-webStorage-%E4%BD%BF%E7%94%A8%E6%97%B6%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">LocalStorage(webStorage)使用时需要注意的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie-%E5%8F%82%E6%95%B0"><span class="nav-text">Cookie 参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-text"></span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie-%E8%AF%BB%E5%86%99"><span class="nav-text">Cookie 读写</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE"><span class="nav-text">设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96"><span class="nav-text">读取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-text">删除</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85%EF%BC%9A"><span class="nav-text">补充：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%9A%84%E5%89%8D%E7%AB%AF%E5%AD%98%E5%82%A8%E6%96%B9%E5%BC%8F-indexedDB"><span class="nav-text">扩展的前端存储方式 indexedDB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E7%82%B9%EF%BC%9A"><span class="nav-text">优点：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9%EF%BC%9A"><span class="nav-text">缺点：</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -829,7 +846,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">483.8k</span>
+    <span title="Site words total count">498.6k</span>
   
 </div>
   <div id="sitetime"></div>

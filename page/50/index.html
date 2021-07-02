@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/30/Git/2020/1.%20git%20commit%20%E6%8A%A5%20Changes%20not%20staged%20for%20commit/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.8%20ArrayList%20%E9%9B%86%E5%90%88%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%B9%E9%87%8F%E5%8F%8A%E6%89%A9%E5%AE%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/30/Git/2020/1.%20git%20commit%20%E6%8A%A5%20Changes%20not%20staged%20for%20commit/" itemprop="url">git commit 报 Changes not staged for commit</a></h1>
+                <a class="post-title-link" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.8%20ArrayList%20%E9%9B%86%E5%90%88%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%B9%E9%87%8F%E5%8F%8A%E6%89%A9%E5%AE%B9/" itemprop="url">Java进阶-ArrayList 集合初始化容量及扩容</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-30T18:34:37+08:00">
-                2020-04-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T11:02:37+08:00">
+                2020-05-25
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -351,8 +351,6 @@
             </span>
           
 
-          
-            
           
 
           
@@ -371,7 +369,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  59 字
+                  537 字
                 </span>
               
 
@@ -387,7 +385,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -409,14 +407,19 @@
 
       
         
-          
-          问题描述：提交时发现有几个文件没有提交成功，再次 git add . git commit  发现报错：Changes not staged for commit
-原因：git add .路径出错。。。之前在子目录打包，忘记跳回根目录了
-
-          
+          <ol>
+<li><p>默认初始化容量10（底层先创建了一个长度为0的数组，当添加第一个元素的时候，初始化容量10）</p>
+</li>
+<li><p>集合底层是一个 Object[] 数组</p>
+</li>
+<li><p>构造方法</p>
+<ul>
+<li><code>new ArrayList();</code></li>
+<li><code>new ArrayList(20);</code></li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/30/Git/2020/1.%20git%20commit%20%E6%8A%A5%20Changes%20not%20staged%20for%20commit/#more" rel="contents">
+            <a class="btn" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.8%20ArrayList%20%E9%9B%86%E5%90%88%E5%88%9D%E5%A7%8B%E5%8C%96%E5%AE%B9%E9%87%8F%E5%8F%8A%E6%89%A9%E5%AE%B9/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -467,7 +470,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%8F%92%E5%85%A5%E6%97%B6%E9%97%B4%E5%B7%AE%E5%85%AB%E5%B0%8F%E6%97%B6%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.7%20List%20%E6%8E%A5%E5%8F%A3%E7%89%B9%E6%9C%89%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -486,7 +489,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%8F%92%E5%85%A5%E6%97%B6%E9%97%B4%E5%B7%AE%E5%85%AB%E5%B0%8F%E6%97%B6%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" itemprop="url">MySQL-插入时间差八小时问题的解决方法</a></h1>
+                <a class="post-title-link" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.7%20List%20%E6%8E%A5%E5%8F%A3%E7%89%B9%E6%9C%89%E6%96%B9%E6%B3%95/" itemprop="url">Java进阶-List 接口特有方法</a></h1>
         
 
         <div class="post-meta">
@@ -499,8 +502,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-29T18:48:47+08:00">
-                2020-04-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T10:47:37+08:00">
+                2020-05-25
               </time>
             
 
@@ -522,8 +525,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -551,7 +554,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  173 字
+                  406 字
                 </span>
               
 
@@ -589,13 +592,18 @@
 
       
         
-          
-          如果往数据库插入一条当前时间的记录，发现插入的时间比本地时间早8个小时，可以通过以下方法进行排查与解决：
-1234567891011# 在数据库中查看当前时间，如果与本地时间一致，则代表 MySQL 的时间没有问题，问题出现在插入代码上select now();# 如果不一致，则使用以下语句进行设置
-          ...
+          <p>List 集合存储元素特点：有序可重复。以下列出 List 接口特有的常用的方法：</p>
+<ul>
+<li><code>void add(int index, Object element)</code></li>
+<li><code>Object get(int index)</code></li>
+<li><code>int indexOf(Object o)</code></li>
+<li><code>int lastIndexOf(Object o)</code></li>
+<li><code>Object remove(int index)</code></li>
+<li><code>Object set(int index, Object element)</code></li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%8F%92%E5%85%A5%E6%97%B6%E9%97%B4%E5%B7%AE%E5%85%AB%E5%B0%8F%E6%97%B6%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/#more" rel="contents">
+            <a class="btn" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.7%20List%20%E6%8E%A5%E5%8F%A3%E7%89%B9%E6%9C%89%E6%96%B9%E6%B3%95/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -646,7 +654,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E8%BF%94%E5%9B%9E%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%B8%A6T%20Z/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.6%20%E5%85%B3%E4%BA%8E%E9%9B%86%E5%90%88%E4%B8%AD%E5%85%83%E7%B4%A0%E7%9A%84%20remove/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -665,7 +673,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E8%BF%94%E5%9B%9E%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%B8%A6T%20Z/" itemprop="url">MySQL-返回时间格式带T Z</a></h1>
+                <a class="post-title-link" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.6%20%E5%85%B3%E4%BA%8E%E9%9B%86%E5%90%88%E4%B8%AD%E5%85%83%E7%B4%A0%E7%9A%84%20remove/" itemprop="url">Java进阶-关于集合中元素的 remove</a></h1>
         
 
         <div class="post-meta">
@@ -678,8 +686,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-29T18:41:47+08:00">
-                2020-04-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T10:26:37+08:00">
+                2020-05-25
               </time>
             
 
@@ -701,8 +709,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -730,7 +738,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  137 字
+                  504 字
                 </span>
               
 
@@ -768,13 +776,12 @@
 
       
         
-          
-          问题描述：前端显示时间为 2020-04-23T08:40:32.000Z，而数据库存储的时间为 2020-04-23 16:40:32。返回的数据不仅带 T Z，还早了8小时，咋回事呢？
-初步认为时区问题，折腾了一番，原来是格式没理解到：前端 new Date(‘2020-04-23T08:40:
-          ...
+          <p>当集合的结构发生改变时，迭代器必须重新获取，如果还是用以前老的迭代器，会出现异常：<code>java.util.ConcurrentModificationException</code></p>
+<p>在迭代集合元素的过程中，不能调用集合对象的 remove 方法，删除元素：c.remove(o); 迭代过程中不能这样，会出现： <code>java.util.ConcurrentModificationException</code></p>
+<p>在迭代元素的过程当中，一<strong>定要使用迭代器 Iterator 的 remove 方法，删除元素</strong>，不要使用集合自带的 remove 方法删除元素</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E8%BF%94%E5%9B%9E%E6%97%B6%E9%97%B4%E6%A0%BC%E5%BC%8F%E5%B8%A6T%20Z/#more" rel="contents">
+            <a class="btn" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.6%20%E5%85%B3%E4%BA%8E%E9%9B%86%E5%90%88%E4%B8%AD%E5%85%83%E7%B4%A0%E7%9A%84%20remove/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -825,7 +832,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/datetime%20%E5%92%8C%20timestamp%20%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E9%80%89%E6%8B%A9/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.5%20remove%20%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -844,7 +851,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/datetime%20%E5%92%8C%20timestamp%20%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E9%80%89%E6%8B%A9/" itemprop="url">MySQL-datetime 和 timestamp 的区别与选择</a></h1>
+                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.5%20remove%20%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" itemprop="url">Java进阶-remove 方法源码解析</a></h1>
         
 
         <div class="post-meta">
@@ -857,8 +864,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-29T18:17:47+08:00">
-                2020-04-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T16:09:37+08:00">
+                2020-05-23
               </time>
             
 
@@ -880,8 +887,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -909,7 +916,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  361 字
+                  120 字
                 </span>
               
 
@@ -947,10 +954,10 @@
 
       
         
-          <p>某次建表时，在选择时间存储类型上有点纠结，需求是：默认数据为当前时间，如果插入 null ，也为当前时间。本身对时间存储类型就不太熟悉，接下来记录一下它们的区别和选择</p>
+          <p>remove 也是用 equals 方法进行比较，会删掉 equals 方法返回 true 的元素</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/29/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/datetime%20%E5%92%8C%20timestamp%20%E7%9A%84%E5%8C%BA%E5%88%AB%E4%B8%8E%E9%80%89%E6%8B%A9/#more" rel="contents">
+            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.5%20remove%20%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1001,7 +1008,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/29/%E5%85%A8%E6%A0%88/Vue+Koa2+MySQL%20%E5%85%A8%E6%A0%88%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.4%20contains%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1020,7 +1027,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/29/%E5%85%A8%E6%A0%88/Vue+Koa2+MySQL%20%E5%85%A8%E6%A0%88%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/" itemprop="url">Vue+Koa2+MySQL 全栈开发记录</a></h1>
+                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.4%20contains%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" itemprop="url">Java进阶-contains 源码分析</a></h1>
         
 
         <div class="post-meta">
@@ -1033,8 +1040,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-29T17:04:47+08:00">
-                2020-04-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T15:53:37+08:00">
+                2020-05-23
               </time>
             
 
@@ -1056,8 +1063,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%A8%E6%A0%88/" itemprop="url" rel="index">
-                    <span itemprop="name">全栈</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -1085,7 +1092,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  3k 字
+                  250 字
                 </span>
               
 
@@ -1101,7 +1108,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  15 分钟
+                  1 分钟
                 </span>
               
             </div>
@@ -1123,11 +1130,10 @@
 
       
         
-          <p>以毕业项目：青年旅社移动端 的登录注册为例，记录 Vue+Koa2+MySQL 全栈开发过程</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/ZhangWei2222/Youth-Hostel">Github地址</a></p>
+          <p>存放在一个集合中的类型，一定要重写 equals 方法</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/29/%E5%85%A8%E6%A0%88/Vue+Koa2+MySQL%20%E5%85%A8%E6%A0%88%E5%BC%80%E5%8F%91%E8%AE%B0%E5%BD%95/#more" rel="contents">
+            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.4%20contains%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1169,7 +1175,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/49/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><span class="space">&hellip;</span><a class="page-number" href="/page/146/">146</a><a class="extend next" rel="next" href="/page/51/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/49/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/49/">49</a><span class="page-number current">50</span><a class="page-number" href="/page/51/">51</a><span class="space">&hellip;</span><a class="page-number" href="/page/150/">150</a><a class="extend next" rel="next" href="/page/51/">&gt;</a>
   </nav>
 
 
@@ -1219,7 +1225,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">727</span>
+                  <span class="site-state-item-count">750</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1308,7 +1314,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">483.8k</span>
+    <span title="Site words total count">498.6k</span>
   
 </div>
   <div id="sitetime"></div>

@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/06/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E5%A4%9A%E5%AD%97%E6%AE%B5%E6%8E%92%E5%BA%8F/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.13%20LinkedList%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/06/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E5%A4%9A%E5%AD%97%E6%AE%B5%E6%8E%92%E5%BA%8F/" itemprop="url">MySQL-多字段排序</a></h1>
+                <a class="post-title-link" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.13%20LinkedList%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" itemprop="url">Java进阶-LinkedList 源码分析</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-06T21:16:47+08:00">
-                2020-05-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T12:17:37+08:00">
+                2020-05-25
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -369,7 +369,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  66 字
+                  326 字
                 </span>
               
 
@@ -407,15 +407,15 @@
 
       
         
-          
-          1select * from table order by id desc,name desc;
-多字字段排序只需要添加多个排序条件，并且每个排序的条件之前用逗号分开。
-order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降序排序。
-
-          
+          <p>LinkedList 集合底层采用了双向链表数据结构：</p>
+<ol>
+<li>LinkedList 集合是双向链表</li>
+<li>对于链表数据结构来说，随机增删效率较高，检索效率较低</li>
+<li>链表中的元素在空间存储上，内存地址不连续</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/06/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E5%A4%9A%E5%AD%97%E6%AE%B5%E6%8E%92%E5%BA%8F/#more" rel="contents">
+            <a class="btn" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.13%20LinkedList%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -466,7 +466,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/06/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/Expression%20#2%20of%20SELECT%20list%20is%20not%20in%20GROUP%20BY%20clause%20and%20contains%20%20nonaggregated%20column%20xxxx/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.12%20%E9%93%BE%E8%A1%A8%E4%BC%98%E7%82%B9%E5%92%8C%E7%BC%BA%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -485,7 +485,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/06/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/Expression%20#2%20of%20SELECT%20list%20is%20not%20in%20GROUP%20BY%20clause%20and%20contains%20%20nonaggregated%20column%20xxxx/" itemprop="url">MySQL-Expression</a></h1>
+                <a class="post-title-link" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.12%20%E9%93%BE%E8%A1%A8%E4%BC%98%E7%82%B9%E5%92%8C%E7%BC%BA%E7%82%B9/" itemprop="url">Java进阶-链表优点和缺点</a></h1>
         
 
         <div class="post-meta">
@@ -498,8 +498,8 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-06T21:02:47+08:00">
-                2020-05-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T12:08:37+08:00">
+                2020-05-25
               </time>
             
 
@@ -521,8 +521,8 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -550,7 +550,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  164 字
+                  346 字
                 </span>
               
 
@@ -588,10 +588,17 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
 
       
         
-          <p><strong>报错原因</strong>：mysql5.7.x版本，默认是开启了 <code>only_full_group_by</code> 模式的，但开启这个模式后，原先的 <code>group by</code> 语句就报错。</p>
+          <p><strong>链表优点：</strong></p>
+<ul>
+<li>由于链表上的元素在空间存储上内存地址不连续，所以随机增删元素的时候不会有大量元素位移，因此随机增删效率较高。在以后的开发中，如果遇到随机增删集合中元素的业务比较多的，建议使用 LinkedList</li>
+</ul>
+<p><strong>链表缺点：</strong></p>
+<ul>
+<li>不能通过数学表达式计算被查找元素的内存地址，每一次查找都是从头节点开始遍历，直到找到为止，所以 LinkedList 集合检索/查找的效率较低</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/06/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/Expression%20#2%20of%20SELECT%20list%20is%20not%20in%20GROUP%20BY%20clause%20and%20contains%20%20nonaggregated%20column%20xxxx/#more" rel="contents">
+            <a class="btn" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.12%20%E9%93%BE%E8%A1%A8%E4%BC%98%E7%82%B9%E5%92%8C%E7%BC%BA%E7%82%B9/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -642,7 +649,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/06/Vue/2020/12.%20%E4%BA%8C%E6%AC%A1%E7%A1%AE%E8%AE%A4%E5%AF%86%E7%A0%81%E6%80%9D%E8%B7%AF/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.11%20%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -661,7 +668,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/06/Vue/2020/12.%20%E4%BA%8C%E6%AC%A1%E7%A1%AE%E8%AE%A4%E5%AF%86%E7%A0%81%E6%80%9D%E8%B7%AF/" itemprop="url">二次确认密码思路</a></h1>
+                <a class="post-title-link" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.11%20%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url">Java进阶-单向链表数据结构</a></h1>
         
 
         <div class="post-meta">
@@ -674,8 +681,8 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-06T20:58:47+08:00">
-                2020-05-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T11:35:37+08:00">
+                2020-05-25
               </time>
             
 
@@ -697,8 +704,8 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -708,8 +715,6 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
             </span>
           
 
-          
-            
           
 
           
@@ -728,7 +733,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  87 字
+                  451 字
                 </span>
               
 
@@ -766,13 +771,14 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
 
       
         
-          
-          在做用户注册需求中，为了提高用户体验感，需要增加二次确认密码，其思路为：使用 @blur ，当第一个输入框失焦后，判断是否输入二次密码以及两次密码是否一致；当第二个输入框失焦后，判断是否两次密码是否一致。
-
-          
+          <p>节点是单向链表中基本的单元，每个节点 Node 都有两个属性：</p>
+<ul>
+<li>存储的数据</li>
+<li>下一个节点的内存地址</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/06/Vue/2020/12.%20%E4%BA%8C%E6%AC%A1%E7%A1%AE%E8%AE%A4%E5%AF%86%E7%A0%81%E6%80%9D%E8%B7%AF/#more" rel="contents">
+            <a class="btn" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.11%20%E5%8D%95%E5%90%91%E9%93%BE%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -823,7 +829,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/30/CSS3/2020/3.%20%E9%AB%98%E5%BA%A6%E6%92%91%E6%BB%A1%E9%A1%B5%E9%9D%A2/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.10%20ArrayList%20%E9%9B%86%E5%90%88%E5%8F%A6%E4%B8%80%E4%B8%AA%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -842,7 +848,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/30/CSS3/2020/3.%20%E9%AB%98%E5%BA%A6%E6%92%91%E6%BB%A1%E9%A1%B5%E9%9D%A2/" itemprop="url">CSS-高度撑满页面</a></h1>
+                <a class="post-title-link" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.10%20ArrayList%20%E9%9B%86%E5%90%88%E5%8F%A6%E4%B8%80%E4%B8%AA%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95/" itemprop="url">Java进阶-ArrayList 集合另一个构造方法</a></h1>
         
 
         <div class="post-meta">
@@ -855,8 +861,8 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-30T18:38:37+08:00">
-                2020-04-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T11:27:37+08:00">
+                2020-05-25
               </time>
             
 
@@ -878,8 +884,8 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CSS3/" itemprop="url" rel="index">
-                    <span itemprop="name">CSS3</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -889,8 +895,6 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
             </span>
           
 
-          
-            
           
 
           
@@ -909,7 +913,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  83 字
+                  91 字
                 </span>
               
 
@@ -948,12 +952,11 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
       
         
           
-          场景描述：需要给某个页面设置背景色，但是背景色出现的高度只有实际内容的高度，需要撑开盒子，高度占满。
-1234567891011html,body,#app &#123; // vue 项目需要设置 app 盒子    height: 100%;    padding: 0;    margin: 
+          123456789101112131415161718192021import java.util.ArrayList;import java.util.Collection;import java.util.HashSet;import java.util.List;public class Ar
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/30/CSS3/2020/3.%20%E9%AB%98%E5%BA%A6%E6%92%91%E6%BB%A1%E9%A1%B5%E9%9D%A2/#more" rel="contents">
+            <a class="btn" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.10%20ArrayList%20%E9%9B%86%E5%90%88%E5%8F%A6%E4%B8%80%E4%B8%AA%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1004,7 +1007,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/30/JavaScript/%E5%87%BD%E6%95%B0/4.%20%E5%90%8D%E5%AD%97%E4%B8%AD%E9%97%B4%E9%83%A8%E5%88%86%E6%9B%BF%E6%8D%A2%E6%88%90%E6%98%9F%E5%8F%B7/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.9%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D%E8%BF%90%E7%AE%97/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1023,7 +1026,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/30/JavaScript/%E5%87%BD%E6%95%B0/4.%20%E5%90%8D%E5%AD%97%E4%B8%AD%E9%97%B4%E9%83%A8%E5%88%86%E6%9B%BF%E6%8D%A2%E6%88%90%E6%98%9F%E5%8F%B7/" itemprop="url">JS-名字中间部分替换成星号</a></h1>
+                <a class="post-title-link" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.9%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D%E8%BF%90%E7%AE%97/" itemprop="url">Java进阶-二进制位运算</a></h1>
         
 
         <div class="post-meta">
@@ -1036,8 +1039,8 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-30T18:37:47+08:00">
-                2020-04-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-25T11:19:37+08:00">
+                2020-05-25
               </time>
             
 
@@ -1059,8 +1062,8 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaScript</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -1070,8 +1073,6 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
             </span>
           
 
-          
-            
           
 
           
@@ -1090,7 +1091,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  66 字
+                  187 字
                 </span>
               
 
@@ -1128,12 +1129,14 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
 
       
         
-          
-          123456789101112131415function formatName(name) &#123;    let newStr;    if (name.length === 2) &#123;        newStr = name.substr(0, 1) + &#x27;*&#x27
-          ...
+          <p>位运算符：</p>
+<ul>
+<li>某个数 x 右移 n 位，最终结果：x / 2的n次方</li>
+<li>某个数 x 左移 n 位，最终结果：x * 2的n次方</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/30/JavaScript/%E5%87%BD%E6%95%B0/4.%20%E5%90%8D%E5%AD%97%E4%B8%AD%E9%97%B4%E9%83%A8%E5%88%86%E6%9B%BF%E6%8D%A2%E6%88%90%E6%98%9F%E5%8F%B7/#more" rel="contents">
+            <a class="btn" href="/2020/05/25/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.9%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%BD%8D%E8%BF%90%E7%AE%97/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1175,7 +1178,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/48/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><span class="page-number current">49</span><a class="page-number" href="/page/50/">50</a><span class="space">&hellip;</span><a class="page-number" href="/page/146/">146</a><a class="extend next" rel="next" href="/page/50/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/48/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><span class="page-number current">49</span><a class="page-number" href="/page/50/">50</a><span class="space">&hellip;</span><a class="page-number" href="/page/150/">150</a><a class="extend next" rel="next" href="/page/50/">&gt;</a>
   </nav>
 
 
@@ -1225,7 +1228,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">727</span>
+                  <span class="site-state-item-count">750</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1314,7 +1317,7 @@ order by id desc,name desc; 表示先按照 id 降序排序，再按照 name 降
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">483.8k</span>
+    <span title="Site words total count">498.6k</span>
   
 </div>
   <div id="sitetime"></div>

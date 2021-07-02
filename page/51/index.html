@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/29/%E5%BC%80%E5%8F%91/markdown/2020/1.%20%E7%BC%96%E5%86%99%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/29/%E5%BC%80%E5%8F%91/markdown/2020/1.%20%E7%BC%96%E5%86%99%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/" itemprop="url">markdown-编写文件目录结构</a></h1>
+                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/" itemprop="url">Java进阶-contains 方法解析</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-29T11:51:48+08:00">
-                2020-04-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T15:42:37+08:00">
+                2020-05-23
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
-                    <span itemprop="name">开发</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -351,8 +351,6 @@
             </span>
           
 
-          
-            
           
 
           
@@ -371,7 +369,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  77 字
+                  199 字
                 </span>
               
 
@@ -409,18 +407,14 @@
 
       
         
-          
-          
-先全局安装 tree
- 1npm i tree-node-cli -g
-查看帮助文档
- 1tree --help
-先 cd 到需要生成目录的文件夹下，输入
- 12tree -L 4 -I &quot;node_modules&quot; &gt; README.md# -L 是确定要几级目录，-I
-          ...
+          <p>深入 Collection 集合的 contains 方法：<code>boolean contains(Object o)</code></p>
+<ul>
+<li>判断集合中是否包含某个对象 o</li>
+<li>如果包含返回 true，如果不包含返回 false</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/29/%E5%BC%80%E5%8F%91/markdown/2020/1.%20%E7%BC%96%E5%86%99%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84/#more" rel="contents">
+            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -471,7 +465,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/28/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E8%A7%A3%E5%8E%8B%E6%96%87%E4%BB%B6%E6%97%B6%E6%8A%A5%E9%94%99gzip%20stdin%20not%20in%20gzip%20format/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -490,7 +484,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/28/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E8%A7%A3%E5%8E%8B%E6%96%87%E4%BB%B6%E6%97%B6%E6%8A%A5%E9%94%99gzip%20stdin%20not%20in%20gzip%20format/" itemprop="url">解压文件时报错gzip stdin not in gzip format</a></h1>
+                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/" itemprop="url">Java进阶-Collection 集合迭代</a></h1>
         
 
         <div class="post-meta">
@@ -503,8 +497,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-28T21:27:47+08:00">
-                2020-04-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T12:22:37+08:00">
+                2020-05-23
               </time>
             
 
@@ -526,8 +520,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index">
-                    <span itemprop="name">服务器</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -555,7 +549,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  50 字
+                  237 字
                 </span>
               
 
@@ -593,14 +587,14 @@
 
       
         
-          
-          在服务器解压 MySQL 压缩包时报错
-123gzip: stdin: not in gzip formattar: Child returned status 1tar: Error is not recoverable: exiting now
-用的命令为 tar -zxvf mysql-ser
-          ...
+          <p>注意：</p>
+<ul>
+<li>以下讲解的遍历方式/迭代方式，是所有 Collection 通用的一种方式。</li>
+<li>在 Map 集合中不能用，在所有的 Collection 以及子类中使用。</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/28/%E6%9C%8D%E5%8A%A1%E5%99%A8/%E8%A7%A3%E5%8E%8B%E6%96%87%E4%BB%B6%E6%97%B6%E6%8A%A5%E9%94%99gzip%20stdin%20not%20in%20gzip%20format/#more" rel="contents">
+            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -651,7 +645,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/28/%E6%9C%8D%E5%8A%A1%E5%99%A8/Linux%20%E4%B8%8B%E5%8D%B8%E8%BD%BD%20MySQL%20%E6%95%B0%E6%8D%AE%E5%BA%93/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -670,7 +664,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/28/%E6%9C%8D%E5%8A%A1%E5%99%A8/Linux%20%E4%B8%8B%E5%8D%B8%E8%BD%BD%20MySQL%20%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url">Linux 下卸载 MySQL 数据库</a></h1>
+                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" itemprop="url">Java进阶-Collection 接口常用方法</a></h1>
         
 
         <div class="post-meta">
@@ -683,8 +677,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-28T21:01:47+08:00">
-                2020-04-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T11:51:37+08:00">
+                2020-05-23
               </time>
             
 
@@ -706,8 +700,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/" itemprop="url" rel="index">
-                    <span itemprop="name">服务器</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -735,7 +729,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  596 字
+                  514 字
                 </span>
               
 
@@ -773,10 +767,18 @@
 
       
         
-          <p>因为数据库突然崩了，所以有了这么一次卸载的机会，记录一下，记录一下</p>
+          <p>关于 java.util.Collection 接口中常用的方法：</p>
+<ol>
+<li><p>Collection 中能存放什么元素？</p>
+<ul>
+<li><p>没有使用“泛型”之前，Collection 中可以存储 Object 的所有子类型</p>
+</li>
+<li><p>使用“泛型”之后，Collection 中只能存储某个具体的类型</p>
+</li>
+<li><p>注意：集合中不能直接存储基本数据类型，也不能存储 java 对象，只是存储 java 对象的内存地址</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/28/%E6%9C%8D%E5%8A%A1%E5%99%A8/Linux%20%E4%B8%8B%E5%8D%B8%E8%BD%BD%20MySQL%20%E6%95%B0%E6%8D%AE%E5%BA%93/#more" rel="contents">
+            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -827,7 +829,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%9F%A5%E6%89%BE%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%20my.cnf%20%E8%B7%AF%E5%BE%84/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.4%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -846,7 +848,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%9F%A5%E6%89%BE%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%20my.cnf%20%E8%B7%AF%E5%BE%84/" itemprop="url">MySQL-查找配置文件 my.cnf 路径</a></h1>
+                <a class="post-title-link" href="/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.4%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE%E6%80%BB%E7%BB%93/" itemprop="url">Java进阶-集合继承结构图总结</a></h1>
         
 
         <div class="post-meta">
@@ -859,8 +861,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-28T20:52:47+08:00">
-                2020-04-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-22T20:25:37+08:00">
+                2020-05-22
               </time>
             
 
@@ -882,8 +884,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -911,7 +913,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  52 字
+                  349 字
                 </span>
               
 
@@ -949,17 +951,15 @@
 
       
         
-          
-          如果安装时没有做什么修改，则默认路径为 /etc/my.cnf
-
-查找 mysqld 的路径
-12which mysqld# /usr/sbin/mysqld
-敲命令，即可找到 
-1/usr/sbin/mysqld --verbose --help |grep -A 1 &#x27;Default 
-          ...
+          <p><strong>所有的实现类：</strong></p>
+<ul>
+<li>ArrayList：底层是数组。</li>
+<li>LinkedList：底层是双向链表。</li>
+<li>Vetor：底层是数组，线程安全的，效率较低，使用较少。</li>
+</ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%9F%A5%E6%89%BE%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%20my.cnf%20%E8%B7%AF%E5%BE%84/#more" rel="contents">
+            <a class="btn" href="/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.4%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE%E6%80%BB%E7%BB%93/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1010,7 +1010,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.3%20Map%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1029,7 +1029,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84/" itemprop="url">MySQL-查看数据库安装路径</a></h1>
+                <a class="post-title-link" href="/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.3%20Map%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE/" itemprop="url">Java进阶-Map 集合继承结构图</a></h1>
         
 
         <div class="post-meta">
@@ -1042,8 +1042,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-28T20:49:47+08:00">
-                2020-04-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-22T20:24:37+08:00">
+                2020-05-22
               </time>
             
 
@@ -1065,8 +1065,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -1094,7 +1094,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  31 字
+                  0 字
                 </span>
               
 
@@ -1134,19 +1134,11 @@
         
           
           
-查询运行文件所在路径
-12which mysql# /usr/bin/mysql
-可通过以下方式连接Mysql
-1/usr/bin/mysql -uroot -p
-
-
-
-
 
           
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/28/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84/#more" rel="contents">
+            <a class="btn" href="/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.3%20Map%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1188,7 +1180,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/50/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/50/">50</a><span class="page-number current">51</span><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/146/">146</a><a class="extend next" rel="next" href="/page/52/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/50/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/50/">50</a><span class="page-number current">51</span><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/150/">150</a><a class="extend next" rel="next" href="/page/52/">&gt;</a>
   </nav>
 
 
@@ -1238,7 +1230,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">727</span>
+                  <span class="site-state-item-count">750</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1327,7 +1319,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">483.8k</span>
+    <span title="Site words total count">498.6k</span>
   
 </div>
   <div id="sitetime"></div>

@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/17/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Vue%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%9C%A8ios%E6%98%BE%E7%A4%BANaN%E7%9A%84%E9%97%AE%E9%A2%98/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/27/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%89%A7%E8%A1%8C%E5%AE%9A%E6%97%B6%E4%BA%8B%E4%BB%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/04/17/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Vue%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%9C%A8ios%E6%98%BE%E7%A4%BANaN%E7%9A%84%E9%97%AE%E9%A2%98/" itemprop="url">Vue项目中的时间在ios显示NaN的问题</a></h1>
+                <a class="post-title-link" href="/2020/04/27/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%89%A7%E8%A1%8C%E5%AE%9A%E6%97%B6%E4%BA%8B%E4%BB%B6/" itemprop="url">MySQL-执行定时事件</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-17T16:52:47+08:00">
-                2020-04-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-27T10:28:47+08:00">
+                2020-04-27
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A7%BB%E5%8A%A8%E7%AB%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">移动端</span>
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
                   </a>
                 </span>
 
@@ -369,7 +369,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  114 字
+                  77 字
                 </span>
               
 
@@ -408,12 +408,16 @@
       
         
           
-          在毕设项目中，发现2020-03-22 10:00:00这种类型的时间，在ios显示为NaN-NaN-NaN NaN:NaN:NaN，但是在PC端调试没有任何问题，数据是正常到达页面的，为啥到了真机就NaN呢？查阅资料后发现，ios 不支持时间的-连接符，解决方法可以把-替换成/
-123var da
+          
+可以使用以下命令查看数据库是否开启 event_scheduler
+1SHOW VARIABLES LIKE &#39;event_scheduler&#39;
+使用命令开启（临时开启，重启mysql又还原回去了）
+1set global event_scheduler &#x3D; on;
+修改
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/04/17/%E7%A7%BB%E5%8A%A8%E7%AB%AF/Vue%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4%E5%9C%A8ios%E6%98%BE%E7%A4%BANaN%E7%9A%84%E9%97%AE%E9%A2%98/#more" rel="contents">
+            <a class="btn" href="/2020/04/27/%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%89%A7%E8%A1%8C%E5%AE%9A%E6%97%B6%E4%BA%8B%E4%BB%B6/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -464,7 +468,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/02/29/Java/%E7%BC%96%E7%A8%8B%E9%A2%98/9.%20%E7%94%9F%E6%88%905%E4%B8%AA%E4%B8%8D%E9%87%8D%E5%A4%8D%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/27/Vue/2020/8.%20%E6%97%A0%E5%88%B7%E6%96%B0%E4%BF%AE%E6%94%B9%20url%20%E5%8F%82%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -483,7 +487,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/29/Java/%E7%BC%96%E7%A8%8B%E9%A2%98/9.%20%E7%94%9F%E6%88%905%E4%B8%AA%E4%B8%8D%E9%87%8D%E5%A4%8D%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B0/" itemprop="url">Java编程题-生成5个不重复的随机数</a></h1>
+                <a class="post-title-link" href="/2020/04/27/Vue/2020/8.%20%E6%97%A0%E5%88%B7%E6%96%B0%E4%BF%AE%E6%94%B9%20url%20%E5%8F%82%E6%95%B0/" itemprop="url">vue-无刷新修改 url 参数</a></h1>
         
 
         <div class="post-meta">
@@ -496,8 +500,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-29T17:25:37+08:00">
-                2020-02-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-27T10:16:47+08:00">
+                2020-04-27
               </time>
             
 
@@ -519,8 +523,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
                   </a>
                 </span>
 
@@ -530,6 +534,8 @@
             </span>
           
 
+          
+            
           
 
           
@@ -548,183 +554,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  126 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>生成5个不重复的随机数[1-5]</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/02/29/Java/%E7%BC%96%E7%A8%8B%E9%A2%98/9.%20%E7%94%9F%E6%88%905%E4%B8%AA%E4%B8%8D%E9%87%8D%E5%A4%8D%E7%9A%84%E9%9A%8F%E6%9C%BA%E6%95%B0/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.18%20%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%20enum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.18%20%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%20enum/" itemprop="url">Java进阶-枚举类型 enum</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-29T17:14:37+08:00">
-                2020-02-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  206 字
+                  81 字
                 </span>
               
 
@@ -763,18 +593,11 @@
       
         
           
-          需求：定义一个方法，该方法的作用是计算两个 int 类型数据的商。如果计算成功返回1，执行失败返回0
-程序执行成功，但是该程序可能存在风险，比如写错返回的值，导致判断失误
-程序中的问题能在编译阶段解决的，绝对不会放在运行期解决，所以引入“枚举类型”
-
-
-
-
-123456789101112131415
+          12345678910111213141516import merge from &#x27;webpack-merge&#x27;；// 修改原有参数        this.$router.push(&#123;    query:merge( this.$route.query, &#123;
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.18%20%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%20enum/#more" rel="contents">
+            <a class="btn" href="/2020/04/27/Vue/2020/8.%20%E6%97%A0%E5%88%B7%E6%96%B0%E4%BF%AE%E6%94%B9%20url%20%E5%8F%82%E6%95%B0/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -825,7 +648,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.17%20%E9%9A%8F%E6%9C%BA%E6%95%B0%20Random/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/27/Vue/2020/7.%20%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E5%92%8C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E5%88%A4%E6%96%AD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -844,7 +667,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.17%20%E9%9A%8F%E6%9C%BA%E6%95%B0%20Random/" itemprop="url">Java进阶-随机数 Random</a></h1>
+                <a class="post-title-link" href="/2020/04/27/Vue/2020/7.%20%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E5%92%8C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E5%88%A4%E6%96%AD/" itemprop="url">vue-生产环境和开发环境的判断</a></h1>
         
 
         <div class="post-meta">
@@ -857,8 +680,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-29T17:06:37+08:00">
-                2020-02-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-27T10:13:47+08:00">
+                2020-04-27
               </time>
             
 
@@ -880,8 +703,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
                   </a>
                 </span>
 
@@ -891,6 +714,8 @@
             </span>
           
 
+          
+            
           
 
           
@@ -909,7 +734,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  65 字
+                  37 字
                 </span>
               
 
@@ -947,10 +772,12 @@
 
       
         
-          <p>用来生成随机数</p>
+          
+          1234const urlDev = &#x27;http://dev.test.com&#x27; // 开发环境const urlQa = &#x27;http://test.com&#x27;     // 生产环境var url = &#x27;&#x27;process.env.NODE_
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.17%20%E9%9A%8F%E6%9C%BA%E6%95%B0%20Random/#more" rel="contents">
+            <a class="btn" href="/2020/04/27/Vue/2020/7.%20%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83%E5%92%8C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E7%9A%84%E5%88%A4%E6%96%AD/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1001,7 +828,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.16%20BigDecimal/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/27/Vue/2020/6.%20this.$router.push%E3%80%81replace%E3%80%81go%20%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1020,7 +847,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.16%20BigDecimal/" itemprop="url">Java进阶-BigDecimal</a></h1>
+                <a class="post-title-link" href="/2020/04/27/Vue/2020/6.%20this.$router.push%E3%80%81replace%E3%80%81go%20%E5%8C%BA%E5%88%AB/" itemprop="url">this.$router.push、replace、go 区别</a></h1>
         
 
         <div class="post-meta">
@@ -1033,8 +860,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-02-29T17:02:37+08:00">
-                2020-02-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-27T10:04:47+08:00">
+                2020-04-27
               </time>
             
 
@@ -1056,8 +883,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
                   </a>
                 </span>
 
@@ -1067,6 +894,8 @@
             </span>
           
 
+          
+            
           
 
           
@@ -1085,7 +914,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  110 字
+                  194 字
                 </span>
               
 
@@ -1123,10 +952,190 @@
 
       
         
-          <p><code>java.math.BigDecimal;</code><br>该类型的数据精确度极高，适合做财务软件；<br>财务软件中 double 类型精确度太低</p>
+          <ol>
+<li><p><code>this.$router.push()</code></p>
+<blockquote>
+<p>跳转到不同的 url，但这个方法会向 history 栈添加一个记录，点击后退会返回到上一个页面。</p>
+</blockquote>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/02/29/Java/%E8%BF%9B%E9%98%B6/12.%20String%20%E7%B1%BB/12.16%20BigDecimal/#more" rel="contents">
+            <a class="btn" href="/2020/04/27/Vue/2020/6.%20this.$router.push%E3%80%81replace%E3%80%81go%20%E5%8C%BA%E5%88%AB/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/04/26/%E5%BC%80%E5%8F%91/%E4%BD%BF%E7%94%A8%20concurrently%20%E5%B9%B6%E8%A1%8C%E5%9C%B0%E8%BF%90%E8%A1%8C%E5%A4%9A%E4%B8%AA%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/04/26/%E5%BC%80%E5%8F%91/%E4%BD%BF%E7%94%A8%20concurrently%20%E5%B9%B6%E8%A1%8C%E5%9C%B0%E8%BF%90%E8%A1%8C%E5%A4%9A%E4%B8%AA%E5%91%BD%E4%BB%A4/" itemprop="url">使用 concurrently 并行地运行多个命令</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-26T17:56:48+08:00">
+                2020-04-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index">
+                    <span itemprop="name">开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  156 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>项目目录结构如下，想要实现一个命令同时跑前端和后端，可以使用 <strong>concurrently</strong></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/04/26/%E5%BC%80%E5%8F%91/%E4%BD%BF%E7%94%A8%20concurrently%20%E5%B9%B6%E8%A1%8C%E5%9C%B0%E8%BF%90%E8%A1%8C%E5%A4%9A%E4%B8%AA%E5%91%BD%E4%BB%A4/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1168,7 +1177,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/60/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><span class="page-number current">61</span><a class="page-number" href="/page/62/">62</a><span class="space">&hellip;</span><a class="page-number" href="/page/146/">146</a><a class="extend next" rel="next" href="/page/62/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/60/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/60/">60</a><span class="page-number current">61</span><a class="page-number" href="/page/62/">62</a><span class="space">&hellip;</span><a class="page-number" href="/page/150/">150</a><a class="extend next" rel="next" href="/page/62/">&gt;</a>
   </nav>
 
 
@@ -1218,7 +1227,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">727</span>
+                  <span class="site-state-item-count">750</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1307,7 +1316,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">483.8k</span>
+    <span title="Site words total count">498.6k</span>
   
 </div>
   <div id="sitetime"></div>

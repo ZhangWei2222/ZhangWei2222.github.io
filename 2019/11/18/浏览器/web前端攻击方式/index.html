@@ -87,7 +87,7 @@
 <meta property="og:description" content="CSRF 跨站点伪造请求(cross site request forgery),利用的是网站对用户网页浏览器的信任。攻击者盗用你的身份，以你的名义发送恶意请求，会造成个人隐私泄露以及财产安全。 常见场景：以你名义发送邮件，发消息；盗取你的账号，购买商品，虚拟货币转账等等。  攻击流程 用户登录受信任网站A，并在本地生成保存Cookie 在不登出A的情况下，访问病毒网站B 网站B要求访问A，发出请">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-11-18T03:11:37.000Z">
-<meta property="article:modified_time" content="2020-07-23T08:10:31.402Z">
+<meta property="article:modified_time" content="2021-07-01T08:58:58.463Z">
 <meta property="article:author" content="Wei Zhang">
 <meta name="twitter:card" content="summary">
 
@@ -434,7 +434,32 @@
 <h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><ol>
 <li>反射型xss。出现在URL中作为参数提交到服务器，服务器解析并响应，响应结果中包含xss代码，最后浏览器解析执行。</li>
 <li>存储型xss。攻击者输入恶意的脚本数据存入数据库，当其他用户读取时，用户浏览器将解析执行这段脚本。</li>
+<li>Dom 型 xss</li>
 </ol>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>存储区</th>
+<th>插入点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储型 XSS</td>
+<td>后端数据库</td>
+<td>HTML</td>
+</tr>
+<tr>
+<td>反射型 XSS</td>
+<td>URL</td>
+<td>HTML</td>
+</tr>
+<tr>
+<td>DOM 型 XSS</td>
+<td>后端数据库/前端存储/URL</td>
+<td>前端 JavaScript</td>
+</tr>
+</tbody></table>
 <h3 id="防御-1"><a href="#防御-1" class="headerlink" title="防御"></a>防御</h3><h4 id="1、浏览器自带防御"><a href="#1、浏览器自带防御" class="headerlink" title="1、浏览器自带防御"></a>1、浏览器自带防御</h4><p>现今主流浏览器（IE，Chrome 和 Safari）带有 HTTP <code>X-XSS-Protection</code> 响应头，当检测到跨站脚本攻击(XSS)时，浏览器将停止加载页面。</p>
 <p><code>X-XSS-Protection</code> 响应头有以下 4 个值：</p>
 <ul>
@@ -475,12 +500,12 @@
 <p>1）在JAVA中使用预编译PreparedStatement；</p>
 <p>2）对数据库特殊字符进行转义处理或编码转换；</p>
 <p>3）在应用发布前，使用专业的sql 注入检测工具进行检测，及时发现和修补sql注入漏洞；</p>
-<h2 id="lt-四-gt-文件上传漏洞"><a href="#lt-四-gt-文件上传漏洞" class="headerlink" title="&lt;四&gt;文件上传漏洞"></a>&lt;四&gt;文件上传漏洞</h2><p>-典型实例为：<br>没有对用户上传的文件做校验，恶意用户长时间上传超大文件占用系统资源，上传可执行脚本获取获取服务器信息</p>
-<p>-推荐防御措施：<br>对用户上传做限流，每个用户每天最多上传多少内容。<br>对文件类型进行判断，不能通过后缀名判断，而要通过判断魔数（文件起始的几个字节）来判断，很多文件类型的魔数是不变的。</p>
-<h2 id="lt-五-gt-DDOS：分布式拒绝服务攻击"><a href="#lt-五-gt-DDOS：分布式拒绝服务攻击" class="headerlink" title="&lt;五&gt;DDOS：分布式拒绝服务攻击"></a>&lt;五&gt;DDOS：分布式拒绝服务攻击</h2><p>-典型实例为：<br>1.攻击者提前控制大量计算机，并在某一时刻指挥大量计算机同时对某一服务器进行访问来达到瘫痪主机的目的。</p>
+<h2 id="lt-四-gt-文件上传漏洞"><a href="#lt-四-gt-文件上传漏洞" class="headerlink" title="&lt;四&gt;文件上传漏洞"></a>&lt;四&gt;文件上传漏洞</h2><h3 id="典型实例为：-1"><a href="#典型实例为：-1" class="headerlink" title="典型实例为："></a>典型实例为：</h3><p>没有对用户上传的文件做校验，恶意用户长时间上传超大文件占用系统资源，上传可执行脚本获取获取服务器信息</p>
+<h3 id="推荐防御措施："><a href="#推荐防御措施：" class="headerlink" title="推荐防御措施："></a>推荐防御措施：</h3><p>对用户上传做限流，每个用户每天最多上传多少内容。<br>对文件类型进行判断，不能通过后缀名判断，而要通过判断魔数（文件起始的几个字节）来判断，很多文件类型的魔数是不变的。</p>
+<h2 id="lt-五-gt-DDOS：分布式拒绝服务攻击"><a href="#lt-五-gt-DDOS：分布式拒绝服务攻击" class="headerlink" title="&lt;五&gt;DDOS：分布式拒绝服务攻击"></a>&lt;五&gt;DDOS：分布式拒绝服务攻击</h2><h3 id="典型实例为：-2"><a href="#典型实例为：-2" class="headerlink" title="典型实例为："></a>典型实例为：</h3><p>1.攻击者提前控制大量计算机，并在某一时刻指挥大量计算机同时对某一服务器进行访问来达到瘫痪主机的目的。</p>
 <p>2.相信大家都知道TCP三次握手的机制，（如不了解请参考文章底部补充）攻击者利用此机制对服务器返回的ACK确认包不回应，这样服务器就会存在大量的等待列表，不断重试，等待队列满了以后不再接受TCP连接，从而阻挡了正常用户的使用</p>
 <p>3.攻击者向DNS服务器发送海量的域名解析请求，DNS首先查缓存，如果缓存不存在的话会去递归调用上级服务器查询，直到查询到全球13台根服务器为止，当解析请求过多时正常用户访问就会出现DNS解析超时问题</p>
-<p>-推荐防御措施：<br>使用缓存，当缓存中存在时就直接取出，不要频繁的连接数据库。</p>
+<h3 id="推荐防御措施：-1"><a href="#推荐防御措施：-1" class="headerlink" title="推荐防御措施："></a>推荐防御措施：</h3><p>使用缓存，当缓存中存在时就直接取出，不要频繁的连接数据库。</p>
 <p>缩短 SYN Timeout时间，即缩短从接受到SYN报文到确定这个报文无效并丢弃该连接的时间。</p>
 <p>限制源ip每秒发起的DNS请求等</p>
 
@@ -614,7 +639,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">727</span>
+                  <span class="site-state-item-count">750</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -685,7 +710,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF"><span class="nav-text">CSRF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%B5%81%E7%A8%8B"><span class="nav-text">攻击流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1"><span class="nav-text">防御</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E9%AA%8C%E8%AF%81-HTTP-Referer-%E5%AD%97%E6%AE%B5"><span class="nav-text">1、验证 HTTP Referer 字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E5%9C%A8%E8%AF%B7%E6%B1%82%E5%9C%B0%E5%9D%80%E4%B8%AD%E6%B7%BB%E5%8A%A0token%E5%B9%B6%E9%AA%8C%E8%AF%81"><span class="nav-text">2、在请求地址中添加token并验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E5%9C%A8HTTP%E5%A4%B4%E4%B8%AD%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7%E5%B9%B6%E9%AA%8C%E8%AF%81"><span class="nav-text">3、在HTTP头中自定义属性并验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81Cookie-Hashing%EF%BC%88%E6%89%80%E6%9C%89%E8%A1%A8%E5%8D%95%E9%83%BD%E5%8C%85%E5%90%AB%E5%90%8C%E4%B8%80%E4%B8%AA%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%EF%BC%89"><span class="nav-text">4、Cookie Hashing（所有表单都包含同一个伪随机数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="nav-text">5、验证码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS"><span class="nav-text">XSS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1-1"><span class="nav-text">防御</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%B8%A6%E9%98%B2%E5%BE%A1"><span class="nav-text">1、浏览器自带防御</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E8%BD%AC%E4%B9%89"><span class="nav-text">2、转义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E8%BF%87%E6%BB%A4"><span class="nav-text">3、过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%EF%BC%88CSP%EF%BC%89"><span class="nav-text">4、内容安全策略（CSP）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="nav-text">SQL注入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%AE%9E%E4%BE%8B%E4%B8%BA%EF%BC%9A"><span class="nav-text">典型实例为：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lt-%E5%9B%9B-gt-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="nav-text">&lt;四&gt;文件上传漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lt-%E4%BA%94-gt-DDOS%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="nav-text">&lt;五&gt;DDOS：分布式拒绝服务攻击</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF"><span class="nav-text">CSRF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%BB%E5%87%BB%E6%B5%81%E7%A8%8B"><span class="nav-text">攻击流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1"><span class="nav-text">防御</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E9%AA%8C%E8%AF%81-HTTP-Referer-%E5%AD%97%E6%AE%B5"><span class="nav-text">1、验证 HTTP Referer 字段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E5%9C%A8%E8%AF%B7%E6%B1%82%E5%9C%B0%E5%9D%80%E4%B8%AD%E6%B7%BB%E5%8A%A0token%E5%B9%B6%E9%AA%8C%E8%AF%81"><span class="nav-text">2、在请求地址中添加token并验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E5%9C%A8HTTP%E5%A4%B4%E4%B8%AD%E8%87%AA%E5%AE%9A%E4%B9%89%E5%B1%9E%E6%80%A7%E5%B9%B6%E9%AA%8C%E8%AF%81"><span class="nav-text">3、在HTTP头中自定义属性并验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81Cookie-Hashing%EF%BC%88%E6%89%80%E6%9C%89%E8%A1%A8%E5%8D%95%E9%83%BD%E5%8C%85%E5%90%AB%E5%90%8C%E4%B8%80%E4%B8%AA%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%EF%BC%89"><span class="nav-text">4、Cookie Hashing（所有表单都包含同一个伪随机数）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E9%AA%8C%E8%AF%81%E7%A0%81"><span class="nav-text">5、验证码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS"><span class="nav-text">XSS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1-1"><span class="nav-text">防御</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E6%B5%8F%E8%A7%88%E5%99%A8%E8%87%AA%E5%B8%A6%E9%98%B2%E5%BE%A1"><span class="nav-text">1、浏览器自带防御</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E8%BD%AC%E4%B9%89"><span class="nav-text">2、转义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E8%BF%87%E6%BB%A4"><span class="nav-text">3、过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E5%86%85%E5%AE%B9%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%EF%BC%88CSP%EF%BC%89"><span class="nav-text">4、内容安全策略（CSP）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="nav-text">SQL注入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%AE%9E%E4%BE%8B%E4%B8%BA%EF%BC%9A"><span class="nav-text">典型实例为：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lt-%E5%9B%9B-gt-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="nav-text">&lt;四&gt;文件上传漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%AE%9E%E4%BE%8B%E4%B8%BA%EF%BC%9A-1"><span class="nav-text">典型实例为：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD%EF%BC%9A"><span class="nav-text">推荐防御措施：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lt-%E4%BA%94-gt-DDOS%EF%BC%9A%E5%88%86%E5%B8%83%E5%BC%8F%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="nav-text">&lt;五&gt;DDOS：分布式拒绝服务攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%AE%9E%E4%BE%8B%E4%B8%BA%EF%BC%9A-2"><span class="nav-text">典型实例为：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A8%E8%8D%90%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD%EF%BC%9A-1"><span class="nav-text">推荐防御措施：</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -719,7 +744,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">483.8k</span>
+    <span title="Site words total count">498.6k</span>
   
 </div>
   <div id="sitetime"></div>

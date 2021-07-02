@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.5%20remove%20%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.8%20%E6%BC%94%E7%A4%BA%20TreeSet%20%E5%AF%B9%20String%20%E6%98%AF%E5%8F%AF%E6%8E%92%E5%BA%8F%E7%9A%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.5%20remove%20%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" itemprop="url">Java进阶-remove 方法源码解析</a></h1>
+                <a class="post-title-link" href="/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.8%20%E6%BC%94%E7%A4%BA%20TreeSet%20%E5%AF%B9%20String%20%E6%98%AF%E5%8F%AF%E6%8E%92%E5%BA%8F%E7%9A%84/" itemprop="url">Java进阶-演示 TreeSet 对 String 是可排序的</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T16:09:37+08:00">
-                2020-05-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-27T17:08:37+08:00">
+                2020-05-27
               </time>
             
 
@@ -352,6 +352,8 @@
           
 
           
+            
+          
 
           
           
@@ -369,7 +371,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  120 字
+                  159 字
                 </span>
               
 
@@ -407,10 +409,15 @@
 
       
         
-          <p>remove 也是用 equals 方法进行比较，会删掉 equals 方法返回 true 的元素</p>
+          <ol>
+<li>TreeSet 集合底层实际上是一个 TreeMap</li>
+<li>TreeMap 集合底层是一个二叉树</li>
+<li>放到 TreeSet 集合中的元素，等同于放到 TreeMap 集合 key 部分了</li>
+<li>TreeSet 集合中的元素：无序不可重复，但是可以按照元素的大小顺序自动排序，称为：可排序集合</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.5%20remove%20%E6%96%B9%E6%B3%95%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/#more" rel="contents">
+            <a class="btn" href="/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.8%20%E6%BC%94%E7%A4%BA%20TreeSet%20%E5%AF%B9%20String%20%E6%98%AF%E5%8F%AF%E6%8E%92%E5%BA%8F%E7%9A%84/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -461,7 +468,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.4%20contains%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.7%20%E5%B1%9E%E6%80%A7%E7%B1%BB%20Properties%20%E7%B1%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -480,7 +487,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.4%20contains%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" itemprop="url">Java进阶-contains 源码分析</a></h1>
+                <a class="post-title-link" href="/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.7%20%E5%B1%9E%E6%80%A7%E7%B1%BB%20Properties%20%E7%B1%BB/" itemprop="url">Java进阶-属性类 Properties 类</a></h1>
         
 
         <div class="post-meta">
@@ -493,8 +500,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T15:53:37+08:00">
-                2020-05-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-27T16:59:37+08:00">
+                2020-05-27
               </time>
             
 
@@ -528,6 +535,8 @@
           
 
           
+            
+          
 
           
           
@@ -545,7 +554,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  250 字
+                  134 字
                 </span>
               
 
@@ -583,10 +592,19 @@
 
       
         
-          <p>存放在一个集合中的类型，一定要重写 equals 方法</p>
+          <ol>
+<li>目前只需要掌握 Properties 属性类对象的相关方法即可：存 和 取<ul>
+<li><code>pro.setProperty(key, value)</code></li>
+<li><code>pro.getProperty(key)</code></li>
+</ul>
+</li>
+<li>Properties 是一个 Map 集合，继承 Hashtable，Properties 的 key 和 value 都是 String 类型</li>
+<li>Properties 被称为属性类对象</li>
+<li>Properties 是线程安全的</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.4%20contains%20%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/#more" rel="contents">
+            <a class="btn" href="/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.7%20%E5%B1%9E%E6%80%A7%E7%B1%BB%20Properties%20%E7%B1%BB/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -637,7 +655,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.6%20HashMap%20%E5%92%8C%20Hashtable%20%E7%9A%84%E5%8C%BA%E5%88%AB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -656,7 +674,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/" itemprop="url">Java进阶-contains 方法解析</a></h1>
+                <a class="post-title-link" href="/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.6%20HashMap%20%E5%92%8C%20Hashtable%20%E7%9A%84%E5%8C%BA%E5%88%AB/" itemprop="url">Java进阶-HashMap 和 Hashtable 的区别</a></h1>
         
 
         <div class="post-meta">
@@ -669,8 +687,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T15:42:37+08:00">
-                2020-05-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-27T16:46:37+08:00">
+                2020-05-27
               </time>
             
 
@@ -704,6 +722,8 @@
           
 
           
+            
+          
 
           
           
@@ -721,7 +741,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  199 字
+                  242 字
                 </span>
               
 
@@ -759,14 +779,16 @@
 
       
         
-          <p>深入 Collection 集合的 contains 方法：<code>boolean contains(Object o)</code></p>
-<ul>
-<li>判断集合中是否包含某个对象 o</li>
-<li>如果包含返回 true，如果不包含返回 false</li>
+          <ul>
+<li>HashMap 集合的 key 和 value 都是可以为 null 的，但是要注意：HashMap 集合的 key null 值只能有一个</li>
+<li><strong>Hashtable</strong> 集合的 <strong>key 和 value 都是不可以为 null 的</strong>，Hashtable 方法都带有 <strong>synchronized</strong> ：线程安全的。线程安全有其他的方案，这个 Hashtable 对线程的处理导致效率较低，使用较少了</li>
+<li>Hashtable 和 HashMap 一样，底层都是<strong>哈希表数据结构</strong></li>
+<li>Hashtable 的<strong>初始化容量是 11</strong>，<strong>默认加载因子是：0.75f</strong></li>
+<li>Hashtable 的*<em>扩容是：原容量 * 2 + 1*</em></li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/#more" rel="contents">
+            <a class="btn" href="/2020/05/27/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.6%20HashMap%20%E5%92%8C%20Hashtable%20%E7%9A%84%E5%8C%BA%E5%88%AB/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -817,7 +839,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/26/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.5%20Java8%20%E5%AF%B9%20HashMap%20%E9%9B%86%E5%90%88%E7%9A%84%E6%94%B9%E8%BF%9B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -836,7 +858,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/" itemprop="url">Java进阶-Collection 集合迭代</a></h1>
+                <a class="post-title-link" href="/2020/05/26/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.5%20Java8%20%E5%AF%B9%20HashMap%20%E9%9B%86%E5%90%88%E7%9A%84%E6%94%B9%E8%BF%9B/" itemprop="url">Java进阶-Java8 对 HashMap 集合的改进</a></h1>
         
 
         <div class="post-meta">
@@ -849,8 +871,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T12:22:37+08:00">
-                2020-05-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-26T17:11:37+08:00">
+                2020-05-26
               </time>
             
 
@@ -901,7 +923,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  237 字
+                  104 字
                 </span>
               
 
@@ -939,14 +961,14 @@
 
       
         
-          <p>注意：</p>
-<ul>
-<li>以下讲解的遍历方式/迭代方式，是所有 Collection 通用的一种方式。</li>
-<li>在 Map 集合中不能用，在所有的 Collection 以及子类中使用。</li>
-</ul>
+          
+          在 JDK8 之后，如果哈希表单向链表中元素超过 8 个，单向链表这种数据结构会变成红黑树数据结构，当红黑树上的节点数量小于 6 时，会重新把红黑树变成单向链表数据结构。
+这种方式也是为了提高检索效率，二叉树的检索会再次缩小扫描范围，提高效率。
+
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/#more" rel="contents">
+            <a class="btn" href="/2020/05/26/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.5%20Java8%20%E5%AF%B9%20HashMap%20%E9%9B%86%E5%90%88%E7%9A%84%E6%94%B9%E8%BF%9B/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -997,7 +1019,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/26/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.4%20%E5%90%8C%E6%97%B6%E9%87%8D%E5%86%99%20hashCode%20%E5%92%8C%20equals/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1016,7 +1038,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" itemprop="url">Java进阶-Collection 接口常用方法</a></h1>
+                <a class="post-title-link" href="/2020/05/26/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.4%20%E5%90%8C%E6%97%B6%E9%87%8D%E5%86%99%20hashCode%20%E5%92%8C%20equals/" itemprop="url">Java进阶-同时重写 hashCode 和 equals</a></h1>
         
 
         <div class="post-meta">
@@ -1029,8 +1051,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T11:51:37+08:00">
-                2020-05-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-26T16:35:37+08:00">
+                2020-05-26
               </time>
             
 
@@ -1081,7 +1103,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  514 字
+                  782 字
                 </span>
               
 
@@ -1097,7 +1119,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2 分钟
+                  3 分钟
                 </span>
               
             </div>
@@ -1119,18 +1141,10 @@
 
       
         
-          <p>关于 java.util.Collection 接口中常用的方法：</p>
-<ol>
-<li><p>Collection 中能存放什么元素？</p>
-<ul>
-<li><p>没有使用“泛型”之前，Collection 中可以存储 Object 的所有子类型</p>
-</li>
-<li><p>使用“泛型”之后，Collection 中只能存储某个具体的类型</p>
-</li>
-<li><p>注意：集合中不能直接存储基本数据类型，也不能存储 java 对象，只是存储 java 对象的内存地址</p>
+          <p>重点：放在 HashMap 集合 key 部分的元素，以及放在 HashSet 集合的元素，需要同时重写 hashCode 和 equals 方法</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/#more" rel="contents">
+            <a class="btn" href="/2020/05/26/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.6%20Map%20%E9%9B%86%E5%90%88/14.6.4%20%E5%90%8C%E6%97%B6%E9%87%8D%E5%86%99%20hashCode%20%E5%92%8C%20equals/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1172,7 +1186,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/45/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><span class="page-number current">46</span><a class="page-number" href="/page/47/">47</a><span class="space">&hellip;</span><a class="page-number" href="/page/146/">146</a><a class="extend next" rel="next" href="/page/47/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/45/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/45/">45</a><span class="page-number current">46</span><a class="page-number" href="/page/47/">47</a><span class="space">&hellip;</span><a class="page-number" href="/page/150/">150</a><a class="extend next" rel="next" href="/page/47/">&gt;</a>
   </nav>
 
 
@@ -1222,7 +1236,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">727</span>
+                  <span class="site-state-item-count">750</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1311,7 +1325,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">483.8k</span>
+    <span title="Site words total count">498.6k</span>
   
 </div>
   <div id="sitetime"></div>

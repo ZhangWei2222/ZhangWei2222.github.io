@@ -87,7 +87,7 @@
 <meta property="og:description" content="前言之前在探索Es6 中import()和import…form的区别时，就在想Es6之前是咋引用模块的呀？？咱今天就来一探究竟！">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-05-29T08:31:37.000Z">
-<meta property="article:modified_time" content="2020-08-14T06:40:10.646Z">
+<meta property="article:modified_time" content="2021-07-02T03:27:21.905Z">
 <meta property="article:author" content="Wei Zhang">
 <meta property="article:tag" content="模块化">
 <meta name="twitter:card" content="summary">
@@ -550,7 +550,7 @@
 <td>解释</td>
 <td>需要等到依赖模块加载完成才编译执行(CommonJs)</td>
 <td>哪一个模块小，就先执行哪一个(AMD)</td>
-<td>当需要某个模块的时候再去再去异步加载（CMD）</td>
+<td>当需要某个模块的时候，再去异步加载（CMD）</td>
 </tr>
 <tr>
 <td>不足</td>
@@ -616,24 +616,24 @@
 </tr>
 <tr>
 <td>暴露接口</td>
-<td>moudlue.exports/exports</td>
+<td>moudlue.exports / exports</td>
 <td>return</td>
 <td>exports</td>
-<td>export/exportdefalut</td>
+<td>export / export defalut</td>
 </tr>
 <tr>
 <td>引用</td>
 <td>require</td>
 <td>require</td>
 <td>require</td>
-<td>import…form/import()</td>
+<td>import…form / import()</td>
 </tr>
 <tr>
 <td>引用语句加载方式</td>
-<td>运行时加载（那会才知道依赖的关系）</td>
-<td>运行时加载</td>
-<td>运行时加载</td>
-<td>编译时加载(进行值的引用，可以静态优化，会跟随引入的模块一起变化；前面几种进行的是值的拷贝，输出后不能改变，得到的是缓存的结果)，静态加载，只能放在代码的最前面；但是import()为运行时加载，异步加载</td>
+<td>运行时加载，可以随处引入（那会才知道依赖的关系）</td>
+<td>运行时加载，可以随处引入</td>
+<td>运行时加载，可以随处引入</td>
+<td>编译时加载(进行值的引用，可以静态优化，会跟随引入的模块一起变化；<br />前面几种进行的是值的拷贝，输出后不能改变，得到的是缓存的结果)<br />静态加载，只能放在代码的最前面；<br />但是import()为运行时加载，可以随处引入，异步加载</td>
 </tr>
 <tr>
 <td>依赖加载方式</td>
@@ -787,7 +787,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">727</span>
+                  <span class="site-state-item-count">750</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -892,7 +892,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">483.8k</span>
+    <span title="Site words total count">498.6k</span>
   
 </div>
   <div id="sitetime"></div>
