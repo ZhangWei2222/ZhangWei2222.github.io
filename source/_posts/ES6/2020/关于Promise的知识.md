@@ -193,3 +193,10 @@ Promise.resolve('Success!')
 3. 多个连续的链接`.catch`只会执行一个，接收 reject 回调，除非后面有所处理
 4. `.catch`可以简单地返回一个常规值来忽略（或覆盖）错误。该技巧仅在随后的 `.then` 接收该值时有效。
 5. `.then`依次传递数据，有`return`，就能接收。
+
+
+
+## 扩展
+
+[Promise 必知必会（十道题）](https://juejin.cn/post/6844903509934997511)
+
