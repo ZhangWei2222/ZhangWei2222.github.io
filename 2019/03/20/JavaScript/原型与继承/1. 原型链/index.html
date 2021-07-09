@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://ae01.alicdn.com/kf/U46d8e0cda836428591167588dad26c42I.png">
 <meta property="og:image" content="http://api.fly63.com/vue_blog/public/Uploads/20200305/5e61062a0f0ec.jpg">
 <meta property="article:published_time" content="2019-03-20T02:35:37.000Z">
-<meta property="article:modified_time" content="2021-07-01T08:58:58.257Z">
+<meta property="article:modified_time" content="2021-07-07T02:42:32.867Z">
 <meta property="article:author" content="Wei Zhang">
 <meta property="article:tag" content="原型链">
 <meta name="twitter:card" content="summary">
@@ -379,7 +379,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  816 字
+                  882 字
                 </span>
               
 
@@ -433,6 +433,12 @@
 
 <p><img src="http://api.fly63.com/vue_blog/public/Uploads/20200305/5e61062a0f0ec.jpg" alt="img"></p>
 <p>![image-20210303192201911](/Users/wei/Library/Application Support/typora-user-images/image-20210303192201911.png)</p>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><ol>
+<li>Prototype 是 构造函数才有，也称为 显式原型</li>
+<li>所有对象都有 _proto_ ， 也叫 隐式原型</li>
+<li>Object.create(null)  创建对象没有 _proto_</li>
+<li>方法是个特殊的对象，除了有属性 _proto_ ，还有属性 prototype, prototype指向方法的</li>
+</ol>
 <h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><p>当试图访问一个对象的属性时，如果没有在该对象上找到，他还会搜索该对象的原型，以及该对象的原型的原型，依次层层向上搜索，直到找到一个名字匹配的属性或到达原型链的末尾。Object.prototype 是 js 原型链的最顶端，它的 <code>__proto__</code> 是null(有 <code>__proto__</code> 属性，但值是 null)</p>
 <blockquote>
 <p>我们可以通过 对象.__proto__ 查看对象的原型 </p>
@@ -591,7 +597,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">750</span>
+                  <span class="site-state-item-count">791</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -602,7 +608,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -662,7 +668,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E5%AF%B9%E8%B1%A1"><span class="nav-text">原型对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE"><span class="nav-text">原型链</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Object"><span class="nav-text">Object</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Array"><span class="nav-text">Array</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function"><span class="nav-text">Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="nav-text">自定义函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%9F"><span class="nav-text">如何确定原型与实现机制的关系？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#isPrototypeOf-NaN"><span class="nav-text">isPrototypeOf()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#instanceof"><span class="nav-text">instanceof</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-text">区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E9%81%8D%E5%8E%86%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E4%B8%8A%E4%B8%8D%E6%98%AF%E5%8E%9F%E5%9E%8B%E4%B8%8A%E7%9A%84%E6%89%80%E6%9C%89%E5%B1%9E%E6%80%A7%E5%91%A2"><span class="nav-text">怎么遍历一个对象上不是原型上的所有属性呢</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E5%AF%B9%E8%B1%A1"><span class="nav-text">原型对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-text">补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE"><span class="nav-text">原型链</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Object"><span class="nav-text">Object</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Array"><span class="nav-text">Array</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Function"><span class="nav-text">Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="nav-text">自定义函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A1%AE%E5%AE%9A%E5%8E%9F%E5%9E%8B%E4%B8%8E%E5%AE%9E%E7%8E%B0%E6%9C%BA%E5%88%B6%E7%9A%84%E5%85%B3%E7%B3%BB%EF%BC%9F"><span class="nav-text">如何确定原型与实现机制的关系？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#isPrototypeOf-NaN"><span class="nav-text">isPrototypeOf()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#instanceof"><span class="nav-text">instanceof</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-text">区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%8E%E4%B9%88%E9%81%8D%E5%8E%86%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E4%B8%8A%E4%B8%8D%E6%98%AF%E5%8E%9F%E5%9E%8B%E4%B8%8A%E7%9A%84%E6%89%80%E6%9C%89%E5%B1%9E%E6%80%A7%E5%91%A2"><span class="nav-text">怎么遍历一个对象上不是原型上的所有属性呢</span></a></li></ol></div>
             
 
           </div>
@@ -696,7 +702,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">498.6k</span>
+    <span title="Site words total count">517.7k</span>
   
 </div>
   <div id="sitetime"></div>

@@ -87,7 +87,7 @@
 <meta property="og:description" content="前言总所周知，咱们传统的生成实例对象的方法是通过构造函数：">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-05-27T08:27:37.000Z">
-<meta property="article:modified_time" content="2021-07-02T03:27:07.202Z">
+<meta property="article:modified_time" content="2021-07-07T06:43:19.120Z">
 <meta property="article:author" content="Wei Zhang">
 <meta name="twitter:card" content="summary">
 
@@ -375,7 +375,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.2k 字
+                  1.5k 字
                 </span>
               
 
@@ -391,7 +391,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5 分钟
+                  6 分钟
                 </span>
               
             </div>
@@ -470,6 +470,27 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReactCounter</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;  </span><br><span class="line">    state = &#123;  </span><br><span class="line">        count: <span class="number">0</span>  </span><br><span class="line">    &#125;;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>并且在constructor里面定义的实例属性，还可以直接列出</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ReactCounter</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;  </span><br><span class="line">    <span class="function"><span class="title">constructor</span>(<span class="params">props</span>)</span> &#123;  </span><br><span class="line">        <span class="built_in">super</span>(props);  </span><br><span class="line">        <span class="built_in">this</span>.state = &#123;  </span><br><span class="line">            count: <span class="number">0</span>  </span><br><span class="line">        &#125;;  </span><br><span class="line">    &#125;  </span><br><span class="line">    state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>类声明不可以提升</li>
+<li>类声明不允许再次声明已经存在的类，否则将会抛出一个类型错误</li>
+<li>class 内部是严格模式，构造函数是可选的</li>
+<li>class 的静态方法或者原型方法都不可枚举，且这些方法都没有原型，不可被 new</li>
+<li>class 必须使用 new 来调用</li>
+<li>class 内部无法重写类名</li>
+<li>class 静态方法与静态属性<ol>
+<li>静态方法前加 static 关键字</li>
+<li>只能通过类名调用</li>
+<li>不能通过实例调用</li>
+<li>可与实例方法重名</li>
+<li>静态方法中的 this 指向类而非实例</li>
+<li>静态方法可被继承</li>
+<li>子类中可通过 super 方法调用父类的静态方法</li>
+<li>Class 内部没有静态属性，只能在外面通过类名定义</li>
+</ol>
+</li>
+</ol>
 
       
     </div>
@@ -601,7 +622,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">750</span>
+                  <span class="site-state-item-count">791</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -612,7 +633,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -672,7 +693,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F%EF%BC%88%E6%B3%A8%E6%84%8F%EF%BC%89"><span class="nav-text">严格模式（注意）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5Class%E7%9A%84%E8%80%81%E7%AA%9D"><span class="nav-text">深入Class的老窝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#constructor%E6%96%B9%E6%B3%95"><span class="nav-text">constructor方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%AF%B9%E8%B1%A1"><span class="nav-text">实例对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-text">表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87"><span class="nav-text">不存在变量提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this%E7%9A%84%E6%8C%87%E5%90%91"><span class="nav-text">this的指向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getter%E5%92%8Csetter"><span class="nav-text">getter和setter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E3%80%81%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7%E3%80%81%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7%EF%BC%88%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%EF%BC%89"><span class="nav-text">静态方法、静态属性、实例属性（重中之重）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="nav-text">1、静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7"><span class="nav-text">2、静态属性和实例属性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7"><span class="nav-text">静态属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7"><span class="nav-text">实例属性</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F%EF%BC%88%E6%B3%A8%E6%84%8F%EF%BC%89"><span class="nav-text">严格模式（注意）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5Class%E7%9A%84%E8%80%81%E7%AA%9D"><span class="nav-text">深入Class的老窝</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#constructor%E6%96%B9%E6%B3%95"><span class="nav-text">constructor方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%AF%B9%E8%B1%A1"><span class="nav-text">实例对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-text">表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87"><span class="nav-text">不存在变量提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this%E7%9A%84%E6%8C%87%E5%90%91"><span class="nav-text">this的指向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getter%E5%92%8Csetter"><span class="nav-text">getter和setter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E3%80%81%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7%E3%80%81%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7%EF%BC%88%E9%87%8D%E4%B8%AD%E4%B9%8B%E9%87%8D%EF%BC%89"><span class="nav-text">静态方法、静态属性、实例属性（重中之重）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95"><span class="nav-text">1、静态方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7%E5%92%8C%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7"><span class="nav-text">2、静态属性和实例属性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7"><span class="nav-text">静态属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7"><span class="nav-text">实例属性</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -706,7 +727,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">498.6k</span>
+    <span title="Site words total count">517.7k</span>
   
 </div>
   <div id="sitetime"></div>

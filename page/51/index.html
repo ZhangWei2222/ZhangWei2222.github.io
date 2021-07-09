@@ -285,7 +285,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/07/07/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/3.%20%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%E8%BF%BD%E8%B8%AA%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -304,7 +304,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/" itemprop="url">Java进阶-contains 方法解析</a></h1>
+                <a class="post-title-link" href="/2020/07/07/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/3.%20%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%E8%BF%BD%E8%B8%AA%E5%8E%9F%E7%90%86/" itemprop="url">响应式系统的依赖收集追踪原理</a></h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T15:42:37+08:00">
-                2020-05-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-07T19:53:47+08:00">
+                2020-07-07
               </time>
             
 
@@ -340,8 +340,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
                   </a>
                 </span>
 
@@ -351,6 +351,8 @@
             </span>
           
 
+          
+            
           
 
           
@@ -369,7 +371,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  199 字
+                  280 字
                 </span>
               
 
@@ -407,378 +409,14 @@
 
       
         
-          <p>深入 Collection 集合的 contains 方法：<code>boolean contains(Object o)</code></p>
-<ul>
-<li>判断集合中是否包含某个对象 o</li>
-<li>如果包含返回 true，如果不包含返回 false</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.3%20contains%20%E6%96%B9%E6%B3%95%E8%A7%A3%E6%9E%90/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/" itemprop="url">Java进阶-Collection 集合迭代</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T12:22:37+08:00">
-                2020-05-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  237 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>注意：</p>
-<ul>
-<li>以下讲解的遍历方式/迭代方式，是所有 Collection 通用的一种方式。</li>
-<li>在 Map 集合中不能用，在所有的 Collection 以及子类中使用。</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.2%20Collection%20%E9%9B%86%E5%90%88%E8%BF%AD%E4%BB%A3/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/" itemprop="url">Java进阶-Collection 接口常用方法</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-23T11:51:37+08:00">
-                2020-05-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  514 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  2 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>关于 java.util.Collection 接口中常用的方法：</p>
+          <p>本章是对昨天小 demo 的改进，删除cb 函数（更新视图函数），添加依赖收集。为什么要添加依赖收集？举例两种情况：</p>
 <ol>
-<li><p>Collection 中能存放什么元素？</p>
-<ul>
-<li><p>没有使用“泛型”之前，Collection 中可以存储 Object 的所有子类型</p>
-</li>
-<li><p>使用“泛型”之后，Collection 中只能存储某个具体的类型</p>
-</li>
-<li><p>注意：集合中不能直接存储基本数据类型，也不能存储 java 对象，只是存储 java 对象的内存地址</p>
+<li>当 data 里面的变量，不会出现在视图的时候，修改变量，不应该触发更新视图函数；</li>
+<li>当 data 里面的变量，出现在两个 vm 实例中，修改变量，需要触发两处的视图更新函数，依赖收集 可以帮我们实现。</li>
+</ol>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/23/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.5%20Collection%20%E9%9B%86%E5%90%88/14.5.1%20Collection%20%E6%8E%A5%E5%8F%A3%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/#more" rel="contents">
+            <a class="btn" href="/2020/07/07/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/3.%20%E5%93%8D%E5%BA%94%E5%BC%8F%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%E8%BF%BD%E8%B8%AA%E5%8E%9F%E7%90%86/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -829,7 +467,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.4%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/07/06/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/2.%20%E6%89%8B%E5%86%99Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B0%8FDemo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -848,7 +486,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.4%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE%E6%80%BB%E7%BB%93/" itemprop="url">Java进阶-集合继承结构图总结</a></h1>
+                <a class="post-title-link" href="/2020/07/06/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/2.%20%E6%89%8B%E5%86%99Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B0%8FDemo/" itemprop="url">手写Vue的响应式小Demo</a></h1>
         
 
         <div class="post-meta">
@@ -861,8 +499,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-22T20:25:37+08:00">
-                2020-05-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-06T19:23:47+08:00">
+                2020-07-06
               </time>
             
 
@@ -884,8 +522,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
                   </a>
                 </span>
 
@@ -895,6 +533,8 @@
             </span>
           
 
+          
+            
           
 
           
@@ -913,7 +553,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  349 字
+                  369 字
                 </span>
               
 
@@ -951,15 +591,18 @@
 
       
         
-          <p><strong>所有的实现类：</strong></p>
+          <p>本章手写一个 Vue 响应式小 Demo，首先需要介绍 <code>Object.defineProperty</code> ，Vue 是基于它实现【响应式系统】的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">    obj: 目标对象</span><br><span class="line">    prop: 需要操作的目标对象的属性名</span><br><span class="line">    descriptor: 描述符</span><br><span class="line"></span><br><span class="line">    return value 传入对象</span><br><span class="line">*&#x2F;</span><br><span class="line">Object.defineProperty(obj, prop, descriptor)</span><br></pre></td></tr></table></figure>
+<p><code>descriptor</code> 的几个属性</p>
 <ul>
-<li>ArrayList：底层是数组。</li>
-<li>LinkedList：底层是双向链表。</li>
-<li>Vetor：底层是数组，线程安全的，效率较低，使用较少。</li>
+<li>enumerable，属性是否可枚举，默认 false。</li>
+<li>configurable，属性是否可以被修改或者删除，默认 false。</li>
+<li>get，获取属性的方法。</li>
+<li>set，设置属性的方法。</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.4%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE%E6%80%BB%E7%BB%93/#more" rel="contents">
+            <a class="btn" href="/2020/07/06/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/2.%20%E6%89%8B%E5%86%99Vue%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B0%8FDemo/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1010,7 +653,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.3%20Map%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE/">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/07/05/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/1.%20Vue.js%20%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E5%85%A8%E5%B1%80%E6%A6%82%E8%A7%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -1029,7 +672,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.3%20Map%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE/" itemprop="url">Java进阶-Map 集合继承结构图</a></h1>
+                <a class="post-title-link" href="/2020/07/05/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/1.%20Vue.js%20%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E5%85%A8%E5%B1%80%E6%A6%82%E8%A7%88/" itemprop="url">Vue.js 运行机制全局概览</a></h1>
         
 
         <div class="post-meta">
@@ -1042,8 +685,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-22T20:24:37+08:00">
-                2020-05-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-05T17:00:47+08:00">
+                2020-07-05
               </time>
             
 
@@ -1065,8 +708,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
                   </a>
                 </span>
 
@@ -1076,6 +719,8 @@
             </span>
           
 
+          
+            
           
 
           
@@ -1094,7 +739,187 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0 字
+                  829 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="全局概览"><a href="#全局概览" class="headerlink" title="全局概览"></a>全局概览</h2><img src="C:\Users\Administrator\Desktop\ZhangWei2222.github.io\source\_posts\Vue\剖析 Vue.js 内部运行机制\Vue.js 运行机制全局概览.assets\image-20200705205036620.png" alt="image-20200705205036620" style="zoom:50%;" />
+
+<p>接下来依次介绍模块的作用以及调用关系</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/05/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/1.%20Vue.js%20%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E5%85%A8%E5%B1%80%E6%A6%82%E8%A7%88/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/07/05/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/%E6%8E%98%E9%87%91%E5%B0%8F%E5%86%8C%EF%BC%9A%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/05/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/%E6%8E%98%E9%87%91%E5%B0%8F%E5%86%8C%EF%BC%9A%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/" itemprop="url">掘金小册：剖析 Vue.js 内部运行机制</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-05T16:55:47+08:00">
+                2020-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  230 字
                 </span>
               
 
@@ -1132,13 +957,199 @@
 
       
         
+          <p>本次小册的学习目标是：</p>
+<ol>
+<li>能够回答本小册每章节的标题，例如：Vue.js 运行机制的概览、响应式的基本原理…</li>
+<li>回答：Vue.js 究竟是如何在我们对数据进行操作的时候影响视图的呢？</li>
+<li>回答：修改的数据如何批量高效地映射到视图上呢？</li>
+<li>回答：传统的 DOM 操作又在何时进行的呢？</li>
+<li>掌握 update 更新的算法</li>
+<li>render function 是什么</li>
+<li>如何更新视图</li>
+</ol>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/05/Vue/2020/13.%20%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/%E6%8E%98%E9%87%91%E5%B0%8F%E5%86%8C%EF%BC%9A%E5%89%96%E6%9E%90%20Vue.js%20%E5%86%85%E9%83%A8%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/07/05/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/PPT%20%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/05/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/PPT%20%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url">PPT 视频学习笔记</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-05T12:35:47+08:00">
+                2020-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">其他学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
           
           
 
           
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.5k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          前言周末在家完成了分配的任务：观看 PPT 视频，本章记录下一些小点。之前做 PPT 的时候，使用的都是别人写好的模块，将当中的内容替换即可。这次学习了如何自行设计一个 PPT、设计中通用的原则和 PPT 的一些快捷使用方法等，原来 PPT 也是一门大学问，视频涉及的内容很多，但是因为目前自己还没有
+          ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020/05/22/Java/%E8%BF%9B%E9%98%B6/14.%20%E9%9B%86%E5%90%88/14.3%20Map%20%E9%9B%86%E5%90%88%E7%BB%A7%E6%89%BF%E7%BB%93%E6%9E%84%E5%9B%BE/#more" rel="contents">
+            <a class="btn" href="/2020/07/05/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/PPT%20%E8%A7%86%E9%A2%91%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1180,7 +1191,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/50/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/50/">50</a><span class="page-number current">51</span><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/150/">150</a><a class="extend next" rel="next" href="/page/52/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/50/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/50/">50</a><span class="page-number current">51</span><a class="page-number" href="/page/52/">52</a><span class="space">&hellip;</span><a class="page-number" href="/page/159/">159</a><a class="extend next" rel="next" href="/page/52/">&gt;</a>
   </nav>
 
 
@@ -1230,7 +1241,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">750</span>
+                  <span class="site-state-item-count">791</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1241,7 +1252,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1319,7 +1330,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">498.6k</span>
+    <span title="Site words total count">517.7k</span>
   
 </div>
   <div id="sitetime"></div>

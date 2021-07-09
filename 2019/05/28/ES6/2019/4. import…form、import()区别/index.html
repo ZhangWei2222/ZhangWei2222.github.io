@@ -87,7 +87,7 @@
 <meta property="og:description" content="前言在咱们项目中，发现import会有两种形式写法 1234567import Vue form &amp;#x27;vue&amp;#x27;routes: [    &amp;#123;        path: &amp;#x27;&#x2F;home&amp;#x27;,        component: () &#x3D;&gt; import(&amp;#x27;.&#x2F;sre&#x2F;home.vue&amp;#x27;)    &amp;#125;] import…form">
 <meta property="og:locale">
 <meta property="article:published_time" content="2019-05-28T03:47:37.000Z">
-<meta property="article:modified_time" content="2021-07-02T03:27:07.203Z">
+<meta property="article:modified_time" content="2021-07-07T02:45:29.958Z">
 <meta property="article:author" content="Wei Zhang">
 <meta name="twitter:card" content="summary">
 
@@ -375,7 +375,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  308 字
+                  639 字
                 </span>
               
 
@@ -391,7 +391,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -438,6 +438,15 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>(<span class="string">&#x27;./test.js&#x27;</span>).then( <span class="function">(<span class="params">&#123;export1, export2&#125;</span>) =&gt;</span> &#123;   </span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>2、import() 函数可以用在async函数中</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">main</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> myModule = <span class="keyword">await</span> <span class="keyword">import</span>(<span class="string">&#x27;./myModule.js&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> &#123;export1, export2&#125; = <span class="keyword">await</span> <span class="keyword">import</span>(<span class="string">&#x27;./myModule.js&#x27;</span>);</span><br><span class="line">  <span class="keyword">const</span> [module1, module2, module3] =</span><br><span class="line">    <span class="keyword">await</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">      <span class="keyword">import</span>(<span class="string">&#x27;./module1.js&#x27;</span>),</span><br><span class="line">      <span class="keyword">import</span>(<span class="string">&#x27;./module2.js&#x27;</span>),</span><br><span class="line">      <span class="keyword">import</span>(<span class="string">&#x27;./module3.js&#x27;</span>),</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br><span class="line">main();</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>import命令输入的变量都是只读的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用 as 关键字,将输入的变量重命名</span></span><br><span class="line"><span class="keyword">import</span> &#123; lastName <span class="keyword">as</span> surname &#125; <span class="keyword">from</span> <span class="string">&#x27;./profile&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//from 指定模块文件的位置,可以是相对路径也可以是绝对路径 .js 后缀可以省略,如果只是模块名,必须又配置文件告诉 JS 引擎该模块的位置</span></span><br><span class="line"><span class="keyword">import</span> &#123;myMethod&#125; <span class="keyword">from</span> <span class="string">&#x27;util&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//import 命令具有提升效果,会提升到整个模块的头部并首先执行</span></span><br><span class="line">foo();</span><br><span class="line"><span class="keyword">import</span> &#123; foo &#125; <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//import 是静态执行,所以不能使用表达式和变量,只有在运行时才能得到结果的语法结构.</span></span><br><span class="line"><span class="comment">//报错</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="string">&#x27;f&#x27;</span> + <span class="string">&#x27;oo&#x27;</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"><span class="comment">//报错</span></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">module</span> = <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; foo &#125; <span class="keyword">from</span> <span class="built_in">module</span>;</span><br><span class="line"><span class="comment">//报错</span></span><br><span class="line"><span class="keyword">if</span> (x === <span class="number">1</span>) &#123;</span><br><span class="line"><span class="keyword">import</span> &#123; foo &#125; <span class="keyword">from</span> <span class="string">&#x27;module1&#x27;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="keyword">import</span> &#123; foo &#125; <span class="keyword">from</span> <span class="string">&#x27;module2&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//仅仅执行 lodash 模块，但不会输入任何值</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;lodash&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//多次重复执行同一 import 语句，只会执行一次 </span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;lodash&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;lodash&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//import 语句是 Singleton 模式       </span></span><br><span class="line"><span class="keyword">import</span> &#123; foo &#125; <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; bar &#125; <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"><span class="comment">//上面两行相当于下面这一行</span></span><br><span class="line"><span class="keyword">import</span> &#123; foo, bar &#125; <span class="keyword">from</span> <span class="string">&#x27;my_module&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模块的整体加载</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> circle <span class="keyword">from</span> <span class="string">&#x27;./circle&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+
+
       
     </div>
     
@@ -568,7 +577,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">750</span>
+                  <span class="site-state-item-count">791</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -579,7 +588,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -639,7 +648,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-text">区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-text">注意</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-text">区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-text">注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-text">补充</span></a></li></ol></div>
             
 
           </div>
@@ -673,7 +682,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">498.6k</span>
+    <span title="Site words total count">517.7k</span>
   
 </div>
   <div id="sitetime"></div>
