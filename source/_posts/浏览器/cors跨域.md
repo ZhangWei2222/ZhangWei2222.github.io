@@ -43,13 +43,13 @@ comments: true
 - `Access-Control-Allow-Credentials`
     - 该字段可选。布尔值，表示是否允许在 CORS 请求之中发送 `Cookie` 。若不携带 `Cookie` 则不需要设置该字段。
     - 当设置为 `true` 则  `Cookie` 包含在请求中，一起发送给服务器。还需要在 AJAX 请求中开启 `withCredentials` 属性，否则浏览器也不会发送 `Cookie` 。
-        ```
+        ```js
         let xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
         ```
 - `Access-Control-Expose-Headers`
     - 该字段可选。可以设置需要获取的字段。因为默认 CORS 请求时，`XMLHttpRequest` 对象的`getResponseHeader()`方法只能拿到以下 6 个基本字段：
-`Cache-Control`、`Content-Language`、`Content-Type`、`Expires`、`Last-Modified`、`Pragma`。
+    `Cache-Control`、`Content-Language`、`Content-Type`、`Expires`、`Last-Modified`、`Pragma`。
 
 ### 非简单请求的 CORS 流程
 
