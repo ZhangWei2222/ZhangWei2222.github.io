@@ -35,7 +35,7 @@ new Vue({
   }
 })
 
-结果报错，因为此时此刻dom上的list还没有数据，也就是说赋值操作没有引起视图的更新；需要改成：
+// 结果报错，因为此时此刻dom上的list还没有数据，也就是说赋值操作没有引起视图的更新；需要改成：
 this.list = res.data.data.list
 this.$nextTick(function () {
 	this.$refs.list.getElementsByTagName('li')[0].style.color = 'red'
