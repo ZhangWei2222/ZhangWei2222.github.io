@@ -1,5 +1,5 @@
 ---
- [关于Promise的知识.md](关于Promise的知识.md) title: 关于Promise的知识
+title: 关于Promise的知识
 date: 2020-01-02 14:51:37
 categories:
 - ES6
