@@ -2,7 +2,7 @@
 title: 使用 koa2-cors 跨域
 date: 2020-04-28 20:38:37
 categories:
-- Koa2
+- NodeJS
 comments: true
 ---
 
