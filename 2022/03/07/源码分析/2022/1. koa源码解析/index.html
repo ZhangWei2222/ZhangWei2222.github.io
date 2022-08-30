@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="是什么一个精简的web框架，它核心是提供一个web服务，入口函数我们是app.listen() 它主要做了以下几件事：  为request和response对象赋能，并基于它们封装成一个context对象 基于async&#x2F;await的中间件容器机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="koa源码分析">
+<meta property="og:url" content="https://super-wei.top/2022/03/07/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/2022/1.%20koa%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="是什么一个精简的web框架，它核心是提供一个web服务，入口函数我们是app.listen() 它主要做了以下几件事：  为request和response对象赋能，并基于它们封装成一个context对象 基于async&#x2F;await的中间件容器机制">
+<meta property="og:locale">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/15071867-9d32b5eaa6523099.png?imageMogr2/auto-orient/strip|imageView2/2/w/910/format/webp">
+<meta property="og:image" content="http://doc.t.pt.miui.com/jianyu/jianyu-docs/imgs/%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B1.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203072320829.jpg">
+<meta property="article:published_time" content="2022-03-07T09:55:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.162Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/15071867-9d32b5eaa6523099.png?imageMogr2/auto-orient/strip|imageView2/2/w/910/format/webp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2022/03/07/源码分析/2022/1. koa源码解析/"/>
+
+
+
+
+
+  <title>koa源码分析 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2022/03/07/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/2022/1.%20koa%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">koa源码分析</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-07T17:55:47+08:00">
+                2022-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" itemprop="url" rel="index">
+                    <span itemprop="name">源码分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.9k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="是什么"><a href="#是什么" class="headerlink" title="是什么"></a>是什么</h2><p>一个精简的web框架，它核心是提供一个web服务，入口函数我们是app.listen()</p>
+<p>它主要做了以下几件事：</p>
+<ul>
+<li>为request和response对象赋能，并基于它们封装成一个context对象</li>
+<li>基于async/await的中间件容器机制</li>
+</ul>
+<a id="more"></a>
+
+
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> koa = <span class="built_in">require</span>(<span class="string">&#x27;koa&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> koa();</span><br><span class="line"><span class="comment">// application文件中有一个use方法，其接收的参数是一个fn</span></span><br><span class="line">app.use(<span class="keyword">async</span> (ctx,next) =&gt; &#123;</span><br><span class="line">    ctx.body = <span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line">&#125;)</span><br><span class="line">app.listen(<span class="number">3000</span>,<span class="function">()=&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p>核心文件只有4个，在lib文件夹下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">── lib</span><br><span class="line">   ├── application.js koa框架的入口文件</span><br><span class="line">   ├── context.js 创建网络请求的上下文对象</span><br><span class="line">   ├── request.js 用于包装koa的request对象</span><br><span class="line">   └── response.js 用于包装koa的response对象</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Koa-Application-创建一个application实例"><a href="#Koa-Application-创建一个application实例" class="headerlink" title="Koa===Application ,创建一个application实例"></a>Koa===Application ,创建一个application实例</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">constructor</span>(<span class="params">options</span>)</span> &#123;</span><br><span class="line">  <span class="built_in">super</span>(); <span class="comment">// Application 继承了 EventEmitter 对象</span></span><br><span class="line">  <span class="comment">/** ... */</span></span><br><span class="line">  <span class="built_in">this</span>.middleware = [];  <span class="comment">// 用于存储所有的中间件函数的，所有的app.use()中调用的fn(中间件)都会被push进去</span></span><br><span class="line">  <span class="built_in">this</span>.context = <span class="built_in">Object</span>.create(context); <span class="comment">// 引入context对象</span></span><br><span class="line">  <span class="built_in">this</span>.request = <span class="built_in">Object</span>.create(request); <span class="comment">// 引入koa 的request对象</span></span><br><span class="line">  <span class="built_in">this</span>.response = <span class="built_in">Object</span>.create(response); <span class="comment">// 引入koa的response对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="listen"><a href="#listen" class="headerlink" title="listen()"></a>listen()</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">listen (...args) &#123;</span><br><span class="line">  debug(<span class="string">&#x27;listen&#x27;</span>)</span><br><span class="line">  <span class="keyword">const</span> server = http.createServer(<span class="built_in">this</span>.callback())</span><br><span class="line">  <span class="keyword">return</span> server.listen(...args)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>本质上还是利用了原生的http package 启动了一个http server,如果不用koa框架，我们用原生的写法如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> server = http.createServer(<span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  res.setHeader(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;text/html&#x27;</span>);</span><br><span class="line">  res.setHeader(<span class="string">&#x27;X-Foo&#x27;</span>, <span class="string">&#x27;bar&#x27;</span>);</span><br><span class="line">  res.writeHead(<span class="number">200</span>, &#123; <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;text/plain&#x27;</span> &#125;);</span><br><span class="line">  res.end(<span class="string">&#x27;ok&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="callback"><a href="#callback" class="headerlink" title="callback()"></a>callback()</h3><p>所以看到这里我们就能猜到this.callback(),应该返回一个(req,res)=&gt;{}这样的一个回调函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">callback () &#123;</span><br><span class="line">  <span class="comment">// 将所有中间件函数通过koa-compose组合一下，这里返回一个(ctx,next)=&gt;&#123;&#125;这样的函数</span></span><br><span class="line">  <span class="keyword">const</span> fn = compose(<span class="built_in">this</span>.middleware)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果没有添加错误的监听回调，这里会添加一个默认的</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">this</span>.listenerCount(<span class="string">&#x27;error&#x27;</span>)) <span class="built_in">this</span>.on(<span class="string">&#x27;error&#x27;</span>, <span class="built_in">this</span>.onerror)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// handleRequest相当于是 上面listen中的http.createServer 的回调函数</span></span><br><span class="line">  <span class="comment">// 有req和res两个参数，代表原生的 request,response对象</span></span><br><span class="line">  <span class="keyword">const</span> handleRequest = <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> ctx = <span class="built_in">this</span>.createContext(req, res) <span class="comment">// 基于req和res，封装一个更强大的context对象</span></span><br><span class="line">    <span class="comment">// 当有请求过来时，需要基于办好了request和response信息的ctx和所有中间件函数，来处理请求</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>.handleRequest(ctx, fn) </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> handleRequest <span class="comment">// 这里返回一个函数，和我们在listen中的猜想是一样的。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="handleRequest"><a href="#handleRequest" class="headerlink" title="handleRequest()"></a>handleRequest()</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">handleRequest (ctx, fnMiddleware) &#123;</span><br><span class="line">  <span class="keyword">const</span> res = ctx.res</span><br><span class="line">  res.statusCode = <span class="number">404</span></span><br><span class="line">  <span class="keyword">const</span> onerror = <span class="function"><span class="params">err</span> =&gt;</span> ctx.onerror(err) <span class="comment">// 错误处理</span></span><br><span class="line">  <span class="keyword">const</span> handleResponse = <span class="function">() =&gt;</span> respond(ctx) <span class="comment">// 响应处理</span></span><br><span class="line">  onFinished(res, onerror)</span><br><span class="line">  <span class="comment">// 执行中间件数组中的所有函数，并在结束时调用上面的respond函数</span></span><br><span class="line">  <span class="keyword">return</span> fnMiddleware(ctx).then(handleResponse).catch(onerror)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在用Koa框架的时候，我们把我们想要的返回值，赋值给ctx.body:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ctx.body=<span class="string">&#x27;hello world&#x27;</span>; <span class="comment">// 返回一个字符串</span></span><br><span class="line"></span><br><span class="line">ctx.body=&#123;<span class="attr">hello</span>:<span class="string">&#x27;world&#x27;</span>&#125;; <span class="comment">// 返回一个json对象</span></span><br></pre></td></tr></table></figure>
+<p>这个部分的处理是在handleResponse处理的，handleResponse调用了respond();</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">respond</span>(<span class="params">ctx</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// allow bypassing koa</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">false</span> === ctx.respond) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> res = ctx.res;</span><br><span class="line">  <span class="comment">// writable 是原生的node的response对象上的 writable 属性，其作用是用于检查是否是可写流</span></span><br><span class="line">  <span class="keyword">if</span> (!ctx.writable) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> body = ctx.body;</span><br><span class="line">  <span class="keyword">const</span> code = ctx.status;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ignore body</span></span><br><span class="line">  <span class="comment">// statuses是一个模块方法，用于判断响应的 statusCode是否属于body为空的类型。</span></span><br><span class="line">  <span class="comment">// 例如：204,205,304，此时将body置为null</span></span><br><span class="line">  <span class="keyword">if</span> (statuses.empty[code]) &#123;</span><br><span class="line">    <span class="comment">// strip headers</span></span><br><span class="line">    ctx.body = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> res.end();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 如果是HEAD方法</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;HEAD&#x27;</span> == ctx.method) &#123;</span><br><span class="line">    <span class="comment">// headersSent 属性是Node原生的 response对象上的，用于检查 http 响应头不是否已经被发送</span></span><br><span class="line">    <span class="comment">// 如果没有被发送，那么添加 length 头部</span></span><br><span class="line">    <span class="keyword">if</span> (!res.headersSent &amp;&amp; isJSON(body)) &#123;</span><br><span class="line">      ctx.length = Buffer.byteLength(<span class="built_in">JSON</span>.stringify(body));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res.end();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// status body</span></span><br><span class="line">  <span class="comment">// 如果body为null时</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">null</span> == body) &#123;</span><br><span class="line">    <span class="comment">// httpVersionMajor是node原生对象response上的一个属性，用于返回当前http的版本，这里是对http2版本以上做的一个兼容</span></span><br><span class="line">    <span class="keyword">if</span> (ctx.req.httpVersionMajor &gt;= <span class="number">2</span>) &#123;</span><br><span class="line">      body = <span class="built_in">String</span>(code);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      body = ctx.message || <span class="built_in">String</span>(code);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// headersSent也是原生属性，为ture表示响应头已经被发送</span></span><br><span class="line">    <span class="comment">// 如果响应报文头还没有被发送出去，就为ctx添加一个length属性，length属性记录这当前报文主体body的字节长度</span></span><br><span class="line">    <span class="keyword">if</span> (!res.headersSent) &#123;</span><br><span class="line">      ctx.type = <span class="string">&#x27;text&#x27;</span>;</span><br><span class="line">      ctx.length = Buffer.byteLength(body);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res.end(body);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// responses</span></span><br><span class="line">  <span class="comment">// 对 body 为Buffer类型的进行处理</span></span><br><span class="line">  <span class="keyword">if</span> (Buffer.isBuffer(body)) <span class="keyword">return</span> res.end(body);</span><br><span class="line">  <span class="comment">// 对 body 为字符串类型的进行处理</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;string&#x27;</span> == <span class="keyword">typeof</span> body) <span class="keyword">return</span> res.end(body);</span><br><span class="line">  <span class="comment">// 对 body 为流类型的进行处理，是流的话合并</span></span><br><span class="line">  <span class="keyword">if</span> (body <span class="keyword">instanceof</span> Stream) <span class="keyword">return</span> body.pipe(res);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// body: json</span></span><br><span class="line">  <span class="comment">// 最后将为Json格式的body进行字符串处理，将其转化成字符串</span></span><br><span class="line">  <span class="comment">// 同时添加length头部信息</span></span><br><span class="line">  body = <span class="built_in">JSON</span>.stringify(body);</span><br><span class="line">  <span class="keyword">if</span> (!res.headersSent) &#123;</span><br><span class="line">    ctx.length = Buffer.byteLength(body);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 最后将转化成字符串的body吐出去</span></span><br><span class="line">  res.end(body);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="createContext"><a href="#createContext" class="headerlink" title="createContext"></a>createContext</h3><p>生成一个新的<code>context</code>对象，并建立 koa 中context、request、response属性之间和原生http对象的关系。而handleRequest函数只是负责执行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">createContext</span>(<span class="params">req, res</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> context = <span class="built_in">Object</span>.create(<span class="built_in">this</span>.context);</span><br><span class="line">    <span class="keyword">const</span> request = context.request = <span class="built_in">Object</span>.create(<span class="built_in">this</span>.request);</span><br><span class="line">    <span class="keyword">const</span> response = context.response = <span class="built_in">Object</span>.create(<span class="built_in">this</span>.response);</span><br><span class="line">    context.app = request.app = response.app = <span class="built_in">this</span>;</span><br><span class="line">    context.req = request.req = response.req = req;</span><br><span class="line">    context.res = request.res = response.res = res;</span><br><span class="line">    request.ctx = response.ctx = context;</span><br><span class="line">    request.response = response;</span><br><span class="line">    response.request = request;</span><br><span class="line">    context.originalUrl = request.originalUrl = req.url;</span><br><span class="line">    context.state = &#123;&#125;;</span><br><span class="line">    <span class="keyword">return</span> context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="https://upload-images.jianshu.io/upload_images/15071867-9d32b5eaa6523099.png?imageMogr2/auto-orient/strip|imageView2/2/w/910/format/webp" alt="img" style="zoom:50%;" />
+
+<blockquote>
+<p>koa通过创建context将node原生的req和res对象都集中到了一起。</p>
+</blockquote>
+<h2 id="中间件的原理"><a href="#中间件的原理" class="headerlink" title="中间件的原理"></a>中间件的原理</h2><p>koa源码的另外一个亮点就是它的中间件机制，我们可以使用use()添加一个中间件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">use (fn) &#123;</span><br><span class="line">  <span class="comment">// 传入的不是function报错</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> fn !== <span class="string">&#x27;function&#x27;</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">&#x27;middleware must be a function!&#x27;</span>)</span><br><span class="line">  debug(<span class="string">&#x27;use %s&#x27;</span>, fn._name || fn.name || <span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">  <span class="comment">// 将该中间件函数 push 进实例对象的 middleware 数组中</span></span><br><span class="line">  <span class="built_in">this</span>.middleware.push(fn)</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">this</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所谓koa的中间件函数的串联其实就是通过数组来逐个执行的</p>
+<h3 id="洋葱圈模型"><a href="#洋葱圈模型" class="headerlink" title="洋葱圈模型"></a>洋葱圈模型</h3><img src="http://doc.t.pt.miui.com/jianyu/jianyu-docs/imgs/%E6%B4%8B%E8%91%B1%E6%A8%A1%E5%9E%8B1.jpg" alt="图1" style="zoom:50%;" />
+
+<img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203072320829.jpg" alt="图2" style="zoom:50%;" />
+
+<p>koa主要利用了async和await的特性，执行到下一个中间件的地方暂停执行，执行完后再回复继续执行。</p>
+<h3 id="中间件的使用"><a href="#中间件的使用" class="headerlink" title="中间件的使用"></a>中间件的使用</h3><p>我们从上面可以看到use只是把中间件保存下来，然后在callback()函数里面用到了</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = compose(<span class="built_in">this</span>.middleware);</span><br></pre></td></tr></table></figure>
+<h3 id="koa-compose模块"><a href="#koa-compose模块" class="headerlink" title="koa-compose模块"></a>koa-compose模块</h3><p>compose 引入的一个第三方package koa-compose，koa-compose模块可以将多个中间件函数合并成一个大的中间件函数，然后调用这个中间件函数就可以依次执行添加的中间件函数，执行一系列的任务。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">compose</span>(<span class="params">middleware</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// compose接收的middleware是一个又中间件函数组成的数组，所以先检测是否为数组，不是则报错</span></span><br><span class="line">  <span class="keyword">if</span> (!<span class="built_in">Array</span>.isArray(middleware)) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">&#x27;Middleware stack must be an array!&#x27;</span>)</span><br><span class="line">  <span class="comment">// 然后检测middleware中的项是否都为function，如果不是则报错</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> fn <span class="keyword">of</span> middleware) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> fn !== <span class="string">&#x27;function&#x27;</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">&#x27;Middleware must be composed of functions!&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 返回了一个和中间件声明一样的函数</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">context, next</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// last called middleware #</span></span><br><span class="line">    <span class="keyword">let</span> index = -<span class="number">1</span>  <span class="comment">// 记录已经执行到中间件的索引</span></span><br><span class="line">    <span class="keyword">return</span> dispatch(<span class="number">0</span>) <span class="comment">// 调用dispatch(0) 从第一个中间件开始执行</span></span><br><span class="line">    <span class="comment">// 声明了一个内部函数dispatch</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">dispatch</span>(<span class="params">i</span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 如果一个中间件执行两次，会抛出错误</span></span><br><span class="line">      <span class="keyword">if</span> (i &lt;= index) <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">&#x27;next() called multiple times&#x27;</span>))</span><br><span class="line">      index = i <span class="comment">// 更新执行到中间件的索引</span></span><br><span class="line">      <span class="keyword">let</span> fn = middleware[i]</span><br><span class="line">      <span class="comment">// 执行到最后一个中间件之后，执行next，中间件都执行完毕之后fn置为undefined</span></span><br><span class="line">      <span class="keyword">if</span> (i === middleware.length) fn = next</span><br><span class="line">      <span class="comment">// 但是next是undefined，所以此时返回Promise.resolve()</span></span><br><span class="line">      <span class="keyword">if</span> (!fn) <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve()</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 中间件定义的时候的形参next,传入的实参实参上是dispatch(i+1), 递归调用dispatch. 并保证结果返回的是个Promise</span></span><br><span class="line">        <span class="comment">// 使用递归的方式返回当前传入ctx的参数，并在中间件执行完毕之后执行的next(),next()其实就是调用自己实现递归。</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(fn(context, dispatch.bind(<span class="literal">null</span>, i + <span class="number">1</span>)));</span><br><span class="line">      &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(err)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">app.use(<span class="keyword">async</span> (ctx,next) =&gt; &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">&quot;1-start&quot;</span>);</span><br><span class="line">   <span class="keyword">await</span> next();</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">&quot;1-end&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;2-start&quot;</span>);</span><br><span class="line">  <span class="keyword">await</span> next();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;2-end&quot;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>然后我们逐步执行：</p>
+<ul>
+<li>fnMiddleware(ctx)运行；</li>
+<li>执行dispatch(0)；</li>
+<li>进入dispatch函数，执行到</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(fn(context, <span class="function"><span class="keyword">function</span> <span class="title">next</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> dispatch(i + <span class="number">1</span>)</span><br><span class="line">&#125;))</span><br></pre></td></tr></table></figure>
+<p>此时fn就是第一个中间件，<strong>它是一个async函数，async函数会返回一个Promise对象，Promise.resolve（）中若传入一个Promise对象的话，那么Promise.resolve将不做任何修改、原封不动地返回这个Promise对象</strong>。</p>
+<ul>
+<li><p>进入到第一个中间件代码内部： 先执行‘console.log(“1-start”);’；</p>
+</li>
+<li><p>然后执行’await next();’并开始等待next执行返回；</p>
+</li>
+<li><p>进入到next函数后，主要是执行dispatch（1），于是老的dispatch（0）函数压栈，开始从头开始执行dispatch（1），即把第二个中间件函数付给fn，然后开始执行，<strong>这步完成了程序控制权从第一个中间件到第二个中间件的转移</strong>。</p>
+</li>
+<li><p>进入到第二个中间件代码内部： 先执行‘console.log(“2-start”);’； 然后执行’await next();’并开始等待next执行返回；</p>
+</li>
+<li><p>进入到next函数后，主要是执行dispatch（2），于是老的dispatch（1）函数压栈，开始从头开始执行dispatch（2），由于此时程序符合下面的条件：</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (i === middleware.length) fn = next</span><br><span class="line"><span class="keyword">if</span> (!fn) <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve()</span><br></pre></td></tr></table></figure>
+<p>所以返回Promise.resolve()，此时第二个中间件的next函数返回了。</p>
+<ul>
+<li><p> 所以接下来执行console.log(“2-end”);</p>
+</li>
+<li><p>由此第二个中间件执行完成，把程序控制权传递给第一个中间件。 第一个中间件执行console.log(“1-end”);。</p>
+</li>
+<li><p>终于完成所有中间件的执行，若中间没有异常，则返回Promise.resolve()，执行handleResponse回调；若有异常，则返回Promise.reject(err),执行onerror回调。</p>
+</li>
+</ul>
+<h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>在koa中有两个错误处理：application.js中的onerror方法和context.js中的onerror方法。</p>
+<ul>
+<li>application中的onerror方法：绑定在koa实例对象上，其监听的是整个对象的error事件。</li>
+<li>context中的onerror方法：绑定在中间件函数数组生成的Promise的catch中与res对象的onFinished函数的回调的，其就是为了处理请求or响应中出现的error事件的。</li>
+</ul>
+<h3 id="application中的onerror"><a href="#application中的onerror" class="headerlink" title="application中的onerror"></a>application中的onerror</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">onerror</span>(<span class="params">err</span>)</span> &#123;</span><br><span class="line">  <span class="comment">// 判断err是否是 new Error过来的实例</span></span><br><span class="line">  <span class="keyword">if</span> (!(err <span class="keyword">instanceof</span> <span class="built_in">Error</span>)) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(util.format(<span class="string">&#x27;non-error thrown: %j&#x27;</span>, err));</span><br><span class="line">  <span class="comment">// 忽略404错误</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="number">404</span> == err.status || err.expose) <span class="keyword">return</span>;</span><br><span class="line">  <span class="comment">// 如果有静默设置也忽略</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.silent) <span class="keyword">return</span>;</span><br><span class="line">  <span class="comment">// 打印错误，定位问题</span></span><br><span class="line">  <span class="keyword">const</span> msg = err.stack || err.toString();</span><br><span class="line">  <span class="built_in">console</span>.error();</span><br><span class="line">  <span class="built_in">console</span>.error(msg.replace(<span class="regexp">/^/gm</span>, <span class="string">&#x27;  &#x27;</span>));</span><br><span class="line">  <span class="built_in">console</span>.error();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="context中的onerror"><a href="#context中的onerror" class="headerlink" title="context中的onerror"></a>context中的onerror</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">onerror</span>(<span class="params">err</span>)</span> &#123;</span><br><span class="line">  <span class="comment">// don&#x27;t do anything if there is no error.</span></span><br><span class="line">  <span class="comment">// this allows you to pass `this.onerror`</span></span><br><span class="line">  <span class="comment">// to node-style callbacks.</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">null</span> == err) <span class="keyword">return</span>;</span><br><span class="line">  <span class="comment">// 将错误转化为 Error 实例</span></span><br><span class="line">  <span class="keyword">if</span> (!(err <span class="keyword">instanceof</span> <span class="built_in">Error</span>)) err = <span class="keyword">new</span> <span class="built_in">Error</span>(util.format(<span class="string">&#x27;non-error thrown: %j&#x27;</span>, err));</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> headerSent = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.headerSent || !<span class="built_in">this</span>.writable) &#123;</span><br><span class="line">    headerSent = err.headerSent = <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// delegate</span></span><br><span class="line">  <span class="comment">// this.app即是对application的引用，当context.js的onerror触发时，会触发application实例的error事件。该事件机制是基于“Application类继承自EventEmitter”这一事实。</span></span><br><span class="line">  <span class="built_in">this</span>.app.emit(<span class="string">&#x27;error&#x27;</span>, err, <span class="built_in">this</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// nothing we can do here other</span></span><br><span class="line">  <span class="comment">// than delegate to the app-level</span></span><br><span class="line">  <span class="comment">// handler and log.</span></span><br><span class="line">  <span class="keyword">if</span> (headerSent) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> &#123; res &#125; = <span class="built_in">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// first unset all headers</span></span><br><span class="line">  <span class="comment">/* istanbul ignore else */</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> res.getHeaderNames === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">    res.getHeaderNames().forEach(<span class="function"><span class="params">name</span> =&gt;</span> res.removeHeader(name));</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    res._headers = &#123;&#125;; <span class="comment">// Node &lt; 7.7</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// then set those specified</span></span><br><span class="line">  <span class="built_in">this</span>.set(err.headers);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// force text/plain</span></span><br><span class="line">  <span class="built_in">this</span>.type = <span class="string">&#x27;text&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ENOENT support</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;ENOENT&#x27;</span> == err.code) err.status = <span class="number">404</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// default to 500</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;number&#x27;</span> != <span class="keyword">typeof</span> err.status || !statuses[err.status]) err.status = <span class="number">500</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// respond</span></span><br><span class="line">  <span class="keyword">const</span> code = statuses[err.status];</span><br><span class="line">  <span class="keyword">const</span> msg = err.expose ? err.message : code;</span><br><span class="line">  <span class="built_in">this</span>.status = err.status;</span><br><span class="line">  <span class="built_in">this</span>.length = Buffer.byteLength(msg);</span><br><span class="line">  <span class="built_in">this</span>.res.end(msg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/bc0e1f46f84a">koa2源码解析</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/34797505">可能是目前市面上比较有诚意的Koa2源码解读</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/07/%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/PicGo+GitHub%E9%85%8D%E7%BD%AE%E5%9B%BE%E5%BA%8A/" rel="next" title="PicGo+GitHub配置图床">
+                <i class="fa fa-chevron-left"></i> PicGo+GitHub配置图床
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/03/08/React/2022/1.%20Reack%20Hooks%20%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%9E%E6%88%98/" rel="prev" title="Reack Hooks 测试题">
+                Reack Hooks 测试题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Koa-Application-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AAapplication%E5%AE%9E%E4%BE%8B"><span class="nav-text">Koa&#x3D;&#x3D;&#x3D;Application ,创建一个application实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#listen"><span class="nav-text">listen()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#callback"><span class="nav-text">callback()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#handleRequest"><span class="nav-text">handleRequest()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#createContext"><span class="nav-text">createContext</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-text">中间件的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%8B%E8%91%B1%E5%9C%88%E6%A8%A1%E5%9E%8B"><span class="nav-text">洋葱圈模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">中间件的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#koa-compose%E6%A8%A1%E5%9D%97"><span class="nav-text">koa-compose模块</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#demo"><span class="nav-text">demo</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="nav-text">错误处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#application%E4%B8%AD%E7%9A%84onerror"><span class="nav-text">application中的onerror</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#context%E4%B8%AD%E7%9A%84onerror"><span class="nav-text">context中的onerror</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

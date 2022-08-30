@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、选择器(1).使用缩排和凹排代替花括号{以及} 123456789body  color whitebody &amp;#123;  color: #fff;&amp;#125;body  color: white (2).允许你使用逗号为多个选择器同时定义属性 1234567textarea, input  border 1px solid #eeetextarea,input &amp;#123;  border">
+<meta property="og:type" content="article">
+<meta property="og:title" content="stylus">
+<meta property="og:url" content="https://super-wei.top/2017/08/19/CSS3/2017/2.%20stylus/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="一、选择器(1).使用缩排和凹排代替花括号{以及} 123456789body  color whitebody &amp;#123;  color: #fff;&amp;#125;body  color: white (2).允许你使用逗号为多个选择器同时定义属性 1234567textarea, input  border 1px solid #eeetextarea,input &amp;#123;  border">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-08-19T07:15:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:44.817Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2017/08/19/CSS3/2017/2. stylus/"/>
+
+
+
+
+
+  <title>stylus | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/08/19/CSS3/2017/2.%20stylus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">stylus</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T15:15:47+08:00">
+                2017-08-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CSS3/" itemprop="url" rel="index">
+                    <span itemprop="name">CSS3</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.7k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、选择器"><a href="#一、选择器" class="headerlink" title="一、选择器"></a>一、选择器</h3><p>(1).使用缩排和凹排代替花括号{以及}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">body</span><br><span class="line">  color white</span><br><span class="line"></span><br><span class="line">body &#123;</span><br><span class="line">  color: #fff;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">body</span><br><span class="line">  color: white</span><br></pre></td></tr></table></figure>
+<p>(2).允许你使用逗号为多个选择器同时定义属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">textarea, input</span><br><span class="line">  border 1px solid #eee</span><br><span class="line"></span><br><span class="line">textarea,</span><br><span class="line">input &#123;</span><br><span class="line">  border: 1px solid #eee;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>唯一的例外就是长得像属性的选择器。例如，下面的foo bar baz可能是个属性或者是选择器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foo bar baz</span><br><span class="line">&gt; input</span><br><span class="line">  border 1px solid</span><br></pre></td></tr></table></figure>
+<p>为解决这个原因，我们可以在尾部加个逗号：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">foo bar baz,</span><br><span class="line">form input,</span><br><span class="line">&gt; a</span><br><span class="line">  border 1px solid</span><br></pre></td></tr></table></figure>
+<p>(3).字符&amp;指向父选择器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">textarea</span><br><span class="line">input</span><br><span class="line">  color #A7A7A7</span><br><span class="line">  &amp;:hover</span><br><span class="line">    color #000</span><br><span class="line"></span><br><span class="line">textarea,</span><br><span class="line">input &#123;</span><br><span class="line">  color: #a7a7a7;</span><br><span class="line">&#125;</span><br><span class="line">textarea:hover,</span><br><span class="line">input:hover &#123;</span><br><span class="line">  color: #000;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(4).unquote() 处理Stylus无法处理的属性值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">filter unquote(&#39;progid:DXImageTransform.Microsoft.BasicImage(rotation&#x3D;1)&#39;)</span><br><span class="line"></span><br><span class="line">filter progid:DXImageTransform.Microsoft.BasicImage(rotation&#x3D;1)</span><br></pre></td></tr></table></figure>
+<h3 id="二、变量"><a href="#二、变量" class="headerlink" title="二、变量"></a>二、变量</h3><p>(1).可以指定表达式为变量，然后在我们的样式中贯穿使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">font-size &#x3D; 14px</span><br><span class="line">body</span><br><span class="line">  font font-size Arial, sans-seri</span><br><span class="line"></span><br><span class="line">body &#123;</span><br><span class="line">  font: 14px Arial, sans-serif;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(2).变量甚至可以组成一个表达式列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">font-size &#x3D; 14px</span><br><span class="line">font &#x3D; font-size &quot;Lucida Grande&quot;, Arial</span><br><span class="line">body</span><br><span class="line">  font font sans-serif</span><br><span class="line"></span><br><span class="line">body &#123;</span><br><span class="line">  font: 14px &quot;Lucida Grande&quot;, Arial sans-serif;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(3).不需要分配值给变量就可以定义引用属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#logo</span><br><span class="line">  position: absolute</span><br><span class="line">  top: 50%</span><br><span class="line">  left: 50%</span><br><span class="line">  width: 150px</span><br><span class="line">  height: 80px</span><br><span class="line">  margin-left: -(@width &#x2F; 2)</span><br><span class="line">  margin-top: -(@height &#x2F; 2)</span><br></pre></td></tr></table></figure>
+<h3 id="三、插值"><a href="#三、插值" class="headerlink" title="三、插值"></a>三、插值</h3><p>通过使用{}字符包围表达式来插入值，其会变成标识符的一部分。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">table</span><br><span class="line">  for row in 1 2 3 4 5</span><br><span class="line">    tr:nth-child(&#123;row&#125;)</span><br><span class="line">      height: 10px * row</span><br><span class="line"></span><br><span class="line">table tr:nth-child(1) &#123;</span><br><span class="line">  height: 10px;</span><br><span class="line">&#125;</span><br><span class="line">table tr:nth-child(2) &#123;</span><br><span class="line">  height: 20px;</span><br><span class="line">&#125;</span><br><span class="line">table tr:nth-child(3) &#123;</span><br><span class="line">  height: 30px;</span><br><span class="line">&#125;</span><br><span class="line">table tr:nth-child(4) &#123;</span><br><span class="line">  height: 40px;</span><br><span class="line">&#125;</span><br><span class="line">table tr:nth-child(5) &#123;</span><br><span class="line">  height: 50px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="四、运算符"><a href="#四、运算符" class="headerlink" title="四、运算符"></a>四、运算符</h3><p>当在属性值内使用/时候，你必须用括号包住。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">font: (14px&#x2F;1.5);</span><br></pre></td></tr></table></figure>
+<h3 id="五、Mixins-混合书写"><a href="#五、Mixins-混合书写" class="headerlink" title="五、Mixins 混合书写"></a>五、Mixins 混合书写</h3><p>混入和函数定义方法一致，但是应用却大相径庭。</p>
+<blockquote>
+<p>下面有定义的border-radius(n)方法，其却作为一个mixin（如，作为状态调用，而非表达式）调用。</p>
+<p>当border-radius()选择器中调用时候，属性会被扩展并复制在选择器中。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">border-radius(n)</span><br><span class="line">  -webkit-border-radius n</span><br><span class="line">  -moz-border-radius n</span><br><span class="line">  border-radius </span><br><span class="line">form input[type&#x3D;button]</span><br><span class="line">  border-radius(5px)</span><br><span class="line"></span><br><span class="line">编译成：</span><br><span class="line">form input[type&#x3D;button] &#123;</span><br><span class="line">  -webkit-border-radius: 5px;</span><br><span class="line">  -moz-border-radius: 5px;</span><br><span class="line">  border-radius: 5px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意到我们混合书写中的border-radius当作了属性，而不是一个递归函数调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">border-radius()</span><br><span class="line">  -webkit-border-radius arguments</span><br><span class="line">  -moz-border-radius arguments</span><br><span class="line">  border-radius arguments</span><br></pre></td></tr></table></figure>
+<h3 id="六、方法"><a href="#六、方法" class="headerlink" title="六、方法"></a>六、方法</h3><p>(1).返回值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">很简单的例子，两数值相加的方法：</span><br><span class="line"></span><br><span class="line">add(a, b)</span><br><span class="line">  a + b</span><br><span class="line">我们可以在特定条件下使用该方法，如在属性值中：</span><br><span class="line"></span><br><span class="line">body </span><br><span class="line">  padding add(10px, 5)</span><br><span class="line"></span><br><span class="line">渲染：</span><br><span class="line">body &#123;</span><br><span class="line">  padding: 15px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(2).默认参数<br>可选参数往往有个默认的给定表达。在Stylus中，我们甚至可以超越默认参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">例如：</span><br><span class="line">add(a, b &#x3D; a)</span><br><span class="line">  a + b</span><br><span class="line"></span><br><span class="line">add(10, 5)</span><br><span class="line">&#x2F;&#x2F; &#x3D;&gt; 15</span><br><span class="line"></span><br><span class="line">add(10)</span><br><span class="line">&#x2F;&#x2F; &#x3D;&gt; 20</span><br><span class="line"></span><br><span class="line">注意：因为参数默认是赋值，我们可可以使用函数调用作为默认值。</span><br><span class="line"></span><br><span class="line">add(a, b &#x3D; unit(a, px))</span><br><span class="line">  a + b</span><br></pre></td></tr></table></figure>
+<p>(3).函数体<br>通过内置unit()把单位都变成px, 因为赋值在每个参数上，因此，我们可以无视单位换算。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">add(a, b &#x3D; a)</span><br><span class="line">  a &#x3D; unit(a, px)</span><br><span class="line">  b &#x3D; unit(b, px)</span><br><span class="line">  a + b</span><br><span class="line"></span><br><span class="line">add(15%, 10deg)</span><br><span class="line">&#x2F;&#x2F; &#x3D;&gt; 25</span><br></pre></td></tr></table></figure>
+<p>(4).变量函数<br>我们可以把函数当作变量传递到新的函数中。例如，invoke()接受函数作为参数，因此，我们可以传递add()以及sub().</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">invoke(a, b, fn)</span><br><span class="line">  fn(a, b)</span><br><span class="line"></span><br><span class="line">add(a, b)</span><br><span class="line">  a + b</span><br><span class="line"></span><br><span class="line">body</span><br><span class="line">  padding invoke(5, 10, add)</span><br><span class="line">  padding invoke(5, 10, sub)</span><br><span class="line"></span><br><span class="line">结果：</span><br><span class="line">body &#123;</span><br><span class="line">  padding: 15;</span><br><span class="line">  padding: -5;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(5).参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">arguments是所有函数体都有的局部变量，包含传递的所有参数。</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">sum()</span><br><span class="line">  n &#x3D; 0</span><br><span class="line">  for num in arguments</span><br><span class="line">    n &#x3D; n + num</span><br><span class="line"></span><br><span class="line">sum(1,2,3,4,5)</span><br><span class="line">&#x2F;&#x2F; &#x3D;&gt; 15</span><br></pre></td></tr></table></figure>
+<h3 id="七、关键字"><a href="#七、关键字" class="headerlink" title="七、关键字"></a>七、关键字</h3><p>Stylus支持关键字参数，或”kwargs”. 允许你根据相关参数名引用参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">  color: rgba(255, 200, 100, 0.5);</span><br><span class="line">  color: rgba(red: 255, green: 200, blue: 100, alpha: 0.5);</span><br><span class="line">  color: rgba(alpha: 0.5, blue: 100, red: 255, 200);</span><br><span class="line">  color: rgba(alpha: 0.5, blue: 100, 255, 200);</span><br><span class="line">&#125;</span><br><span class="line">等同于：</span><br><span class="line">body &#123;</span><br><span class="line">   color: rgba(255,200,100,0.5);</span><br><span class="line">   color: rgba(255,200,100,0.5);</span><br><span class="line">   color: rgba(255,200,100,0.5);</span><br><span class="line">   color: rgba(255,200,100,0.5);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查看函数或混合书写中接受的参数，可以使用p()方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p(rgba)</span><br><span class="line">生成：</span><br><span class="line">inspect: rgba(red, green, blue, alpha)</span><br></pre></td></tr></table></figure>
+<h3 id="八、内置方法"><a href="#八、内置方法" class="headerlink" title="八、内置方法"></a>八、内置方法</h3><p>Stylus支持name…形式的其余参数。这些参数可以消化传递给混写或函数的参数们。这在处理浏览器私有属性，如-moz或-webkit的时候很管用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">box-shadow()</span><br><span class="line">  -webkit-box-shadow arguments</span><br><span class="line">  -moz-box-shadow arguments</span><br><span class="line">  box-shadow arguments</span><br><span class="line"></span><br><span class="line">body</span><br><span class="line">  box-shadow #ddd 1px 1px, #eee 2px 2px</span><br><span class="line"></span><br><span class="line">body &#123;</span><br><span class="line">  -webkit-box-shadow: #ddd 1px 1px, #eee 2px 2px;</span><br><span class="line">  -moz-box-shadow: #ddd 1px 1px, #eee 2px 2px;</span><br><span class="line">  box-shadow: #ddd 1px 1px, #eee 2px 2px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="九、注释"><a href="#九、注释" class="headerlink" title="九、注释"></a>九、注释</h3><p>Stylus支持三种注释，单行注释，多行注释，以及多行缓冲注释。</p>
+<p>(1).单行注释<br>跟JavaScript一样，双斜杠，CSS中不输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 我是注释!</span><br><span class="line">body</span><br><span class="line">  padding 5px &#x2F;&#x2F; 蛋疼的padding</span><br></pre></td></tr></table></figure>
+<p>(2).多行注释<br>多行注释看起来有点像CSS的常规注释。然而，它们只有在compress选项未启用的时候才会被输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * 给定数值合体</span><br><span class="line"> *&#x2F;</span><br><span class="line"></span><br><span class="line">add(a, b)</span><br><span class="line">      a + b</span><br></pre></td></tr></table></figure>
+<p>(3).多行缓冲注释<br>跟多行注释类似，不同之处在于开始的时候，这里是/*!. 这个相当于告诉Stylus压缩的时候这段无视直接输出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*!</span><br><span class="line"> * 给定数值合体</span><br><span class="line"> *&#x2F;</span><br><span class="line"></span><br><span class="line">add(a, b)</span><br><span class="line">  a + b</span><br></pre></td></tr></table></figure>
+<h3 id="十、条件"><a href="#十、条件" class="headerlink" title="十、条件"></a>十、条件</h3><h3 id="十一、迭代"><a href="#十一、迭代" class="headerlink" title="十一、迭代"></a>十一、迭代</h3><h3 id="十二、-import"><a href="#十二、-import" class="headerlink" title="十二、@import"></a>十二、@import</h3><h3 id="十三、-media"><a href="#十三、-media" class="headerlink" title="十三、@media"></a>十三、@media</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@media print</span><br><span class="line">  #header</span><br><span class="line">  #footer</span><br><span class="line">    display none</span><br><span class="line"></span><br><span class="line">生成为：</span><br><span class="line">@media print &#123;</span><br><span class="line">  #header,</span><br><span class="line">  #footer &#123;</span><br><span class="line">    display: none;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="十四、-font-face"><a href="#十四、-font-face" class="headerlink" title="十四、@font-face"></a>十四、@font-face</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@font-face</span><br><span class="line">  font-family Geo</span><br><span class="line">  font-style normal</span><br><span class="line">  src url(fonts&#x2F;geo_sans_light&#x2F;GensansLight.ttf)</span><br><span class="line"></span><br><span class="line">.ingeo</span><br><span class="line">  font-family Geo</span><br><span class="line">生成为：</span><br><span class="line">@font-face &#123;</span><br><span class="line">  font-family: Geo;</span><br><span class="line">  font-style: normal;</span><br><span class="line">  src: url(&quot;fonts&#x2F;geo_sans_light&#x2F;GensansLight.ttf&quot;);</span><br><span class="line">&#125;</span><br><span class="line">.ingeo &#123;</span><br><span class="line">  font-family: Geo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="十五、-keyframes"><a href="#十五、-keyframes" class="headerlink" title="十五、@keyframes"></a>十五、@keyframes</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">@keyframes pulse</span><br><span class="line">0%</span><br><span class="line">  background-color red</span><br><span class="line">  opacity 1.0</span><br><span class="line">  -webkit-transform scale(1.0) rotate(0deg)</span><br><span class="line">33%</span><br><span class="line">  background-color blue</span><br><span class="line">  opacity 0.75</span><br><span class="line">  -webkit-transform scale(1.1) rotate(-5deg)</span><br><span class="line">67%</span><br><span class="line">  background-color green</span><br><span class="line">  opacity 0.5</span><br><span class="line">  -webkit-transform scale(1.1) rotate(5deg)</span><br><span class="line">100%</span><br><span class="line">  background-color red</span><br><span class="line">  opacity 1.0</span><br><span class="line">  -webkit-transform scale(1.0) rotate(0deg)</span><br><span class="line">生成为：</span><br><span class="line">@-webkit-keyframes pulse &#123;</span><br><span class="line">  0% &#123;</span><br><span class="line">  background-color: red;</span><br><span class="line">  opacity: 1;</span><br><span class="line">    -webkit-transform: scale(1) rotate(0deg);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  33% &#123;</span><br><span class="line">    background-color: blue;</span><br><span class="line">    opacity: 0.75;</span><br><span class="line">    -webkit-transform: scale(1.1) rotate(-5deg);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  67% &#123;</span><br><span class="line">    background-color: green;</span><br><span class="line">    opacity: 0.5;</span><br><span class="line">    -webkit-transform: scale(1.1) rotate(5deg);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  100% &#123;</span><br><span class="line">    background-color: red;</span><br><span class="line">    opacity: 1;</span><br><span class="line">    -webkit-transform: scale(1) rotate(0deg);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="十六、-extend"><a href="#十六、-extend" class="headerlink" title="十六、@extend"></a>十六、@extend</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">message,</span><br><span class="line">.warning &#123;</span><br><span class="line">  padding: 10px;</span><br><span class="line">  border: 1px solid #eee;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.warning &#123;</span><br><span class="line">  color: #E2E21E;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.message &#123;</span><br><span class="line">  padding: 10px;</span><br><span class="line">  border: 1px solid #eee;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.warning &#123;</span><br><span class="line">  @extend .message;</span><br><span class="line">  color: #E2E21E;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="十七、url"><a href="#十七、url" class="headerlink" title="十七、url()"></a>十七、url()</h3><h3 id="十八、字面量css"><a href="#十八、字面量css" class="headerlink" title="十八、字面量css"></a>十八、字面量css</h3><p>如果遇到Stylus搞不定的特殊需求，你可以使用@css使其作为CSS字面量解决之。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@css &#123;</span><br><span class="line">  body &#123;</span><br><span class="line">    font: 14px;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">编译为：</span><br><span class="line">body &#123;</span><br><span class="line">  font: 14px;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="十九、CSS样式解析"><a href="#十九、CSS样式解析" class="headerlink" title="十九、CSS样式解析"></a>十九、CSS样式解析</h3><p>支持css,stylus</p>
+<h3 id="二十、使用"><a href="#二十、使用" class="headerlink" title="二十、使用"></a>二十、使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#npm -g stylus</span><br></pre></td></tr></table></figure>
+
+<p>在.styl文件夹中 stylus &lt;demo.styl&gt; demo.css</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stylus -w demo.styl -o demo.css</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/19/JavaScript/2017/2.%20javascript%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6%E8%AF%A6%E8%A7%A3%EF%BC%9Aevent%20loop/" rel="next" title="javascript运行机制详解：event loop">
+                <i class="fa fa-chevron-left"></i> javascript运行机制详解：event loop
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/20/JavaScript/2017/3.%20js%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA/" rel="prev" title="js深入浅出">
+                js深入浅出 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-text">一、选择器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%8F%98%E9%87%8F"><span class="nav-text">二、变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8F%92%E5%80%BC"><span class="nav-text">三、插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">四、运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81Mixins-%E6%B7%B7%E5%90%88%E4%B9%A6%E5%86%99"><span class="nav-text">五、Mixins 混合书写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E6%96%B9%E6%B3%95"><span class="nav-text">六、方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-text">七、关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%86%85%E7%BD%AE%E6%96%B9%E6%B3%95"><span class="nav-text">八、内置方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E6%B3%A8%E9%87%8A"><span class="nav-text">九、注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E3%80%81%E6%9D%A1%E4%BB%B6"><span class="nav-text">十、条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E8%BF%AD%E4%BB%A3"><span class="nav-text">十一、迭代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81-import"><span class="nav-text">十二、@import</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%B8%89%E3%80%81-media"><span class="nav-text">十三、@media</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E5%9B%9B%E3%80%81-font-face"><span class="nav-text">十四、@font-face</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%BA%94%E3%80%81-keyframes"><span class="nav-text">十五、@keyframes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E5%85%AD%E3%80%81-extend"><span class="nav-text">十六、@extend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%B8%83%E3%80%81url"><span class="nav-text">十七、url()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E5%85%AB%E3%80%81%E5%AD%97%E9%9D%A2%E9%87%8Fcss"><span class="nav-text">十八、字面量css</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%81%E4%B9%9D%E3%80%81CSS%E6%A0%B7%E5%BC%8F%E8%A7%A3%E6%9E%90"><span class="nav-text">十九、CSS样式解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%8D%81%E3%80%81%E4%BD%BF%E7%94%A8"><span class="nav-text">二十、使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

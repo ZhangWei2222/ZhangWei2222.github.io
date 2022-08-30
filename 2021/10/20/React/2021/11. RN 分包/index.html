@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言我们都知道我们写的代码最终都是会打包成bundle包，对于web端应用打包完之后有html, css,js等产物，但对于像weex,rn等跨端框架来说，最终生成的bundle包用于native，也就是安卓或者IOS端的话，实际的产物仅有js一种，因为对于native来说是没有DOM和BOM的，所以html和css对于native来说是没有用的，只有js会被框架内置的js引擎解析后映射转换为原生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-Native分包">
+<meta property="og:url" content="https://super-wei.top/2021/10/20/React/2021/11.%20RN%20%E5%88%86%E5%8C%85/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="前言我们都知道我们写的代码最终都是会打包成bundle包，对于web端应用打包完之后有html, css,js等产物，但对于像weex,rn等跨端框架来说，最终生成的bundle包用于native，也就是安卓或者IOS端的话，实际的产物仅有js一种，因为对于native来说是没有DOM和BOM的，所以html和css对于native来说是没有用的，只有js会被框架内置的js引擎解析后映射转换为原生">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-10-20T13:48:37.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.032Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2021/10/20/React/2021/11. RN 分包/"/>
+
+
+
+
+
+  <title>React-Native分包 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/10/20/React/2021/11.%20RN%20%E5%88%86%E5%8C%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React-Native分包</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-10-20T21:48:37+08:00">
+                2021-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.3k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>我们都知道我们写的代码最终都是会打包成bundle包，对于web端应用打包完之后有html, css,js等产物，但对于像weex,rn等跨端框架来说，最终生成的bundle包用于native，也就是安卓或者IOS端的话，实际的产物仅有js一种，因为对于native来说是没有DOM和BOM的，所以html和css对于native来说是没有用的，只有js会被框架内置的js引擎解析后映射转换为原生的视图和代码，就和直接用安卓或者IOS直接写出来的代码实际是一样的。而对于js的bundle来说，通过都是打包成一个bundle，但实际中的场景往往是这样的：</p>
+<a id="more"></a>
+
+<ul>
+<li><p>假设有两条基于 RN 的业务线 A 和 B，它们的 JSBundle 都是动态下发的</p>
+</li>
+<li><p>A 的 JSBundle 大小为 700KB，其中包括 600KB 的基础包（React，React Native 的 JS 代码）和 100KB 的业务代码</p>
+</li>
+<li><p>B 的 JSBundle 大小为 800KB，其中包括 600KB 的基础包和 200KB 的业务代码</p>
+</li>
+<li><p>每次从 Native 跳转到 A/B 的 RN 容器，都要<strong>全量</strong>下载解析运行</p>
+</li>
+</ul>
+<p>大家从上面的例子里可以看出，600KB 的基础包在多条业务线里是<strong>重复</strong>的，完全没有必要多次下载和加载，这时候一个想法自然而然就出来了：</p>
+<blockquote>
+<p>把一些共有库打包到一个 <code>common.bundle</code> 文件里，我们每次只要动态下发业务包 <code>businessA.bundle</code> 和 <code>businessB.bundle</code>，然后在客户端实现先加载 <code>common.bundle</code> 文件，再加载 <code>business.bundle</code> 文件就可以了</p>
+</blockquote>
+<p>这样做的好处有几个：</p>
+<ul>
+<li><p><code>common.bundle</code> 可以直接放在本地，省去多业务线的多次下载，<strong>节省流量和带宽</strong></p>
+</li>
+<li><p>可以在 RN 容器预初始化的时候就加载 <code>common.bundle</code> ，<strong>二次加载的业务包体积更小，初始化速度更快</strong></p>
+</li>
+</ul>
+<p>顺着上面的思路，上面问题就会转换为两个小问题：</p>
+<ul>
+<li><p>如何实现 JSBundle 的拆包？</p>
+</li>
+<li><p>iOS/Android 的 RN 容器如何实现多 bundle 加载？</p>
+</li>
+</ul>
+<h2 id="JS-Bundle-拆包"><a href="#JS-Bundle-拆包" class="headerlink" title="JS Bundle 拆包"></a>JS Bundle 拆包</h2><p>拆包之前要先了解一下 Metro 这个打包工具的工作流程。Metro 的打包流程很简单，只有三个步骤：</p>
+<ul>
+<li><p><strong>Resolution</strong>：可以简单理解为分析各个模块的依赖关系，最后会生成一个依赖图</p>
+</li>
+<li><p><strong>Transformation</strong>：代码的编译转换，主要是借助 Babel 的编译转换能力</p>
+</li>
+<li><p><strong>Serialization</strong>：所有代码转换完毕后，打印转换后的代码，生成一个或者多个 bundle 文件</p>
+</li>
+</ul>
+<p>从上面流程可以看出，我们的拆包步骤只会在 <code>Serialization</code> 这一步。我们只要借助 <code>Serialization</code> 暴露的各个方法就可以实现 bundle 分包了。</p>
+<p>正式分包前，我们先抛开各种技术细节，把问题简化一下：<strong>对于一个全是数字的数组，如何把它分为偶数数组和奇数数组？</strong></p>
+<p>最好想的是我们遍历一遍原数组，如果当前元素是奇数，就放到奇数数组里，如果是偶数，放偶数数组里。</p>
+<p>Metro 对 JS bundle 分包其实是一个道理。Metro 打包的时候，会给每个模块设置 moduleId，这个 id 就是一个从 0 开始的自增 number。我们分包的时候，公有的模块（例如 <code>react</code> <code>react-native</code>）输出到 <code>common.bundle</code>，业务模块输出到 <code>business.bundle</code> 就行了。</p>
+<p>因为要兼顾多条业务线，现在业内主流的分包方案是这样的：</p>
+<p><strong>1.**先建立一个 <code>common.js</code> 文件，里面引入了所有的公有模块，然后 Metro 以这个 <code>common.js</code> 为入口文件，打一个 <code>common.bundle</code> 文件，</strong>同时要记录所有的公有模块的 moduleId**</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// common.js</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;react&#x27;</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">&#x27;react-native&#x27;</span>);......</span><br></pre></td></tr></table></figure>
+<p><strong>2.**对业务线 A 进行打包，Metro 的打包入口文件就是 A 的项目入口文件。打包过程中要</strong>过滤<strong>掉上一步记录的</strong>公有模块 moduleId**，这样打包结果就只有 A 的业务代码了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// indexA.js</span></span><br><span class="line"><span class="keyword">import</span> &#123;AppRegistry&#125; <span class="keyword">from</span> <span class="string">&#x27;react-native&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> BusinessA <span class="keyword">from</span> <span class="string">&#x27;./BusinessA&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;name <span class="keyword">as</span> appName&#125; <span class="keyword">from</span> <span class="string">&#x27;./app.json&#x27;</span>;</span><br><span class="line">AppRegistry.registerComponent(appName, <span class="function">() =&gt;</span> BusinessA);</span><br></pre></td></tr></table></figure>
+<p>**3.**业务线 B C D E…… 打包流程同业务线 A</p>
+<p>上面的思路看起来很美好，但是还是存在一个问题：<strong>每次启动 Metro 打包的时候，moduleId 都是从 0 开始自增，这样会导致不同的 JSBundle ID 重复</strong>。</p>
+<p>为了避免 id 重复，目前业内主流的做法是把模块的路径当作 moduleId（因为模块的路径基本上是固定且不冲突的），这样就解决了 id 冲突的问题。Metro 暴露了 <code>createModuleIdFactory</code> 这个函数，我们可以在这个函数里覆盖原来的自增 number 逻辑：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;  </span><br><span class="line">  serializer: &#123;    </span><br><span class="line">  createModuleIdFactory: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;     </span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">path</span>) </span>&#123;       </span><br><span class="line">      <span class="comment">// 根据文件的相对路径构建 ModuleId       </span></span><br><span class="line">      <span class="keyword">const</span> projectRootPath = __dirname;      </span><br><span class="line">      <span class="keyword">let</span> moduleId = path.substr(projectRootPath.length + <span class="number">1</span>);      </span><br><span class="line">      <span class="keyword">return</span> moduleId;     </span><br><span class="line">    &#125;;   </span><br><span class="line">  &#125;,  </span><br><span class="line">&#125;&#125;;</span><br></pre></td></tr></table></figure>
+<p>整合一下第一步的思路，就可以构建出下面的 <code>metro.common.config.js</code> 配置文件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// metro.common.config.js</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;  </span><br><span class="line">  transformer: &#123;    </span><br><span class="line">    getTransformOptions: <span class="keyword">async</span> () =&gt; (&#123;    </span><br><span class="line">      transform: &#123;        </span><br><span class="line">        experimentalImportSupport: <span class="literal">false</span>,    </span><br><span class="line">        inlineRequires: <span class="literal">true</span>,    </span><br><span class="line">      &#125;,   </span><br><span class="line">    &#125;),  </span><br><span class="line">  &#125;,  </span><br><span class="line">  serializer: &#123;    </span><br><span class="line">    createModuleIdFactory: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;    </span><br><span class="line">      <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">path</span>) </span>&#123;        <span class="comment">// 根据文件的相对路径构建 ModuleId     </span></span><br><span class="line">        <span class="keyword">const</span> projectRootPath = __dirname;     </span><br><span class="line">        <span class="comment">// 把 moduleId 写入 idList.txt 文件，记录公有模块 id      </span></span><br><span class="line">        <span class="keyword">let</span> moduleId = path.substr(projectRootPath.length + <span class="number">1</span>); </span><br><span class="line">        fs.appendFileSync(<span class="string">&#x27;./idList.txt&#x27;</span>, <span class="string">`<span class="subst">$&#123;moduleId&#125;</span>\n`</span>);     </span><br><span class="line">        <span class="keyword">return</span> moduleId;    </span><br><span class="line">      &#125;; </span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,&#125;;</span><br></pre></td></tr></table></figure>
+<p>然后运行命令行命令打包即可：</p>
+<p># 打包平台：android# 打包配置文件：metro.common.config.js# 打包入口文件：common.js# 输出路径：bundle/common.android.bundle</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx react-native bundle --platform android --config metro.common.config.js --dev <span class="literal">false</span> --entry-file common.js --bundle-output bundle/common.android.bundle</span><br></pre></td></tr></table></figure>
+<p>通过以上命令的打包，我们可以看到 moduleId 都转换为了相对路径，并且 <code>idList.txt</code> 也记录了所有的 moduleId：</p>
+<p>第二步的关键在于过滤公有模块的 moduleId，Metro 提供了 <code>processModuleFilter</code> 这个方法，借助它可以实现模块的过滤。具体的逻辑可见以下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// metro.business.config.js</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="comment">// 读取 idList.txt，转换为数组const idList = fs.readFileSync(&#x27;./idList.txt&#x27;, &#x27;utf8&#x27;).toString().split(&#x27;\n&#x27;);</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createModuleId</span>(<span class="params">path</span>) </span>&#123; </span><br><span class="line">  <span class="keyword">const</span> projectRootPath = __dirname;  <span class="keyword">let</span> moduleId = path.substr(projectRootPath.length + <span class="number">1</span>); </span><br><span class="line">  <span class="keyword">return</span> moduleId;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;  </span><br><span class="line">  transformer: &#123;   </span><br><span class="line">    getTransformOptions: <span class="keyword">async</span> () =&gt; (&#123;   </span><br><span class="line">      transform: &#123;    </span><br><span class="line">        experimentalImportSupport: <span class="literal">false</span>,    </span><br><span class="line">        inlineRequires: <span class="literal">true</span>,   </span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;), </span><br><span class="line">  &#125;,  </span><br><span class="line">  serializer: &#123;   </span><br><span class="line">    createModuleIdFactory: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;      <span class="comment">// createModuleId 的逻辑和 metro.common.config.js 完全一样      </span></span><br><span class="line">      <span class="keyword">return</span> createModuleId;   </span><br><span class="line">    &#125;,   </span><br><span class="line">    processModuleFilter: <span class="function"><span class="keyword">function</span> (<span class="params">modules</span>) </span>&#123;    </span><br><span class="line">      <span class="keyword">const</span> mouduleId = createModuleId(modules.path);   <span class="comment">// 通过 mouduleId 过滤在 common.bundle 里的数据      </span></span><br><span class="line">      <span class="keyword">if</span> (idList.indexOf(mouduleId) === -<span class="number">1</span>) &#123;     </span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;createModuleIdFactory path&#x27;</span>, mouduleId);   </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;     </span><br><span class="line">      &#125;     </span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;   </span><br><span class="line">    &#125;, </span><br><span class="line">  &#125;,&#125;;</span><br></pre></td></tr></table></figure>
+<p>最后运行命令行命令打包即可：</p>
+<p># 打包平台：android# 打包配置文件：metro.business.config.js# 打包入口文件：index.js# 输出路径：bundle/business.android.bundle</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx react-native bundle --platform android --config metro.business.config.js --dev <span class="literal">false</span> --entry-file index.js --bundle-output bundle/business.android.bundle</span><br></pre></td></tr></table></figure>
+<p>最后的打包结果只有 11 行（不分包的话得 398 行），可以看出分包的收益非常大。</p>
+<p>当然使用相对路径作为 moduleId 打包时，不可避免的会导致包体积变大，我们可以使用 md5 计算一下相对路径，然后取前几位作为最后的 moduleId；或者还是采用递增 id，只不过使用更复杂的映射算法来保证 moduleId 的唯一性和稳定性。</p>
+<h2 id="Native-实现多-bundle-加载"><a href="#Native-实现多-bundle-加载" class="headerlink" title="Native 实现多 bundle 加载"></a>Native 实现多 bundle 加载</h2><p>分包只是第一步，想要展示完整正确的 RN 界面，还需要做到「合」，这个「合」就是指在 Native 端实现多 bundle 的加载。</p>
+<p><code>common.bundle</code> 的加载比较容易，直接在 RN 容器初始化的时候加载就好了。容器初始化的流程上一节我已经详细介绍了，这里就不多言了。这时候问题就转换为 <code>business.bundle</code> 的加载问题。</p>
+<p>React Native 不像浏览器的多 bundle 加载，直接动态生成一个 <code>&lt;script /&gt;</code> 标签插入 HTML 中就可以实现动态加载了。我们需要结合具体的 RN 容器实现来实现 <code>business.bundle</code> 加载的需求。这时候我们需要关注两个点：</p>
+<ol>
+<li><strong>时机</strong>：什么时候开始加载？</li>
+<li><strong>方法</strong>：如何加载新的 bundle？</li>
+</ol>
+<p>对于第一个问题，我们的答案是 <code>common.bundle</code> 加载完成后再加载 <code>business.bundle</code>。</p>
+<p><code>common.bundle</code> 加载完成后，iOS 端会发送事件名称是 <code>RCTJavaScriptDidLoadNotification</code> 的全局通知，Android 端则会向 ReactInstanceManager 实例中注册的所有 ReactInstanceEventListener 回调 <code>onReactContextInitialized()</code> 方法。我们在对应事件监听器和回调中实现业务包的加载即可。</p>
+<p>对于第二个问题，iOS 我们可以使用 RCTCxxBridge 的 <code>executeSourceCode</code> 方法在当前的 RN 实例上下文中执行一段 JS 代码，以此来达到增量加载的目的。不过值得注意的是，<code>executeSourceCode</code> 是 RCTCxxBridge 的私有方法，需要我们用 Category 将其暴露出来。</p>
+<p>Android 端可以使用刚刚建立好的 ReactInstanceManager 实例，通过 <code>getCurrentReactContext()</code> 获取到当前的 ReactContext 上下文对象，再调用上下文对象的 <code>getCatalystInstance()</code> 方法获取媒介实例，最终调用媒介实例的 <code>loadScriptFromFile(String fileName, String sourceURL, boolean loadSynchronously)</code> 方法完成业务 JSBundle 的增量加载。</p>
+<p>iOS 和 Android 的示例代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">NSURL *businessBundleURI = <span class="comment">// 业务包 URI</span></span><br><span class="line">NSError *error = nil;</span><br><span class="line">NSData *sourceData = [NSData dataWithContentsOfURL:businessBundleURI options:NSDataReadingMappedIfSafe error:&amp;error];</span><br><span class="line"><span class="keyword">if</span> (error) &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">[bridge.batchedBridge executeSourceCode:sourceData sync:NO]</span><br><span class="line">ReactContext context = RNHost.getReactInstanceManager().getCurrentReactContext();</span><br><span class="line">CatalystInstance catalyst = context.getCatalystInstance();</span><br><span class="line"><span class="built_in">String</span> fileName = <span class="string">&quot;businessBundleURI&quot;</span></span><br><span class="line">catalyst.loadScriptFromFile(fileName, fileName, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/10/20/NodeJS/2021/10.%20Node%E6%80%A7%E8%83%BD%E6%A3%80%E6%B5%8B/" rel="next" title="React-基础">
+                <i class="fa fa-chevron-left"></i> React-基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/10/21/React/2021/2.%20super/" rel="prev" title="React-super">
+                React-super <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS-Bundle-%E6%8B%86%E5%8C%85"><span class="nav-text">JS Bundle 拆包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Native-%E5%AE%9E%E7%8E%B0%E5%A4%9A-bundle-%E5%8A%A0%E8%BD%BD"><span class="nav-text">Native 实现多 bundle 加载</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

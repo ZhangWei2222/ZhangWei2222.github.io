@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言GUI 渲染线程和 JS 引擎线程是相互排斥的，比如开发者用 js 写了一个遍历大量数据的循环，在执行 js 时候，会阻塞浏览器的渲染绘制，给用户直观的感受就是卡顿">
+<meta property="og:type" content="article">
+<meta property="og:title" content="调度和时间片">
+<meta property="og:url" content="https://super-wei.top/2022/04/06/React/%E5%8E%9F%E7%90%86/4.%20%E8%B0%83%E5%BA%A6%20%E5%92%8C%20%E6%97%B6%E9%97%B4%E7%89%87/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="前言GUI 渲染线程和 JS 引擎线程是相互排斥的，比如开发者用 js 写了一个遍历大量数据的循环，在执行 js 时候，会阻塞浏览器的渲染绘制，给用户直观的感受就是卡顿">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202204061444481.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202204061524162.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202204061525921.png">
+<meta property="article:published_time" content="2022-04-06T06:39:37.000Z">
+<meta property="article:modified_time" content="2022-04-06T07:58:13.881Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202204061444481.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2022/04/06/React/原理/4. 调度 和 时间片/"/>
+
+
+
+
+
+  <title>调度和时间片 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2022/04/06/React/%E5%8E%9F%E7%90%86/4.%20%E8%B0%83%E5%BA%A6%20%E5%92%8C%20%E6%97%B6%E9%97%B4%E7%89%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">调度和时间片</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-04-06T14:39:37+08:00">
+                2022-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.4k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>GUI 渲染线程和 JS 引擎线程是相互排斥的，比如开发者用 js 写了一个遍历大量数据的循环，在执行 js 时候，会阻塞浏览器的渲染绘制，给用户直观的感受就是卡顿</p>
+<a id="more"></a>
+
+
+
+<h2 id="为什么采用异步调度？"><a href="#为什么采用异步调度？" class="headerlink" title="为什么采用异步调度？"></a>为什么采用异步调度？</h2><p><strong>v15 版本面临卡顿的问题</strong></p>
+<p>由于对于大型的 React 应用，会存在一次更新，递归遍历大量的虚拟 DOM ，造成占用 js 线程，使得浏览器没有时间去做一些动画效果，伴随项目越来越大，项目会越来越卡</p>
+<p><strong>如何解决？</strong></p>
+<blockquote>
+<p>vue 有着 template 模版收集依赖的过程，轻松构建响应式，使得在一次更新中，vue 能够迅速响应，找到需要更新的范围，然后以组件粒度更新组件，渲染视图。</p>
+<p>在 React 中，一次更新 React 无法知道此次更新的波及范围，所以 React 选择从根节点开始 diff ，查找不同，更新这些不同。</p>
+</blockquote>
+<p>React 将更新交给浏览器自己控制：如果浏览器有绘制任务那么执行绘制任务，在空闲时间执行更新任务，就能解决卡顿问题了。</p>
+<blockquote>
+<p>与 vue 更快的响应，更精确的更新范围，React 选择更好的用户体验。</p>
+</blockquote>
+<h2 id="说一说React-的时间分片？"><a href="#说一说React-的时间分片？" class="headerlink" title="说一说React 的时间分片？"></a>说一说React 的时间分片？</h2><h3 id="如何让浏览器控制-React-更新呢"><a href="#如何让浏览器控制-React-更新呢" class="headerlink" title="如何让浏览器控制 React 更新呢"></a>如何让浏览器控制 React 更新呢</h3><p>浏览器每次执行一次事件循环（一帧）都会做如下事情：**<code>处理事件、执行 js ，调用 requestAnimation ，布局 Layout ，绘制 Paint</code>**。</p>
+<p>在一帧执行后，如果没有其他事件，那么浏览器会进入休息时间。那么有的一些不是特别紧急的 React 更新，就可以执行了。</p>
+<h3 id="如何知道浏览器有空闲时间？"><a href="#如何知道浏览器有空闲时间？" class="headerlink" title="如何知道浏览器有空闲时间？"></a>如何知道浏览器有空闲时间？</h3><h4 id="requestIdleCallback"><a href="#requestIdleCallback" class="headerlink" title="requestIdleCallback"></a>requestIdleCallback</h4><ul>
+<li><p>谷歌浏览器提供的一个 API， 在浏览器有空余的时间，浏览器就会调用 requestIdleCallback 的回调</p>
+</li>
+<li><p><code>requestIdleCallback(callback,&#123; timeout &#125;)</code></p>
+<ul>
+<li><p>callback 回调，浏览器空余时间执行回调函数。</p>
+</li>
+<li><p>timeout 超时时间。如果浏览器长时间没有空闲，那么回调就不会执行，为了解决这个问题，可以通过 requestIdleCallback 的第二个参数指定一个超时时间。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-个优先级"><a href="#5-个优先级" class="headerlink" title="5 个优先级"></a>5 个优先级</h4><p>防止 requestIdleCallback 中的任务由于浏览器没有空闲时间而卡死</p>
+<ul>
+<li><p>Immediate -1 需要立刻执行</p>
+</li>
+<li><p>UserBlocking 250ms 超时时间250ms，一般指的是用户交互</p>
+</li>
+<li><p>Normal 5000ms 超时时间5s，不需要直观立即变化的任务，比如网络请求</p>
+</li>
+<li><p>Low 10000ms 超时时间10s，肯定要执行的任务，但是可以放在最后处理</p>
+</li>
+<li><p>Idle 一些没有必要的任务，可能不会执行</p>
+</li>
+</ul>
+<h3 id="异步更新任务描述"><a href="#异步更新任务描述" class="headerlink" title="异步更新任务描述"></a>异步更新任务描述</h3><p>通过类似 requestIdleCallback 去向浏览器做一帧一帧请求，等到浏览器有空余时间，去执行 React 的异步更新任务，这样保证页面的流畅<img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202204061444481.jpg" alt="img" style="zoom:50%;" /></p>
+<h2 id="React-如何模拟-requestIdleCallback？"><a href="#React-如何模拟-requestIdleCallback？" class="headerlink" title="React 如何模拟 requestIdleCallback？"></a>React 如何模拟 requestIdleCallback？</h2><blockquote>
+<p>requestIdleCallback 目前只有谷歌浏览器支持 ，react 为了兼容每个浏览器 自己模拟了这个 api</p>
+</blockquote>
+<h3 id="实现-requestIdleCallback-具备的条件"><a href="#实现-requestIdleCallback-具备的条件" class="headerlink" title="实现 requestIdleCallback 具备的条件"></a>实现 requestIdleCallback 具备的条件</h3><ul>
+<li>可以主动让出主线程，让浏览器去渲染视图</li>
+<li>一次事件循环只执行一次，因为执行一个以后，还会请求下一次的时间片</li>
+</ul>
+<p>能够满足条件的，就只有 宏任务 宏任务是在下次事件循环中执行，不会阻塞浏览器更新；而且浏览器一次只会执行一个宏任务</p>
+<h3 id="MessageChannel-接口"><a href="#MessageChannel-接口" class="headerlink" title="MessageChannel 接口"></a>MessageChannel 接口</h3><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>允许开发者创建一个新的消息通道，并通过它的两个 MessagePort 属性发送数据</p>
+<ul>
+<li><p>MessageChannel.port1 只读返回 channel 的 port1 </p>
+</li>
+<li><p>MessageChannel.port2 只读返回 channel 的 port2 </p>
+</li>
+</ul>
+<h4 id="模拟如何触发异步宏任务？"><a href="#模拟如何触发异步宏任务？" class="headerlink" title="模拟如何触发异步宏任务？"></a>模拟如何触发异步宏任务？</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> scheduledHostCallback = <span class="literal">null</span> </span><br><span class="line"><span class="comment">/* 建立一个消息通道 */</span></span><br><span class="line"><span class="keyword">var</span> channel = <span class="keyword">new</span> MessageChannel();</span><br><span class="line"><span class="comment">/* 建立一个port发送消息 */</span></span><br><span class="line"><span class="keyword">var</span> port = channel.port2;</span><br><span class="line"></span><br><span class="line">channel.port1.onmessage = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">/* 执行任务 */</span></span><br><span class="line">  scheduledHostCallback() </span><br><span class="line">  <span class="comment">/* 执行完毕，清空任务 */</span></span><br><span class="line">  scheduledHostCallback = <span class="literal">null</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* 向浏览器请求执行更新任务 */</span></span><br><span class="line">requestHostCallback = <span class="function"><span class="keyword">function</span> (<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  scheduledHostCallback = callback;</span><br><span class="line">  <span class="keyword">if</span> (!isMessageLoopRunning) &#123;</span><br><span class="line">    isMessageLoopRunning = <span class="literal">true</span>;</span><br><span class="line">    port.postMessage(<span class="literal">null</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>在一次更新中，React 会调用 requestHostCallback ，把更新任务赋值给 scheduledHostCallback ，然后 port2 向 port1 发起 postMessage 消息通知</p>
+</li>
+<li><p>port1 会通过 onmessage ，接受来自 port2 消息，然后执行更新任务 scheduledHostCallback ，然后置空 scheduledHostCallback ，借此达到异步执行目的</p>
+</li>
+</ul>
+<h2 id="React-为什么不用-settimeout-？"><a href="#React-为什么不用-settimeout-？" class="headerlink" title="React 为什么不用 settimeout ？"></a>React 为什么不用 settimeout ？</h2><p>为了让视图流畅地运行，可以按照人类能感知到最低限度每秒 60 帧的频率划分时间片，这样每个时间片就是 16ms 。16 毫秒要完成如上 js 执行，浏览器绘制等操作。递归执行 setTimeout(fn, 0) 时，最后间隔时间会变成 4 毫秒左右</p>
+<h2 id="异步调度原理？"><a href="#异步调度原理？" class="headerlink" title="异步调度原理？"></a>异步调度原理？</h2><h3 id="ensureRootIsScheduled"><a href="#ensureRootIsScheduled" class="headerlink" title="ensureRootIsScheduled"></a>ensureRootIsScheduled</h3><p><strong>React 发生一次更新，会统一走 ensureRootIsScheduled（调度应用）</strong></p>
+<p>对于正常更新会走 performSyncWorkOnRoot 逻辑，最后会走 workLoopSync </p>
+<p>对于低优先级的异步更新会走 performConcurrentWorkOnRoot 逻辑，最后会走 workLoopConcurrent </p>
+<p>在一次更新调度过程中，workLoop 会执行每一个待更新的 fiber 。这样就解决了一次性遍历大量的 fiber ，导致浏览器没有时间执行一些渲染任务，导致了页面卡顿。</p>
+<blockquote>
+<p>他们的区别就是异步模式会调用一个 shouldYield() ：如果当前浏览器没有空余时间， shouldYield 会中止循环，直到浏览器有空闲时间后再继续遍历，从而达到终止渲染的目的</p>
+</blockquote>
+<h3 id="scheduleCallback"><a href="#scheduleCallback" class="headerlink" title="scheduleCallback"></a>scheduleCallback</h3><h4 id="同步、异步任务进入调度器的区别"><a href="#同步、异步任务进入调度器的区别" class="headerlink" title="同步、异步任务进入调度器的区别"></a>同步、异步任务进入调度器的区别</h4><p>低优先级异步任务的处理，比同步多了一个超时等级的概念，会计算五种超时等级</p>
+<p>对于正常更新任务，最后会变成类似如下结构：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scheduleCallback(Immediate,workLoopSync)</span><br></pre></td></tr></table></figure>
+<p>对于异步任务：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 计算超时等级，就是如上那五个等级 */</span></span><br><span class="line"><span class="keyword">var</span> priorityLevel = inferPriorityFromExpirationTime(currentTime, expirationTime);</span><br><span class="line">scheduleCallback(priorityLevel,workLoopConcurrent)</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><h5 id="taskQueue"><a href="#taskQueue" class="headerlink" title="taskQueue"></a>taskQueue</h5><ul>
+<li><p>里面存的都是过期的任务 </p>
+</li>
+<li><p>依据任务的过期时间( expirationTime ) 排序</p>
+</li>
+<li><p>需要在调度的 workLoop 中循环执行完这些任务</p>
+</li>
+</ul>
+<h5 id="timerQueue"><a href="#timerQueue" class="headerlink" title="timerQueue"></a>timerQueue</h5><ul>
+<li><p>里面存的都是没有过期的任务</p>
+</li>
+<li><p>依据任务的开始时间( startTime )排序</p>
+</li>
+<li><p>在调度 workLoop 中 会用 advanceTimers 检查任务是否过期：如果过期了，放入 taskQueue 队列</p>
+</li>
+</ul>
+<h4 id="做了什么？"><a href="#做了什么？" class="headerlink" title="做了什么？"></a>做了什么？</h4><ul>
+<li><p>创建一个新的任务 newTask</p>
+</li>
+<li><p>通过任务的开始时间( startTime ) 和 当前时间( currentTime ) 比较</p>
+<ul>
+<li><p>当 startTime &gt; currentTime，说明未过期，存到 timerQueue</p>
+</li>
+<li><p>当 startTime &lt;= currentTime，说明已过期，存到 taskQueue</p>
+</li>
+</ul>
+</li>
+<li><p>如果任务过期，并且没有调度中的任务，那么调度 requestHostCallback。本质上调度的是 flushWork</p>
+</li>
+<li><p>如果任务没有过期，用 requestHostTimeout 延时执行 handleTimeout</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scheduleCallback</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="comment">/* 计算过期时间：超时时间  = 开始时间（现在时间） + 任务超时的时间（上述设置那五个等级）     */</span></span><br><span class="line">   <span class="keyword">const</span> expirationTime = startTime + timeout;</span><br><span class="line">   <span class="comment">/* 创建一个新任务 */</span></span><br><span class="line">   <span class="keyword">const</span> newTask = &#123; ... &#125;</span><br><span class="line">  <span class="keyword">if</span> (startTime &gt; currentTime) &#123;</span><br><span class="line">      <span class="comment">/* 通过开始时间排序 */</span></span><br><span class="line">      newTask.sortIndex = startTime;</span><br><span class="line">      <span class="comment">/* 把任务放在timerQueue中 */</span></span><br><span class="line">      push(timerQueue, newTask);</span><br><span class="line">      <span class="comment">/*  执行setTimeout ， */</span></span><br><span class="line">      requestHostTimeout(handleTimeout, startTime - currentTime);</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="comment">/* 通过 expirationTime 排序  */</span></span><br><span class="line">    newTask.sortIndex = expirationTime;  </span><br><span class="line">    <span class="comment">/* 把任务放入taskQueue */</span></span><br><span class="line">    push(taskQueue, newTask);</span><br><span class="line">    <span class="comment">/*没有处于调度中的任务， 然后向浏览器请求一帧，浏览器空闲执行 flushWork */</span></span><br><span class="line">     <span class="keyword">if</span> (!isHostCallbackScheduled &amp;&amp; !isPerformingWork) &#123;</span><br><span class="line">        isHostCallbackScheduled = <span class="literal">true</span>;</span><br><span class="line">         requestHostCallback(flushWork)</span><br><span class="line">     &#125;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+<h5 id="requestHostTimeout"><a href="#requestHostTimeout" class="headerlink" title="requestHostTimeout"></a>requestHostTimeout</h5><p>通过 setTimeout 来进行延时指定时间</p>
+<h5 id="handleTimeout"><a href="#handleTimeout" class="headerlink" title="handleTimeout"></a>handleTimeout</h5><p>会把任务重新放在 requestHostCallback 调度</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">handleTimeout</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  isHostTimeoutScheduled = <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">/* 将 timeQueue 中过期的任务，放在 taskQueue 中 。 */</span></span><br><span class="line">  advanceTimers(currentTime);</span><br><span class="line">  <span class="comment">/* 如果没有处于调度中 */</span></span><br><span class="line">  <span class="keyword">if</span>(!isHostCallbackScheduled)&#123;</span><br><span class="line">      <span class="comment">/* 判断有没有过期的任务， */</span></span><br><span class="line">      <span class="keyword">if</span> (peek(taskQueue) !== <span class="literal">null</span>) &#123;   </span><br><span class="line">      isHostCallbackScheduled = <span class="literal">true</span>;</span><br><span class="line">      <span class="comment">/* 开启调度任务 */</span></span><br><span class="line">      requestHostCallback(flushWork);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过 advanceTimers 将 timeQueue 中过期的任务转移到 taskQueue 中，然后调用 requestHostCallback 调度过期的任务</p>
+<h5 id="advanceTimers"><a href="#advanceTimers" class="headerlink" title="advanceTimers"></a>advanceTimers</h5><p>如果任务已经过期，那么将 timerQueue 中的过期任务，放入 taskQueue</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">advanceTimers</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">   <span class="keyword">var</span> timer = peek(timerQueue);</span><br><span class="line">   <span class="keyword">while</span> (timer !== <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span>(timer.callback === <span class="literal">null</span>)&#123;</span><br><span class="line">        pop(timerQueue);</span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(timer.startTime &lt;= currentTime)&#123; <span class="comment">/* 如果任务已经过期，那么将 timerQueue 中的过期任务，放入taskQueue */</span></span><br><span class="line">         pop(timerQueue);</span><br><span class="line">         timer.sortIndex = timer.expirationTime;</span><br><span class="line">         push(taskQueue, timer);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>综上：React 的更新任务最后都是放在 taskQueue 中的。requestHostCallback ，放入 MessageChannel 中的回调函数是flushWork</strong></p>
+<h5 id="flushWork"><a href="#flushWork" class="headerlink" title="flushWork"></a>flushWork</h5><p>如果有延时任务执行的话，那么会先暂停延时任务，然后调用 workLoop ，去真正执行超时的更新任务</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">flushWork</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (isHostTimeoutScheduled) &#123; <span class="comment">/* 如果有延时任务，那么先暂定延时任务*/</span></span><br><span class="line">    isHostTimeoutScheduled = <span class="literal">false</span>;</span><br><span class="line">    cancelHostTimeout();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">try</span>&#123;</span><br><span class="line">     <span class="comment">/* 执行 workLoop 里面会真正调度我们的事件  */</span></span><br><span class="line">     workLoop(hasTimeRemaining, initialTime)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="workLoop"><a href="#workLoop" class="headerlink" title="workLoop"></a>workLoop</h5><p>会依次更新过期任务队列中的任务。<strong>到此为止，完成整个调度过程。</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">workLoop</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> currentTime = initialTime;</span><br><span class="line">  advanceTimers(currentTime);</span><br><span class="line">  <span class="comment">/* 获取任务列表中的第一个 */</span></span><br><span class="line">  currentTask = peek();</span><br><span class="line">  <span class="keyword">while</span> (currentTask !== <span class="literal">null</span>)&#123;</span><br><span class="line">      <span class="comment">/* 真正的更新函数 callback */</span></span><br><span class="line">      <span class="keyword">var</span> callback = currentTask.callback;</span><br><span class="line">      <span class="keyword">if</span>(callback !== <span class="literal">null</span> )&#123;</span><br><span class="line">         <span class="comment">/* 执行更新 */</span></span><br><span class="line">         callback()</span><br><span class="line">        <span class="comment">/* 先看一下 timeQueue 中有没有 过期任务。 */</span></span><br><span class="line">        advanceTimers(currentTime);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/* 再一次获取任务，循环执行 */</span> </span><br><span class="line">      currentTask = peek(taskQueue);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="shouldYield-中止-workloop"><a href="#shouldYield-中止-workloop" class="headerlink" title="shouldYield 中止 workloop"></a>shouldYield 中止 workloop</h5><p>在 fiber 的异步更新任务 workLoopConcurrent 中，每一个 fiber 的 workloop 都会调用 shouldYield 判断是否有超时更新的任务，如果有，那么停止 workLoop</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">unstable_shouldYield</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> currentTime = <span class="built_in">exports</span>.unstable_now();</span><br><span class="line">  advanceTimers(currentTime);</span><br><span class="line">  <span class="comment">/* 获取第一个任务 */</span></span><br><span class="line">  <span class="keyword">var</span> firstTask = peek(taskQueue);</span><br><span class="line">  <span class="keyword">return</span> firstTask !== currentTask &amp;&amp; currentTask !== <span class="literal">null</span> &amp;&amp; firstTask !== <span class="literal">null</span> &amp;&amp; firstTask.callback !== <span class="literal">null</span> &amp;&amp; firstTask.startTime &lt;= currentTime &amp;&amp; firstTask.expirationTime &lt; currentTask.expirationTime || shouldYieldToHost();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果存在第一个任务，并且已经超时了，那么 shouldYield 会返回 true，那么会中止 fiber 的 workloop</p>
+<h2 id="简述一下调度流程？"><a href="#简述一下调度流程？" class="headerlink" title="简述一下调度流程？"></a>简述一下调度流程？</h2><p><img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202204061524162.png" alt="image-20220406152444103"></p>
+<h2 id="调和-异步调度-流程总图"><a href="#调和-异步调度-流程总图" class="headerlink" title="调和 + 异步调度 流程总图"></a>调和 + 异步调度 流程总图</h2><p><img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202204061525921.png" alt="image-20220406152511869"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/31/React/%E5%8E%9F%E7%90%86/3.%20%E8%B0%83%E5%92%8C%E6%B5%81%E7%A8%8B%EF%BC%9AbeginWork%20%E5%92%8C%20render%20%E5%85%A8%E6%B5%81%E7%A8%8B/" rel="next" title="调和流程：beginWork 和 render 全流程">
+                <i class="fa fa-chevron-left"></i> 调和流程：beginWork 和 render 全流程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/08/29/React/2022/3.%20React%20re-render%20%E6%8C%87%E5%8D%97/" rel="prev" title="React re-render 指南">
+                React re-render 指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%87%87%E7%94%A8%E5%BC%82%E6%AD%A5%E8%B0%83%E5%BA%A6%EF%BC%9F"><span class="nav-text">为什么采用异步调度？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4React-%E7%9A%84%E6%97%B6%E9%97%B4%E5%88%86%E7%89%87%EF%BC%9F"><span class="nav-text">说一说React 的时间分片？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%A9%E6%B5%8F%E8%A7%88%E5%99%A8%E6%8E%A7%E5%88%B6-React-%E6%9B%B4%E6%96%B0%E5%91%A2"><span class="nav-text">如何让浏览器控制 React 更新呢</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%9F%A5%E9%81%93%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9C%89%E7%A9%BA%E9%97%B2%E6%97%B6%E9%97%B4%EF%BC%9F"><span class="nav-text">如何知道浏览器有空闲时间？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#requestIdleCallback"><span class="nav-text">requestIdleCallback</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E4%B8%AA%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-text">5 个优先级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%9B%B4%E6%96%B0%E4%BB%BB%E5%8A%A1%E6%8F%8F%E8%BF%B0"><span class="nav-text">异步更新任务描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-%E5%A6%82%E4%BD%95%E6%A8%A1%E6%8B%9F-requestIdleCallback%EF%BC%9F"><span class="nav-text">React 如何模拟 requestIdleCallback？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-requestIdleCallback-%E5%85%B7%E5%A4%87%E7%9A%84%E6%9D%A1%E4%BB%B6"><span class="nav-text">实现 requestIdleCallback 具备的条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MessageChannel-%E6%8E%A5%E5%8F%A3"><span class="nav-text">MessageChannel 接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E5%A6%82%E4%BD%95%E8%A7%A6%E5%8F%91%E5%BC%82%E6%AD%A5%E5%AE%8F%E4%BB%BB%E5%8A%A1%EF%BC%9F"><span class="nav-text">模拟如何触发异步宏任务？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8-settimeout-%EF%BC%9F"><span class="nav-text">React 为什么不用 settimeout ？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E8%B0%83%E5%BA%A6%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="nav-text">异步调度原理？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ensureRootIsScheduled"><span class="nav-text">ensureRootIsScheduled</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scheduleCallback"><span class="nav-text">scheduleCallback</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E3%80%81%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E8%BF%9B%E5%85%A5%E8%B0%83%E5%BA%A6%E5%99%A8%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">同步、异步任务进入调度器的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-text">相关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#taskQueue"><span class="nav-text">taskQueue</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#timerQueue"><span class="nav-text">timerQueue</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">做了什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#requestHostTimeout"><span class="nav-text">requestHostTimeout</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#handleTimeout"><span class="nav-text">handleTimeout</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#advanceTimers"><span class="nav-text">advanceTimers</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#flushWork"><span class="nav-text">flushWork</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#workLoop"><span class="nav-text">workLoop</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#shouldYield-%E4%B8%AD%E6%AD%A2-workloop"><span class="nav-text">shouldYield 中止 workloop</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E4%B8%80%E4%B8%8B%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B%EF%BC%9F"><span class="nav-text">简述一下调度流程？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E5%92%8C-%E5%BC%82%E6%AD%A5%E8%B0%83%E5%BA%A6-%E6%B5%81%E7%A8%8B%E6%80%BB%E5%9B%BE"><span class="nav-text">调和 + 异步调度 流程总图</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

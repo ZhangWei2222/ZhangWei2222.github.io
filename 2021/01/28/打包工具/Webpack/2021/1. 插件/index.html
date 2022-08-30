@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Webpack," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="webpack的工作机制是基于事件流，将各个插件串联起来。实现这一切的核心就是tapable对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack-插件">
+<meta property="og:url" content="https://super-wei.top/2021/01/28/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/2021/1.%20%E6%8F%92%E4%BB%B6/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="webpack的工作机制是基于事件流，将各个插件串联起来。实现这一切的核心就是tapable对象">
+<meta property="og:locale">
+<meta property="og:image" content="https://img.youpin.mi-img.com/jianyu/e099f162938_22026080841611803232870.png">
+<meta property="article:published_time" content="2021-01-28T03:08:36.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.099Z">
+<meta property="article:author" content="Wei Zhang">
+<meta property="article:tag" content="Webpack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.youpin.mi-img.com/jianyu/e099f162938_22026080841611803232870.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2021/01/28/打包工具/Webpack/2021/1. 插件/"/>
+
+
+
+
+
+  <title>webpack-插件 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/01/28/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/2021/1.%20%E6%8F%92%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webpack-插件</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-28T11:08:36+08:00">
+                2021-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">打包工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.7k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>webpack的工作机制是基于事件流，将各个插件串联起来。实现这一切的核心就是tapable对象</p>
+<a id="more"></a>
+
+
+
+<h2 id="Tapable"><a href="#Tapable" class="headerlink" title="Tapable"></a>Tapable</h2><p>tapable 是一个类似于nodejs 的EventEmitter 的库，主要是控制钩子函数的发布与订阅，控制着webpack的插件系。webpack的本质就是一系列的插件运行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123;</span><br><span class="line">  SyncHook, <span class="comment">// 同步串行钩子，在触发事件之后，会按照事件注册的先后顺序执行所有的事件处理函数</span></span><br><span class="line">  SyncBailHook, <span class="comment">// 同步保险钩子，如果事件处理函数执行时有一个返回值不为空。则跳过剩下未执行的事件处理函数</span></span><br><span class="line">  SyncWaterfallHook, <span class="comment">// 同步瀑布流钩子，上一个事件处理函数的返回值作为参数传递给下一个事件处理函数，依次类推</span></span><br><span class="line">  SyncLoopHook, <span class="comment">// 同步循环钩子，事件处理函数返回true表示继续循环，如果返回undefined的话，表示结束循环</span></span><br><span class="line">  AsyncParallelHook, <span class="comment">// 异步并行钩子</span></span><br><span class="line">  AsyncParallelBailHook, <span class="comment">// 异步并行保险钩子</span></span><br><span class="line">  AsyncSeriesHook, <span class="comment">// 异步串行钩子</span></span><br><span class="line">  AsyncSeriesBailHook, <span class="comment">// 异步串行保险钩子</span></span><br><span class="line">  AsyncSeriesWaterfallHook <span class="comment">// 异步串行瀑布流钩子</span></span><br><span class="line">&#125; = <span class="built_in">require</span>(<span class="string">&quot;tapable&quot;</span>);</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>钩子名称</th>
+<th><strong>执行方式</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SyncHook</strong></td>
+<td><strong>同步串行钩子</strong></td>
+<td><strong>不关心监听函数的返回值，按照事件注册顺序依次执行</strong></td>
+</tr>
+<tr>
+<td><strong>SyncBailHook</strong></td>
+<td><strong>同步保险钩子</strong></td>
+<td><strong>只要有一个监听函数返回不为空，则跳过之后剩下的所有监听函数</strong></td>
+</tr>
+<tr>
+<td>SyncWaterfallHook</td>
+<td>同步瀑布流钩子</td>
+<td>前一个监听函数的返回值会传递给下一个监听函数</td>
+</tr>
+<tr>
+<td>SyncLoopHook</td>
+<td>同步循环钩子</td>
+<td>执行监听函数，当返回值为true时循环执行监听函数，直到返回值为undefined则退出循环执行下一个</td>
+</tr>
+<tr>
+<td><strong>AsyncParallelHook</strong></td>
+<td><strong>异步并行钩子</strong></td>
+<td><strong>哪个函数先执行完就先执行哪个函数，不关心监听函数的返回值</strong></td>
+</tr>
+<tr>
+<td>AsyncParallelBailHook</td>
+<td>异步并行保险钩子</td>
+<td>只要有一个监听函数返回不为空，则跳过之后剩下的所有监听函数直至 <code>callAsync</code>，调用它的回调函数</td>
+</tr>
+<tr>
+<td><strong>AsyncSeriesHook</strong></td>
+<td><strong>异步串行钩子</strong></td>
+<td><strong>不关心监听函数的返回值，但是必须执行回调函数，等所有函数执行完毕之后调用 <code>callAsync</code> 的回调函数</strong></td>
+</tr>
+<tr>
+<td>AsyncSeriesBailHook</td>
+<td>异步串行保险钩子</td>
+<td>异步执行监听函数，当有一个函数返回不为空时，则跳过后面的所有监听函数，直接调用 <code>callAsync</code> 的回调函数</td>
+</tr>
+<tr>
+<td>AsyncSeriesWaterfallHook</td>
+<td>异步串行瀑布流钩子</td>
+<td>上一个监听函数的返回值可传递给下一个监听函数</td>
+</tr>
+</tbody></table>
+<h2 id="compiler-和-compilation-对象"><a href="#compiler-和-compilation-对象" class="headerlink" title="compiler 和 compilation 对象"></a>compiler 和 compilation 对象</h2><p>开发webpack插件最重要两个资源是对象：<strong>compiler</strong>和<strong>compilation</strong>，都是扩展了tapable对象</p>
+<ul>
+<li><p>Compiler 对象</p>
+<ul>
+<li>包含了 Webpack 环境所有的配置信息，包含 options，loaders，plugins 这些信息</li>
+<li>这个对象在 Webpack 启动时候被实例化，它是全局唯一的</li>
+</ul>
+</li>
+<li><p>compilation 对象</p>
+<ul>
+<li>包含了当前的模块资源、编译生成资源、变化的文件等</li>
+<li>当 Webpack 以开发模式运行时，每当检测到一个文件变化，一次新的 Compilation 将被创建</li>
+<li>Compilation 对象也提供了很多事件回调供插件做扩展</li>
+</ul>
+</li>
+</ul>
+<p>两者的区别在于，Compiler代表了整个 webpack 从启动到关闭的生命周期，相当于webpack的一个执行者；而 compilation 只代表一次单独的编译。</p>
+<h2 id="compiler-事件钩子"><a href="#compiler-事件钩子" class="headerlink" title="compiler 事件钩子"></a>compiler 事件钩子</h2><table>
+<thead>
+<tr>
+<th>事件钩子</th>
+<th align="left"><strong>触发时机</strong></th>
+<th><strong>参数</strong></th>
+<th><strong>类型</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>entryOption</td>
+<td align="left">在 entry 配置项处理过之后，执行插件</td>
+<td></td>
+<td>SyncBailHook</td>
+</tr>
+<tr>
+<td>run</td>
+<td align="left">开始读取记录之前</td>
+<td>compilation</td>
+<td>AsyncSeriesHook</td>
+</tr>
+<tr>
+<td>compile</td>
+<td align="left">一个新的 compilation 创建之前</td>
+<td>compilation</td>
+<td>SyncHook</td>
+</tr>
+<tr>
+<td>compilation</td>
+<td align="left">compilation 创建之后</td>
+<td>compilation</td>
+<td>SyncHook</td>
+</tr>
+<tr>
+<td>make</td>
+<td align="left">从 entry 开始递归分析依赖，准备对每个模块进行 build</td>
+<td>compilation</td>
+<td>AsyncParallelHook</td>
+</tr>
+<tr>
+<td>after-compile</td>
+<td align="left">编译（build）过程结束</td>
+<td>compilation</td>
+<td>AsyncSeriesHook</td>
+</tr>
+<tr>
+<td>emit</td>
+<td align="left">生成资源到 output 目录之前</td>
+<td>compilation</td>
+<td>AsyncSeriesHook</td>
+</tr>
+<tr>
+<td>after-emit</td>
+<td align="left">生成资源到 output 目录之后</td>
+<td>compilation</td>
+<td>AsyncSeriesHook</td>
+</tr>
+<tr>
+<td>asset-emitted</td>
+<td align="left">生成文件的时候执行，提供访问产出文件信息的入口</td>
+<td>file、info</td>
+<td>AsyncSeriesHook</td>
+</tr>
+<tr>
+<td>done</td>
+<td align="left">编译（compilation）完成</td>
+<td>stats</td>
+<td>AsyncSeriesHook</td>
+</tr>
+</tbody></table>
+<p><img src="https://img.youpin.mi-img.com/jianyu/e099f162938_22026080841611803232870.png" alt="img"></p>
+<h2 id="插件的组成"><a href="#插件的组成" class="headerlink" title="插件的组成"></a>插件的组成</h2><ul>
+<li>插件必须是一个函数，函数原型上需要定义 apply 方法或者是一个包含 apply 方法的对象，apply 方法的参数为compiler</li>
+<li>完成自定义编译流程，处理compiltion对象的内部数据<ul>
+<li>compiler hook 的 tap 方法的第一个参数应该是驼峰式命名的插件名称，建议是一个常量，以便在所有hook中重复使用</li>
+</ul>
+</li>
+<li>功能完成后调用 webpack 提供的回调<ul>
+<li>异步的事件需要调用 callback 回调,通知 Webpack 进入下一个流程，不然会卡住</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pluginName = <span class="string">&#x27;testWebpackPlugin&#x27;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestWebpackPlugin</span> </span>&#123;</span><br><span class="line">  <span class="title">constructor</span> (<span class="params">opt</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.options = opt</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="title">apply</span>(<span class="params">compiler</span>)</span> &#123;</span><br><span class="line">    compiler.hooks.阶段.tap函数(pluginName, <span class="function">(<span class="params">compilation,callback</span>) =&gt;</span> &#123;</span><br><span class="line">      callback() <span class="comment">// 异步需要</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="tap-函数"><a href="#tap-函数" class="headerlink" title="tap 函数"></a>tap 函数</h3><p>Tapable类暴露了tap、tapAsync和tapPromise方法，可以根据钩子的同步/异步方式来选择一个函数注入逻辑。</p>
+<ul>
+<li>tap 同步钩子</li>
+<li>tapAsync 异步钩子，通过callback回调告诉Webpack异步执行完毕</li>
+<li>tapPromise 异步钩子，返回一个Promise告诉Webpack异步执行完毕</li>
+</ul>
+<h4 id="tap"><a href="#tap" class="headerlink" title="tap"></a>tap</h4><p>tap是一个同步钩子，同步钩子在使用时不可以包含异步调用，因为函数返回时异步逻辑有可能未执行完毕导致问题。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">compiler.hooks.compile.tap(<span class="string">&#x27;MyWebpackPlugin&#x27;</span>, <span class="function"><span class="params">params</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;我是同步钩子&#x27;</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="tapAsync"><a href="#tapAsync" class="headerlink" title="tapAsync"></a>tapAsync</h4><p>tapAsync是一个异步钩子，我们可以通过callback告知Webpack异步逻辑执行完毕。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">compiler.hooks.emit.tapAsync(<span class="string">&#x27;MyWebpackPlugin&#x27;</span>, <span class="function">(<span class="params">compilation, callback</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 在1秒后打印文件列表</span></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;文件列表&#x27;</span>, <span class="built_in">Object</span>.keys(compilation.assets).join(<span class="string">&#x27;,&#x27;</span>));</span><br><span class="line">    callback();</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="tapPromise"><a href="#tapPromise" class="headerlink" title="tapPromise"></a>tapPromise</h4><p>tapPromise也是异步钩子，和tapAsync的区别在于tapPromise是通过返回Promise来告知Webpack异步逻辑执行完毕</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">compiler.hooks.afterEmit.tapPromise(<span class="string">&#x27;MyWebpackPlugin&#x27;</span>, <span class="function">(<span class="params">compilation</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 将生成结果上传到CDN</span></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> filelist = <span class="built_in">Object</span>.keys(compilation.assets);</span><br><span class="line">    uploadToCDN(filelist, <span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span>(err) &#123;</span><br><span class="line">        reject(err);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      resolve();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="手写插件"><a href="#手写插件" class="headerlink" title="手写插件"></a>手写插件</h2><h3 id="从一个简单例子开始"><a href="#从一个简单例子开始" class="headerlink" title="从一个简单例子开始"></a>从一个简单例子开始</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pluginName = <span class="string">&#x27;testWebpackPlugin&#x27;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestWebpackPlugin</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">opt</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;插件被使用了&#x27;</span>, opt)</span><br><span class="line">    <span class="built_in">this</span>.options = opt</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">apply</span>(<span class="params">compiler</span>)</span> &#123;</span><br><span class="line">    compiler.hooks.emit.tapAsync(pluginName, <span class="function">(<span class="params">compilation, callback</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;生成资源到 output 目录之前&#x27;</span>, compilation.assets)</span><br><span class="line">      compilation.assets[<span class="string">&#x27;Copyright.txt&#x27;</span>] = &#123;</span><br><span class="line">        source: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="string">&#x27;这是一个版权文件&#x27;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        size: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">          <span class="keyword">return</span> <span class="number">8</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      callback()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = TestWebpackPlugin;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="keyword">const</span> TestWebpackPlugin = <span class="built_in">require</span>(<span class="string">&#x27;./src/plugin/test&#x27;</span>);</span><br><span class="line"><span class="keyword">new</span> TestWebpackPlugin(&#123;</span><br><span class="line">  name: <span class="string">&#x27;zw&#x27;</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="简易的-html-webpack-plugin"><a href="#简易的-html-webpack-plugin" class="headerlink" title="简易的 html-webpack-plugin"></a>简易的 html-webpack-plugin</h3><p><strong>功能：</strong>将指定的html模板复制一份输出到dist目录下，同时会自动引入bundle.js</p>
+<p><strong>思路</strong></p>
+<ol>
+<li><p>编写一个自定义插件，注册<strong>afterEmit</strong>钩子</p>
+</li>
+<li><p>根据创建对象时传入的template属性来读取html模板</p>
+</li>
+<li><p>使用工具分析HTML，推荐使用cheerio，可以直接使用jQuery api</p>
+</li>
+<li><p>循环遍历webpack打包的资源文件列表，如果有多个bundle就都打包进去（可以根据需求自己修改，因为可能有chunk，一般只引入第一个即可）</p>
+</li>
+<li><p>输出新生成的HTML字符串到dist目录中</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> cheerio = <span class="built_in">require</span>(<span class="string">&#x27;cheerio&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> pluginName = <span class="string">&#x27;htmlWebpackPlugin&#x27;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">HtmlWebpackPlugin</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">opt</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 传入filename和template</span></span><br><span class="line">    <span class="built_in">this</span>.options = opt</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">apply</span>(<span class="params">compiler</span>)</span> &#123;</span><br><span class="line">    compiler.hooks.afterEmit.tapAsync(pluginName, <span class="function">(<span class="params">compilation, callback</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 根据模板读取html文件内容</span></span><br><span class="line">      <span class="keyword">let</span> result = fs.readFileSync(<span class="built_in">this</span>.options.template, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">      <span class="comment">// 使用cheerio来分析HTML</span></span><br><span class="line">      <span class="comment">// cheerio是jquery核心功能的一个快速灵活而又简洁的实现，主要是为了用在服务器端需要对DOM进行操作的地方</span></span><br><span class="line">      <span class="keyword">let</span> $ = cheerio.load(result)</span><br><span class="line">      <span class="comment">// 创建script标签后插入HTML中</span></span><br><span class="line">      <span class="built_in">Object</span>.keys(compilation.assets).forEach(<span class="function"><span class="params">item</span> =&gt;</span> $(<span class="string">`&lt;script src=&quot;<span class="subst">$&#123;item&#125;</span>&quot;&gt;&lt;/script&gt;`</span>).appendTo(<span class="string">&#x27;body&#x27;</span>))</span><br><span class="line">      <span class="comment">// 转换成新的HTML并写入到dist目录中</span></span><br><span class="line">      fs.writeFileSync(path.join(process.cwd(), <span class="string">&#x27;dist&#x27;</span>, <span class="built_in">this</span>.options.filename), $.html())</span><br><span class="line">      callback()</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = HtmlWebpackPlugin;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="简易的-内联-inline-source-plugin"><a href="#简易的-内联-inline-source-plugin" class="headerlink" title="简易的 内联 inline-source-plugin"></a>简易的 内联 inline-source-plugin</h3><p>将外链的标签变成内联的，主要体现在</p>
+<ul>
+<li>将 <code>link</code> 标签变成 <code>style</code> 标签，然后里面填充的是引入的 css 的内容</li>
+<li>将 <code>script</code> 标签填充引入的 <code>script</code> 文件内容</li>
+<li>删除掉已经生成的没必要引入的文件</li>
+</ul>
+<p>思路：</p>
+<ul>
+<li><p>找出 <code>index.html</code> 中的 <code>link</code> 标签以及 <code>script</code> 标签，将其的 <code>innerHTML</code> 替换为对应文件的源码</p>
+</li>
+<li><p>利用 <a target="_blank" rel="noopener" href="https://github.com/jantimon/html-webpack-plugin">html-webpack-plugin</a> 插件提供的一些钩子，这里使用的是 alterAssetTagGroups，因为我们重点是在 <code>head</code> 以及 <code>body</code> 上找标签</p>
+<ul>
+<li>关于 tag 标签提供了两个钩子 <code>alterAssetTags</code>、<code>alterAssetTagGroups</code></li>
+</ul>
+<blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&gt;alterAssetTags：</span><br><span class="line">&gt;AsyncSeriesWaterfallHook&lt;&#123;</span><br><span class="line">assetTags: &#123;</span><br><span class="line">  scripts: <span class="built_in">Array</span>&lt;HtmlTagObject&gt;,</span><br><span class="line">  styles: <span class="built_in">Array</span>&lt;HtmlTagObject&gt;,</span><br><span class="line">  meta: <span class="built_in">Array</span>&lt;HtmlTagObject&gt;,</span><br><span class="line">&#125;,</span><br><span class="line">publicPath: string,</span><br><span class="line">outputName: string,</span><br><span class="line">plugin: HtmlWebpackPlugin</span><br><span class="line">&gt;&#125;&gt;</span><br><span class="line"></span><br><span class="line">&gt;alterAssetTagGroups：</span><br><span class="line">&gt;AsyncSeriesWaterfallHook&lt;&#123;</span><br><span class="line">headTags: <span class="built_in">Array</span>&lt;HtmlTagObject | HtmlTagObject&gt;,</span><br><span class="line">bodyTags: <span class="built_in">Array</span>&lt;HtmlTagObject | HtmlTagObject&gt;,</span><br><span class="line">publicPath: string,</span><br><span class="line">outputName: string,</span><br><span class="line">plugin: HtmlWebpackPlugin</span><br><span class="line">&gt;&#125;&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> pluginName = <span class="string">&#x27;inlineSourcePlugin&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 因为最后是改变 html 的 tag 然后插入到 html 中的，所以这里会使用到</span></span><br><span class="line"><span class="comment">// html-webpack-plugin 提供的一些 hooks 来供我们使用</span></span><br><span class="line"><span class="comment">// 在 html-webpack-plugin 的基础上开发插件</span></span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InlineSourcePlugin</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">&#123; test &#125;</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 用于匹配文件的正则，这里主要寻找以 js 或 css 结尾的文件</span></span><br><span class="line">    <span class="built_in">this</span>.reg = test</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理一个 tag 的数据</span></span><br><span class="line">  <span class="function"><span class="title">processTag</span>(<span class="params">tag, compilation</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> newTag, url</span><br><span class="line">    <span class="keyword">const</span> &#123; tagName, attributes &#125; = tag</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tagName === <span class="string">&#x27;link&#x27;</span> &amp;&amp; <span class="built_in">this</span>.reg.test(attributes.href)) &#123;</span><br><span class="line">      newTag = &#123;</span><br><span class="line">        tagName: <span class="string">&#x27;style&#x27;</span>,</span><br><span class="line">        attributes: &#123; <span class="attr">type</span>: <span class="string">&#x27;text/css&#x27;</span> &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      url = attributes.href</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (tagName === <span class="string">&#x27;script&#x27;</span> &amp;&amp; <span class="built_in">this</span>.reg.test(attributes.src)) &#123;</span><br><span class="line">      newTag = &#123;</span><br><span class="line">        tagName: <span class="string">&#x27;script&#x27;</span>,</span><br><span class="line">        attributes: &#123; <span class="attr">type</span>: <span class="string">&#x27;application/javascript&#x27;</span>, <span class="attr">defer</span>: <span class="string">&quot;defer&quot;</span> &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      url = attributes.src</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (url) &#123;</span><br><span class="line">      <span class="comment">// 标签里面插入对应文件的源码</span></span><br><span class="line">      newTag.innerHTML = compilation.assets[url].source()</span><br><span class="line">      <span class="comment">// 既然都把源码怼 html 上了，就应该删除对应的文件</span></span><br><span class="line">      <span class="keyword">delete</span> compilation.assets[url]</span><br><span class="line">      <span class="keyword">return</span> newTag</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tag</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 处理引入 tags 的数据</span></span><br><span class="line">  <span class="function"><span class="title">processTags</span>(<span class="params">data, compilation</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> headTags = []</span><br><span class="line">    data.headTags.forEach(<span class="function"><span class="params">headTag</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 处理引入 css 的 link 标签</span></span><br><span class="line">      headTags.push(<span class="built_in">this</span>.processTag(headTag, compilation))</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> bodyTags = []</span><br><span class="line">    data.bodyTags.forEach(<span class="function"><span class="params">bodyTag</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="comment">// 处理引入 script 标签</span></span><br><span class="line">      bodyTags.push(<span class="built_in">this</span>.processTag(bodyTag, compilation))</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123; ...data, headTags, bodyTags &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">apply</span>(<span class="params">compiler</span>)</span> &#123;</span><br><span class="line">    compiler.hooks.compilation.tap(pluginName, <span class="function">(<span class="params">compilation</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;The compiler is starting a new compilation...&#x27;</span>)</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 静态插件接口 | compilation | HOOK NAME | register listener</span></span><br><span class="line">      <span class="comment">// 使用 alterAssetTagGroups 这个 hooks</span></span><br><span class="line">      HtmlWebpackPlugin.getHooks(compilation).alterAssetTagGroups.tapAsync(</span><br><span class="line">        <span class="string">&#x27;alterPlugin&#x27;</span>, <span class="comment">// 为堆栈取名</span></span><br><span class="line">        (data, cb) =&gt; &#123;</span><br><span class="line">          <span class="comment">// 处理 html 的某些 tags, 这里需要做处理的是 css 和 js</span></span><br><span class="line">          <span class="keyword">const</span> newData = <span class="built_in">this</span>.processTags(data, compilation)</span><br><span class="line">          <span class="comment">// 返回 data</span></span><br><span class="line">          cb(<span class="literal">null</span>, newData)</span><br><span class="line">        &#125;</span><br><span class="line">      )</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = InlineSourcePlugin</span><br><span class="line"></span><br><span class="line"><span class="comment">// weback 使用</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> MiniCssExtractPlugin = <span class="built_in">require</span>(<span class="string">&#x27;mini-css-extract-plugin&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> InlineSourcePlugin = <span class="built_in">require</span>(<span class="string">&#x27;./plugins/inlineSource-plugin&#x27;</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  mode: <span class="string">&#x27;development&#x27;</span>,</span><br><span class="line">  entry: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">&#x27;dist&#x27;</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">        use: [MiniCssExtractPlugin.loader, <span class="string">&#x27;css-loader&#x27;</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="keyword">new</span> MiniCssExtractPlugin(&#123;</span><br><span class="line">      filename: <span class="string">&#x27;main.css&#x27;</span></span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> InlineSourcePlugin(&#123;</span><br><span class="line">      test: <span class="regexp">/\.(js|css)/</span></span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">      template: <span class="string">&#x27;./src/index.html&#x27;</span>，</span><br><span class="line">      inject: <span class="string">&#x27;body&#x27;</span></span><br><span class="line">    &#125;),</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6899623827337281544#heading-2">深入学习webpack plugin到手写一个plugin</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Webpack/" rel="tag"># Webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/01/13/Vue3/2021/4.%20watch%E3%80%81watchEffect/" rel="next" title="Vue3-watch、watchEffect">
+                <i class="fa fa-chevron-left"></i> Vue3-watch、watchEffect
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/28/JavaScript/2021/4.%20V8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" rel="prev" title="js-V8垃圾回收">
+                js-V8垃圾回收 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tapable"><span class="nav-text">Tapable</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compiler-%E5%92%8C-compilation-%E5%AF%B9%E8%B1%A1"><span class="nav-text">compiler 和 compilation 对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compiler-%E4%BA%8B%E4%BB%B6%E9%92%A9%E5%AD%90"><span class="nav-text">compiler 事件钩子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-text">插件的组成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tap-%E5%87%BD%E6%95%B0"><span class="nav-text">tap 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tap"><span class="nav-text">tap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tapAsync"><span class="nav-text">tapAsync</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tapPromise"><span class="nav-text">tapPromise</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%86%99%E6%8F%92%E4%BB%B6"><span class="nav-text">手写插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E4%BE%8B%E5%AD%90%E5%BC%80%E5%A7%8B"><span class="nav-text">从一个简单例子开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E6%98%93%E7%9A%84-html-webpack-plugin"><span class="nav-text">简易的 html-webpack-plugin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E6%98%93%E7%9A%84-%E5%86%85%E8%81%94-inline-source-plugin"><span class="nav-text">简易的 内联 inline-source-plugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

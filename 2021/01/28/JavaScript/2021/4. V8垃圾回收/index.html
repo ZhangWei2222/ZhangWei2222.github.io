@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="V8 是什么 V8引擎是一个 JS 引擎实现  使用 C++ 开发，能将其编译成 原生机器码（IA-32、x86-64、ARM等），并且使用了如内联缓存等方法提高性能  具有很好的可移植和跨平台特性   内存管理介绍JavaScript中的垃圾收集 程序的运行需要内存，只要程序要求，操作系统就必须提供内存  JavaScript使用自动内存管理，这被称为“垃圾回收机制”（garbage colle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js-V8垃圾回收">
+<meta property="og:url" content="https://super-wei.top/2021/01/28/JavaScript/2021/4.%20V8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="V8 是什么 V8引擎是一个 JS 引擎实现  使用 C++ 开发，能将其编译成 原生机器码（IA-32、x86-64、ARM等），并且使用了如内联缓存等方法提高性能  具有很好的可移植和跨平台特性   内存管理介绍JavaScript中的垃圾收集 程序的运行需要内存，只要程序要求，操作系统就必须提供内存  JavaScript使用自动内存管理，这被称为“垃圾回收机制”（garbage colle">
+<meta property="og:locale">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/4jgj1c7cg5_22026080841625816679170.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/r078f79njs8_22026080841625816679192.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/fejkh5gn1q_22026080841625816679178.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/j8oppmj4s28_22026080841625816679186.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/6ve4tqu6t4_22026080841625816679197.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/hiidv9u521o_22026080841625816679183.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/dqd8i5397n8_22026080841625816679369.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/0anrmpctha8_22026080841625816679363.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/nuc3kt8laq8_22026080841625816679366.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/guumhk6vli_22026080841625816679361.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/bcr5vj03038_22026080841625816679367.png">
+<meta property="article:published_time" content="2021-01-28T03:26:37.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.006Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.youpin.mi-img.com/luban/4jgj1c7cg5_22026080841625816679170.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2021/01/28/JavaScript/2021/4. V8垃圾回收/"/>
+
+
+
+
+
+  <title>js-V8垃圾回收 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/01/28/JavaScript/2021/4.%20V8%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">js-V8垃圾回收</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-28T11:26:37+08:00">
+                2021-01-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.4k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="V8-是什么"><a href="#V8-是什么" class="headerlink" title="V8 是什么"></a>V8 是什么</h2><ul>
+<li><p>V8引擎是一个 JS 引擎实现</p>
+</li>
+<li><p>使用 C++ 开发，能将其编译成 原生机器码（IA-32、x86-64、ARM等），并且使用了如内联缓存等方法提高性能</p>
+</li>
+<li><p>具有很好的可移植和跨平台特性</p>
+</li>
+</ul>
+<h2 id="内存管理介绍"><a href="#内存管理介绍" class="headerlink" title="内存管理介绍"></a>内存管理介绍</h2><h3 id="JavaScript中的垃圾收集"><a href="#JavaScript中的垃圾收集" class="headerlink" title="JavaScript中的垃圾收集"></a>JavaScript中的垃圾收集</h3><ul>
+<li><p>程序的运行需要内存，只要程序要求，操作系统就必须提供内存</p>
+</li>
+<li><p>JavaScript使用自动内存管理，这被称为“垃圾回收机制”（garbage collector）</p>
+</li>
+<li><p>优点是可以简化开发、节省代码</p>
+</li>
+<li><p>缺点是无法完整的掌握内存的分配与回收的具体过程</p>
+</li>
+</ul>
+<h3 id="NodeJS中的内存管理"><a href="#NodeJS中的内存管理" class="headerlink" title="NodeJS中的内存管理"></a>NodeJS中的内存管理</h3><ul>
+<li><p>网页端的内存泄漏</p>
+</li>
+<li><p>对于持续运行的服务进程Node服务器端程序，必须及时释放不再用到的内存。否则内存使用越来越高，轻则影响系统性能，重则导致进程崩溃</p>
+</li>
+<li><p>如果不在用到的内存没有及时释放。就叫做内存泄漏</p>
+</li>
+</ul>
+<h3 id="V8内存管理"><a href="#V8内存管理" class="headerlink" title="V8内存管理"></a>V8内存管理</h3><h4 id="v8内存限制"><a href="#v8内存限制" class="headerlink" title="v8内存限制"></a>v8内存限制</h4><ul>
+<li><p>在64位操作系统可以使用1.4G内存</p>
+</li>
+<li><p>在32位操作系统可以使用0.7G内存</p>
+</li>
+</ul>
+<h4 id="v8内存管理"><a href="#v8内存管理" class="headerlink" title="v8内存管理"></a>v8内存管理</h4><ul>
+<li><p>JS对象都是通过V8进行分配管理内存的</p>
+</li>
+<li><p><code>process.memoryUsage</code>返回一个对象，包含了Node进程的内存占用信息</p>
+</li>
+</ul>
+<img src="https://img.youpin.mi-img.com/luban/4jgj1c7cg5_22026080841625816679170.png" alt="png" style="zoom: 50%;" />
+
+<ul>
+<li><p>rss(resident set size)：所有内存占用，包括指令区和堆栈。</p>
+</li>
+<li><p>heapTotal：“堆”占用的内存，包括用到的和没用到的</p>
+</li>
+<li><p>heapUsed：用到的堆的部分（判断内存泄漏，以heapUsed字段为准）</p>
+</li>
+<li><p>external：V8引擎内部的C++对象占用的内存</p>
+</li>
+</ul>
+<img src="https://img.youpin.mi-img.com/luban/r078f79njs8_22026080841625816679192.png" alt="png" style="zoom: 50%;" />
+
+<img src="https://img.youpin.mi-img.com/luban/fejkh5gn1q_22026080841625816679178.png" alt="png" style="zoom: 50%;" />
+
+<h4 id="为何限制内存大小"><a href="#为何限制内存大小" class="headerlink" title="为何限制内存大小"></a>为何限制内存大小</h4><ul>
+<li><p>因为V8的垃圾收集工作原理导致的，1.4G内存完全一次垃圾收集需要1秒以上</p>
+</li>
+<li><p>这个暂停时间称为 Stop The World，在这个期间，应用的性能和响应能力都会下降</p>
+</li>
+</ul>
+<h4 id="如果打开内存限制"><a href="#如果打开内存限制" class="headerlink" title="如果打开内存限制"></a>如果打开内存限制</h4><ul>
+<li>一旦初始化成功。生效后不能再修改</li>
+<li>-max-new-space-size,最大new space大小，执行scavenge回收，默认16M，单位KB</li>
+<li>-max-old-space-size,最大old space大小，执行MarkSweep回收，默认1G，单位MB</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node --max-old-space-size=<span class="number">2000</span> app.js 单位是M</span><br><span class="line">node --max-<span class="keyword">new</span>-space-size=<span class="number">1024</span> app.js 单位是kb</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="V8-的垃圾回收机制"><a href="#V8-的垃圾回收机制" class="headerlink" title="V8 的垃圾回收机制"></a>V8 的垃圾回收机制</h2><ul>
+<li><p>v8 是基于分代的垃圾回收</p>
+</li>
+<li><p>不同代垃圾回收机制不一样</p>
+</li>
+<li><p>按存活时间分为新生代和老生代</p>
+</li>
+</ul>
+<h3 id="分代"><a href="#分代" class="headerlink" title="分代"></a>分代</h3><ul>
+<li><p>年龄小的是新生代，由 From 区域和 To 区域两个区域组成</p>
+<ul>
+<li>在64位系统里，新生代内存是32M，From区域和To区域个占用16M</li>
+<li>在32位系统里，新生代内存是16M，From区域和To区域各占用8M</li>
+</ul>
+</li>
+<li><p>年龄大的是老生代，默认情况下： </p>
+<ul>
+<li>64 位系统下老生代内存是 1400M </li>
+<li>32 位系统下老生代内存是 700M</li>
+</ul>
+</li>
+</ul>
+<img src="https://img.youpin.mi-img.com/luban/j8oppmj4s28_22026080841625816679186.png" alt="png" style="zoom:50%;" />
+
+<h3 id="新生代垃圾回收"><a href="#新生代垃圾回收" class="headerlink" title="新生代垃圾回收"></a>新生代垃圾回收</h3><ul>
+<li><p>新生代区域一分为二，每个 16M，一个使用，一个空闲</p>
+</li>
+<li><p>开始垃圾回收的时候，会检查 FROM 区域中的存活对象，如果还活着，拷贝到 TO 空间，完成后释放空间</p>
+</li>
+<li><p>完成后 FROM 和 TO 互换</p>
+</li>
+<li><p>新生代扫描的时候是一种广度优先的扫描策略</p>
+</li>
+<li><p>新生代的空间小，存活对象少</p>
+</li>
+<li><p>当一个对象经历多次的垃圾回收依然存活的时候，生存周期比较长的对象会被移动到老生代，这个移动的过程被称为晋升或者升级</p>
+<ul>
+<li>经历5次以上的回收还存在</li>
+<li>TO的空间使用占比超过25%，或者超大对象</li>
+</ul>
+</li>
+</ul>
+<p>怎么判断一个对象是否是存活对象呢？</p>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><ul>
+<li><p>语言引擎有一张引用表，保存了内存里面所有的资源的引用次数。</p>
+</li>
+<li><p>若果一个值的引用次数是 0，就表示这个值不再用到了，因此可以将这块内存释放。</p>
+</li>
+</ul>
+<img src="https://img.youpin.mi-img.com/luban/6ve4tqu6t4_22026080841625816679197.png" alt="png" style="zoom: 50%;" />
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p1 = <span class="keyword">new</span> Person(<span class="string">&#x27;youpin1&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> p2 = <span class="keyword">new</span> Person(<span class="string">&#x27;youpin2&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.name = name</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>()</span><br><span class="line"><span class="keyword">let</span> p = <span class="keyword">new</span> Person(<span class="string">&#x27;youpin&#x27;</span>)</span><br><span class="line">s.add(p)</span><br><span class="line">p = <span class="literal">null</span></span><br><span class="line">s = <span class="literal">null</span></span><br></pre></td></tr></table></figure>
+<p>新生代回收流程<br><img src="https://img.youpin.mi-img.com/luban/hiidv9u521o_22026080841625816679183.png" alt="png" style="zoom:50%;" /></p>
+<p>升级流程<br><img src="https://img.youpin.mi-img.com/luban/dqd8i5397n8_22026080841625816679369.png" alt="png" style="zoom:50%;" /></p>
+<h3 id="老生代"><a href="#老生代" class="headerlink" title="老生代"></a>老生代</h3><ul>
+<li><p>mark-sweep(标记清除) mark-compact(标记整理)</p>
+</li>
+<li><p>老生代空间大，大部分都是存活对象，GC耗时比较长</p>
+</li>
+<li><p>在GC期间无法响应，STOP-THE-WORLD</p>
+</li>
+<li><p>V8 有一个优化方案，增量处理，把一个大暂停换成多个小暂停 INCREMENT-GC</p>
+</li>
+</ul>
+<img src="https://img.youpin.mi-img.com/luban/0anrmpctha8_22026080841625816679363.png" alt="png" style="zoom:50%;" />
+
+<img src="https://img.youpin.mi-img.com/luban/nuc3kt8laq8_22026080841625816679366.png" alt="png" style="zoom:50%;" />
+
+<img src="https://img.youpin.mi-img.com/luban/guumhk6vli_22026080841625816679361.png" alt="png" style="zoom:50%;" />
+
+<h4 id="mark-sweep-标记清除"><a href="#mark-sweep-标记清除" class="headerlink" title="mark-sweep(标记清除)"></a>mark-sweep(标记清除)</h4><ul>
+<li><p>标记活着的对象，随后清除在标记阶段没有标记的对象，只清理死亡对象</p>
+</li>
+<li><p>问题在于清除后会出现内存不连续的情况，这种内存碎片会对后续的内存分配产生影响</p>
+</li>
+<li><p>如果要分配一个大对象，碎片空间可能无法分配</p>
+</li>
+</ul>
+<h4 id="mark-compack-标记整理"><a href="#mark-compack-标记整理" class="headerlink" title="mark-compack(标记整理)"></a>mark-compack(标记整理)</h4><ul>
+<li>标记死亡后会对对象进行整理，活着的对象向左移动，移动完成后直接清理掉边界外的内存</li>
+</ul>
+<h4 id="incremental-marking-增量标记"><a href="#incremental-marking-增量标记" class="headerlink" title="incremental marking 增量标记"></a>incremental marking 增量标记</h4><ul>
+<li><p>以上三种回收时都需要暂停程序执行，收集完成后才恢复，STOP-THE-WORLD在新生代影响不大，但是在老生代影响就非常大了</p>
+</li>
+<li><p>增量标记就是把标记改为了增量标记，把一次性长时间停顿拆分成了多个小步骤，做完一步程序运行一会儿，垃圾回收和应用程序运行交替进行，停顿时间可以减少到1/6左右,包括垃圾回收占用时间</p>
+</li>
+</ul>
+<p><img src="https://img.youpin.mi-img.com/luban/bcr5vj03038_22026080841625816679367.png" alt="png"></p>
+<h3 id="两种回收器"><a href="#两种回收器" class="headerlink" title="两种回收器"></a>两种回收器</h3><h4 id="副垃圾回收器"><a href="#副垃圾回收器" class="headerlink" title="副垃圾回收器"></a>副垃圾回收器</h4><ul>
+<li>主要负责新生代的垃圾回收</li>
+</ul>
+<h4 id="主垃圾回收器"><a href="#主垃圾回收器" class="headerlink" title="主垃圾回收器"></a>主垃圾回收器</h4><ul>
+<li><p>主要负责老生代的垃圾回收</p>
+</li>
+<li><p>主要有3个阶段</p>
+<ul>
+<li><p>标记（marking）</p>
+</li>
+<li><p>清除（sweeping）</p>
+</li>
+<li><p>整理（compacting）</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/01/28/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/2021/1.%20%E6%8F%92%E4%BB%B6/" rel="next" title="webpack-插件">
+                <i class="fa fa-chevron-left"></i> webpack-插件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/02/01/Vue3/2021/5.%20vue2%E5%92%8Cvue3%E5%AF%B9%E6%AF%94/" rel="prev" title="Vue3-vue2和vue3对比">
+                Vue3-vue2和vue3对比 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#V8-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">V8 是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%8B%E7%BB%8D"><span class="nav-text">内存管理介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86"><span class="nav-text">JavaScript中的垃圾收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NodeJS%E4%B8%AD%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">NodeJS中的内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#V8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">V8内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#v8%E5%86%85%E5%AD%98%E9%99%90%E5%88%B6"><span class="nav-text">v8内存限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#v8%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-text">v8内存管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BA%E4%BD%95%E9%99%90%E5%88%B6%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F"><span class="nav-text">为何限制内存大小</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E6%89%93%E5%BC%80%E5%86%85%E5%AD%98%E9%99%90%E5%88%B6"><span class="nav-text">如果打开内存限制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#V8-%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6"><span class="nav-text">V8 的垃圾回收机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E4%BB%A3"><span class="nav-text">分代</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E7%94%9F%E4%BB%A3%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-text">新生代垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="nav-text">引用计数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%80%81%E7%94%9F%E4%BB%A3"><span class="nav-text">老生代</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mark-sweep-%E6%A0%87%E8%AE%B0%E6%B8%85%E9%99%A4"><span class="nav-text">mark-sweep(标记清除)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mark-compack-%E6%A0%87%E8%AE%B0%E6%95%B4%E7%90%86"><span class="nav-text">mark-compack(标记整理)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#incremental-marking-%E5%A2%9E%E9%87%8F%E6%A0%87%E8%AE%B0"><span class="nav-text">incremental marking 增量标记</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E7%A7%8D%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-text">两种回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%AF%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-text">副垃圾回收器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-text">主垃圾回收器</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

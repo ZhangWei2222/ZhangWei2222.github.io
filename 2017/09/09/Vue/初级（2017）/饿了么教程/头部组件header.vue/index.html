@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="饿了么教程," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="弹层制作 vue动画效果配置和弹层css sticky footer原理 使用css sticky footer技术 vue的v-for遍历 vue的v-show和事件监听 vue动画处理   header和公告栏制作 text-overflow:ellipsis的使用 font-size:0和vertical-align的使用 mixin的运用 stylus相关和1像素边框问题 背景图片的虚化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="头部组件header.vue">
+<meta property="og:url" content="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%A4%B4%E9%83%A8%E7%BB%84%E4%BB%B6header.vue/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="弹层制作 vue动画效果配置和弹层css sticky footer原理 使用css sticky footer技术 vue的v-for遍历 vue的v-show和事件监听 vue动画处理   header和公告栏制作 text-overflow:ellipsis的使用 font-size:0和vertical-align的使用 mixin的运用 stylus相关和1像素边框问题 背景图片的虚化">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-09-09T07:15:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.057Z">
+<meta property="article:author" content="Wei Zhang">
+<meta property="article:tag" content="饿了么教程">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2017/09/09/Vue/初级（2017）/饿了么教程/头部组件header.vue/"/>
+
+
+
+
+
+  <title>头部组件header.vue | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%A4%B4%E9%83%A8%E7%BB%84%E4%BB%B6header.vue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">头部组件header.vue</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-09T15:15:47+08:00">
+                2017-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.8k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>弹层制作 vue动画效果配置和弹层css sticky footer原理<ul>
+<li>使用css sticky footer技术</li>
+<li>vue的v-for遍历</li>
+<li>vue的v-show和事件监听</li>
+<li>vue动画处理</li>
+</ul>
+</li>
+<li>header和公告栏制作<ul>
+<li>text-overflow:ellipsis的使用</li>
+<li>font-size:0和vertical-align的使用</li>
+<li>mixin的运用 stylus相关和1像素边框问题</li>
+<li>背景图片的虚化</li>
+<li>flex布局的使用</li>
+</ul>
+</li>
+</ul>
+<p>html部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;header&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;content-wrapper&quot;&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;avatar&quot;&gt;</span><br><span class="line">        &lt;img width&#x3D;&quot;64&quot; height&#x3D;&quot;64&quot; :src&#x3D;&quot;seller.avatar&quot;&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;content&quot;&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;title&quot;&gt;</span><br><span class="line">          &lt;span class&#x3D;&quot;brand&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">          &lt;span class&#x3D;&quot;name&quot;&gt;&#123;&#123;seller.name&#125;&#125;&lt;&#x2F;span&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;description&quot;&gt;</span><br><span class="line">          &#123;&#123;seller.description&#125;&#125; &#x2F; &#123;&#123;seller.deliveryTime&#125;&#125;分钟送达</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;div v-if&#x3D;&quot;seller.supports&quot; class&#x3D;&quot;supports&quot;&gt;</span><br><span class="line">        &lt;!--只列出第一个support的内容--&gt;</span><br><span class="line">          &lt;span class&#x3D;&quot;icon&quot; :class&#x3D;&quot;classMap[seller.supports[0].type]&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">          &lt;span class&#x3D;&quot;text&quot;&gt;&#123;&#123;seller.supports[0].description&#125;&#125;&lt;&#x2F;span&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;div v-if&#x3D;&quot;seller.supports&quot; class&#x3D;&quot;support-count&quot; @click&#x3D;&quot;showDetail&quot;&gt;</span><br><span class="line">        &lt;span class&#x3D;&quot;count&quot;&gt;&#123;&#123;seller.supports.length&#125;&#125;个&lt;&#x2F;span&gt;</span><br><span class="line">        &lt;i class&#x3D;&quot;icon-keyboard_arrow_right&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;!--绑定showDetail事件--&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;bulletin-wrapper&quot; @click&#x3D;&quot;showDetail&quot;&gt;</span><br><span class="line">      &lt;span class&#x3D;&quot;bulletin-title&quot;&gt;&lt;&#x2F;span&gt;&lt;span class&#x3D;&quot;bulletin-text&quot;&gt;&#123;&#123;seller.bulletin&#125;&#125;&lt;&#x2F;span&gt;</span><br><span class="line">      &lt;i class&#x3D;&quot;icon-keyboard_arrow_right&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;background&quot;&gt;</span><br><span class="line">      &lt;img width&#x3D;&quot;100%&quot; height&#x3D;&quot;100%&quot; :src&#x3D;&quot;seller.avatar&quot;&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;!--这里使用了vue的动画配置transition--&gt;</span><br><span class="line">    &lt;transition name&#x3D;&quot;fade&quot;&gt;</span><br><span class="line">      &lt;div v-show&#x3D;&quot;detailShow&quot; class&#x3D;&quot;detail&quot;&gt;</span><br><span class="line">      &lt;!--使用clearfix这个class来做css sticky footer--&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;detail-wrapper clearfix&quot;&gt;</span><br><span class="line">          &lt;div class&#x3D;&quot;detail-main&quot;&gt;</span><br><span class="line">            &lt;h1 class&#x3D;&quot;name&quot;&gt;&#123;&#123;seller.name&#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;star-wrapper&quot;&gt;</span><br><span class="line">            &lt;!--这里传值给star组件--&gt;</span><br><span class="line">              &lt;star :size&#x3D;&quot;48&quot; :score&#x3D;&quot;seller.score&quot;&gt;&lt;&#x2F;star&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;title&quot;&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;line&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;text&quot;&gt;优惠信息&lt;&#x2F;div&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;line&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;!--列出全部的support的内容--&gt;</span><br><span class="line">            &lt;ul v-if&#x3D;&quot;seller.supports&quot; class&#x3D;&quot;supports&quot;&gt;</span><br><span class="line">              &lt;li class&#x3D;&quot;support-item&quot; v-for&#x3D;&quot;(item,index) in seller.supports&quot;&gt;</span><br><span class="line">                &lt;span class&#x3D;&quot;icon&quot; :class&#x3D;&quot;classMap[seller.supports[index].type]&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">                &lt;span class&#x3D;&quot;text&quot;&gt;&#123;&#123;seller.supports[index].description&#125;&#125;&lt;&#x2F;span&gt;</span><br><span class="line">              &lt;&#x2F;li&gt;</span><br><span class="line">            &lt;&#x2F;ul&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;title&quot;&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;line&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;text&quot;&gt;商家公告&lt;&#x2F;div&gt;</span><br><span class="line">              &lt;div class&#x3D;&quot;line&quot;&gt;&lt;&#x2F;div&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">            &lt;div class&#x3D;&quot;bulletin&quot;&gt;</span><br><span class="line">              &lt;p class&#x3D;&quot;content&quot;&gt;&#123;&#123;seller.bulletin&#125;&#125;&lt;&#x2F;p&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">          &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">        &lt;!--绑定hideDetail事件--&gt;</span><br><span class="line">        &lt;div class&#x3D;&quot;detail-close&quot; @click&#x3D;&quot;hideDetail&quot;&gt;</span><br><span class="line">          &lt;i class&#x3D;&quot;icon-close&quot;&gt;&lt;&#x2F;i&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;transition&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
+<p>js部分</p>
+<p>星星组件参看:star.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  import star from &#39;..&#x2F;star&#x2F;star.vue&#39;; &#x2F;&#x2F;导入星星组件</span><br><span class="line"></span><br><span class="line">  export default&#123;</span><br><span class="line">    props: &#123;</span><br><span class="line">      seller: &#123; &#x2F;&#x2F;将seller对象传给组件</span><br><span class="line">        type: Object &#x2F;&#x2F;这是vue的prop验证属性的写法</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    data()&#123;</span><br><span class="line">      return &#123; &#x2F;&#x2F;设置一个变量来控制显示隐藏,vue直接会关联到dom</span><br><span class="line">        detailShow: false </span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">      showDetail()&#123;</span><br><span class="line">        this.detailShow &#x3D; true;  &#x2F;&#x2F;变量控制显示公告详情页</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    created()&#123; &#x2F;&#x2F;主要看这个classMap</span><br><span class="line">      this.classMap &#x3D; [&#39;decrease&#39;, &#39;discount&#39;, &#39;special&#39;, &#39;invoice&#39;, &#39;guarantee&#39;];</span><br><span class="line">    &#125;,</span><br><span class="line">    components: &#123;</span><br><span class="line">      &#39;star&#39;: star</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是:</p>
+<blockquote>
+<p>使用一个classMap的映射方法来实现数字和类型之间的转换</p>
+</blockquote>
+<p>元数据supports是一个数组:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&quot;supports&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;type&quot;: 0,</span><br><span class="line">        &quot;description&quot;: &quot;在线支付满28减5&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;type&quot;: 1,</span><br><span class="line">        &quot;description&quot;: &quot;VC无限橙果汁全场8折&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;type&quot;: 2,</span><br><span class="line">        &quot;description&quot;: &quot;单人精彩套餐&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;type&quot;: 3,</span><br><span class="line">        &quot;description&quot;: &quot;该商家支持发票,请下单写好发票抬头&quot;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;type&quot;: 4,</span><br><span class="line">        &quot;description&quot;: &quot;已加入“外卖保”计划,食品安全保障&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br></pre></td></tr></table></figure>
+<p>然后页面需要根据不同的type来显示不同的description,并且还要显示不同的图片</p>
+<p>这就需要做一个关联,将数组的值跟图片关联起来,而图片的关联是根据class来识别的,从而可以实现数组的方式来调用对应的图片.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--这是css里面的--&gt;</span><br><span class="line">&amp;.decrease</span><br><span class="line">  bg-image(&#39;decrease_1&#39;)</span><br><span class="line">&amp;.discount</span><br><span class="line">  bg-image(&#39;discount_1&#39;)</span><br><span class="line">&amp;.guarantee</span><br><span class="line">  bg-image(&#39;guarantee_1&#39;)</span><br><span class="line">&amp;.invoice</span><br><span class="line">  bg-image(&#39;invoice_1&#39;)</span><br><span class="line">&amp;.special</span><br><span class="line">  bg-image(&#39;special_1&#39;)</span><br></pre></td></tr></table></figure>
+<p>通过做一个对应关系</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">this.classMap &#x3D; [&#39;decrease&#39;, &#39;discount&#39;, &#39;special&#39;, &#39;invoice&#39;, &#39;guarantee&#39;];</span><br><span class="line">&#x2F;&#x2F;classMap数组的顺序就对应supports数组的顺序</span><br><span class="line">&#x2F;&#x2F;例如supports数组的第一个元素就对应decrease,而decrease又对应到.decrease的class</span><br><span class="line">classMap[seller.supports[0].type] &#x2F;&#x2F;seller.supports[0].type就是0,然后classMap的第0个就是decrease,就能够指向到.decrease</span><br></pre></td></tr></table></figure>
+<p>这里只需要用数组第一个元素即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;div v-if&#x3D;&quot;seller.supports&quot; class&#x3D;&quot;supports&quot;&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;icon&quot; :class&#x3D;&quot;classMap[seller.supports[0].type]&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;text&quot;&gt;&#123;&#123;seller.supports[0].description&#125;&#125;&lt;&#x2F;span&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<p>这里是用到全部的元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul v-if&#x3D;&quot;seller.supports&quot; class&#x3D;&quot;supports&quot;&gt;</span><br><span class="line">    &lt;li class&#x3D;&quot;support-item&quot; v-for&#x3D;&quot;(item,index) in seller.supports&quot;&gt;</span><br><span class="line">        &lt;span class&#x3D;&quot;icon&quot; :class&#x3D;&quot;classMap[seller.supports[index].type]&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">        &lt;span class&#x3D;&quot;text&quot;&gt;&#123;&#123;seller.supports[index].description&#125;&#125;&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;&#x2F;li&gt;</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br></pre></td></tr></table></figure>
+<p>css部分</p>
+<ul>
+<li>考虑到行内元素的不一致的对齐,需要大量使用line-height和vertical-align</li>
+<li>font-size为0,为了去掉行内元素的间隙,这个可以继承,所以需要在子孙元素里面再单独设置font-size</li>
+<li>对于text-overflow:ellipsis的长度取决于块的长度</li>
+<li>用合并代替换行来取消多余字符,这种情况也是可以避免设置font-size为0</li>
+<li>使用vertical-align :top之后还需要margin-top :7px,在没办法完全对齐的情况下使用</li>
+<li>clearfix的css sticky footer部分需要参看:vue动画效果配置和弹层css sticky footer原理</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br></pre></td><td class="code"><pre><span class="line">&lt;style lang&#x3D;&quot;stylus&quot; rel&#x3D;&quot;stylesheet&#x2F;stylus&quot;&gt;</span><br><span class="line">  @import &quot;..&#x2F;..&#x2F;common&#x2F;stylus&#x2F;mixin.styl&quot; &#x2F;&#x2F;导入minxin</span><br><span class="line"></span><br><span class="line">  .header</span><br><span class="line">    position relative &#x2F;&#x2F;这里的相对定位是为了让下面的绝对定位做参考</span><br><span class="line">    overflow: hidden</span><br><span class="line">    color: #ffffff</span><br><span class="line">    background: rgba(7, 17, 27, 0.5)</span><br><span class="line">    .content-wrapper</span><br><span class="line">      padding: 24px 12px 18px 24px</span><br><span class="line">      font-size: 0 &#x2F;&#x2F;这里为0是为了去掉行内元素的间隙,这个可以继承,所以需要在子孙元素里面再单独设置font-size</span><br><span class="line">      position: relative &#x2F;&#x2F;这里的相对定位是为了让下面的绝对定位做参考</span><br><span class="line">      .avatar</span><br><span class="line">        display: inline-block</span><br><span class="line">        vertical-align: top</span><br><span class="line">        img</span><br><span class="line">          border-radius: 2px</span><br><span class="line">      .content</span><br><span class="line">        display: inline-block</span><br><span class="line">        margin-left: 16px</span><br><span class="line">        .title</span><br><span class="line">          margin: 2px 0 8px 0</span><br><span class="line">          .brand</span><br><span class="line">            display: inline-block</span><br><span class="line">            vertical-align: top</span><br><span class="line">            width: 30px</span><br><span class="line">            height: 18px</span><br><span class="line">            bg-image(&#39;brand&#39;) &#x2F;&#x2F;这里使用了一个图片的mixin</span><br><span class="line">            background-size: 30px 18px</span><br><span class="line">            background-repeat: no-repeat</span><br><span class="line">          .name</span><br><span class="line">            margin-left: 6px</span><br><span class="line">            font-size: 16px</span><br><span class="line">            line-height: 18px</span><br><span class="line">            font-weight: bold</span><br><span class="line">        .description</span><br><span class="line">          margin-bottom: 10px</span><br><span class="line">          line-height: 12px</span><br><span class="line">          font-size: 12px</span><br><span class="line">        .supports</span><br><span class="line">          .icon</span><br><span class="line">            display: inline-block</span><br><span class="line">            vertical-align: top</span><br><span class="line">            width: 12px</span><br><span class="line">            height: 12px</span><br><span class="line">            margin-right: 4px</span><br><span class="line">            background-size: 12px 12px</span><br><span class="line">            background-repeat: no-repeat</span><br><span class="line">            &amp;.decrease &#x2F;&#x2F;这里就是配合classMap进行图片切换的</span><br><span class="line">              bg-image(&#39;decrease_1&#39;) &#x2F;&#x2F;这是图片的mixin,在mixin.styl里面可以看到</span><br><span class="line">            &amp;.discount</span><br><span class="line">              bg-image(&#39;discount_1&#39;)</span><br><span class="line">            &amp;.guarantee</span><br><span class="line">              bg-image(&#39;guarantee_1&#39;)</span><br><span class="line">            &amp;.invoice</span><br><span class="line">              bg-image(&#39;invoice_1&#39;)</span><br><span class="line">            &amp;.special</span><br><span class="line">              bg-image(&#39;special_1&#39;)</span><br><span class="line">          .text</span><br><span class="line">            line-height: 12px</span><br><span class="line">            font-size: 10px</span><br><span class="line">      .support-count</span><br><span class="line">        position: absolute</span><br><span class="line">        right: 12px</span><br><span class="line">        bottom: 14px</span><br><span class="line">        padding: 0 8px</span><br><span class="line">        height: 24px</span><br><span class="line">        line-height: 24px</span><br><span class="line">        border-radius: 14px</span><br><span class="line">        background: rgba(0, 0, 0, 0.2)</span><br><span class="line">        text-align: center</span><br><span class="line">        .count</span><br><span class="line">          vertical-align: top &#x2F;&#x2F;考虑到行内元素的不一致的对齐,需要大量使用line-height和vertical-align</span><br><span class="line">          font-size: 10px</span><br><span class="line">        .icon-keyboard_arrow_right</span><br><span class="line">          margin-left: 2px</span><br><span class="line">          line-height: 24px</span><br><span class="line">          font-size: 10px</span><br><span class="line">    .bulletin-wrapper</span><br><span class="line">      position: relative &#x2F;&#x2F;做相对定位,给icon-keyboard_arrow_right绝对定位做参照</span><br><span class="line">      height: 28px</span><br><span class="line">      line-height: 28px</span><br><span class="line">      padding: 0 22px 0 12px</span><br><span class="line">      white-space: nowrap</span><br><span class="line">      overflow: hidden</span><br><span class="line">      text-overflow: ellipsis &#x2F;&#x2F;这里是字数太长的省略处理</span><br><span class="line">      background: rgba(7, 17, 27, 0.2)</span><br><span class="line">      .bulletin-title</span><br><span class="line">        display: inline-block</span><br><span class="line">        vertical-align: top</span><br><span class="line">        margin-top: 8px</span><br><span class="line">        width: 22px</span><br><span class="line">        height: 12px</span><br><span class="line">        bg-image(&#39;bulletin&#39;)</span><br><span class="line">        background-size: 22px</span><br><span class="line">      .bulletin-text</span><br><span class="line">        vertical-align: top</span><br><span class="line">        margin: 0 4px</span><br><span class="line">        font-size: 10px</span><br><span class="line">        font-weight: 200</span><br><span class="line">      .icon-keyboard_arrow_right</span><br><span class="line">        position: absolute</span><br><span class="line">        font-size: 10px</span><br><span class="line">        right: 12px</span><br><span class="line">        top: 8px</span><br><span class="line">    .background &#x2F;&#x2F;这里使用的是图片做背景,所以需要做下面这些处理</span><br><span class="line">      position absolute &#x2F;&#x2F;背景图片需要绝对定位</span><br><span class="line">      top: 0 &#x2F;&#x2F;设置位置</span><br><span class="line">      left: 0</span><br><span class="line">      width: 100% &#x2F;&#x2F;设置大小</span><br><span class="line">      height: 100%</span><br><span class="line">      z-index: -1 &#x2F;&#x2F;将背景图片设置里层,避免突出位置看到外露部分</span><br><span class="line">      filter: blur(10px) &#x2F;&#x2F;背景图片虚化</span><br><span class="line">    .detail</span><br><span class="line">      position: fixed &#x2F;&#x2F;弹出层,所以用fixed</span><br><span class="line">      z-index: 100 &#x2F;&#x2F;需要设置z-index保持一定的高度</span><br><span class="line">      top: 0</span><br><span class="line">      left: 0</span><br><span class="line">      width: 100%</span><br><span class="line">      height: 100%</span><br><span class="line">      overflow: auto &#x2F;&#x2F;加overflow hidden来把多余的背景阴影去掉</span><br><span class="line">      opacity: 1 &#x2F;&#x2F;这是动画设置</span><br><span class="line">      background: rgba(7, 17, 27, 0.8)</span><br><span class="line">      &amp;.fade-enter-active, &amp;.fade-leave-active &#x2F;&#x2F;vue的动画需要参考vue动画配置理解</span><br><span class="line">        transition: all 0.5s</span><br><span class="line">      &amp;.fade-enter, &amp;.fade-leave-active</span><br><span class="line">        opacity: 0</span><br><span class="line">        background: rgba(7, 17, 27, 0)</span><br><span class="line">      .detail-wrapper</span><br><span class="line">        width: 100%</span><br><span class="line">        min-height: 100% &#x2F;&#x2F;因为不知道有多少内容,所以用min-height</span><br><span class="line">        .detail-main</span><br><span class="line">          margin-top: 64px</span><br><span class="line">          padding-bottom: 64px &#x2F;&#x2F;预留下面close按钮的位置,所以下内边距顶起</span><br><span class="line">          .name</span><br><span class="line">            line-height: 16px</span><br><span class="line">            text-align: center</span><br><span class="line">            font-size: 16px</span><br><span class="line">            font-weight: 700</span><br><span class="line">          .star-wrapper</span><br><span class="line">            margin-top: 18px</span><br><span class="line">            padding: 2px 0</span><br><span class="line">            text-align center</span><br><span class="line">          .title</span><br><span class="line">            display: flex &#x2F;&#x2F;使用flex布局等分详情页优惠界面</span><br><span class="line">            width: 80%</span><br><span class="line">            margin: 28px auto 24px auto</span><br><span class="line">            .line</span><br><span class="line">              flex: 1 &#x2F;&#x2F;使用1的比例的flex块</span><br><span class="line">              position: relative &#x2F;&#x2F;这里使用相对布局加top对齐,可以也可以margin-bottom</span><br><span class="line">              top: -6px</span><br><span class="line">              border-bottom: 1px solid rgba(255, 255, 255, 0.2) &#x2F;&#x2F;使用border生成线,因为使用的是div</span><br><span class="line">            .text</span><br><span class="line">              padding: 0 12px</span><br><span class="line">              font-size: 14px</span><br><span class="line">              font-weight 700</span><br><span class="line">          .supports</span><br><span class="line">            width: 80%</span><br><span class="line">            margin: 0 auto</span><br><span class="line">            .support-item</span><br><span class="line">              padding: 0 12px</span><br><span class="line">              margin-bottom: 12px</span><br><span class="line">              font-size: 0</span><br><span class="line">              &amp;:last-child</span><br><span class="line">                margin-bottom: 0</span><br><span class="line">              .icon</span><br><span class="line">                display: inline-block</span><br><span class="line">                width: 16px</span><br><span class="line">                height: 16px</span><br><span class="line">                vertical-align: top</span><br><span class="line">                margin-right: 6px</span><br><span class="line">                background-size: 16px 16px</span><br><span class="line">                background-repeat: no-repeat</span><br><span class="line">                &#x2F;&#x2F;通过对应不同的class来对应不同的图片</span><br><span class="line">                &amp;.decrease</span><br><span class="line">                  bg-image(&#39;decrease_2&#39;)</span><br><span class="line">                &amp;.discount</span><br><span class="line">                  bg-image(&#39;discount_2&#39;)</span><br><span class="line">                &amp;.guarantee</span><br><span class="line">                  bg-image(&#39;guarantee_2&#39;)</span><br><span class="line">                &amp;.invoice</span><br><span class="line">                  bg-image(&#39;invoice_2&#39;)</span><br><span class="line">                &amp;.special</span><br><span class="line">                  bg-image(&#39;special_2&#39;)</span><br><span class="line">              .text</span><br><span class="line">                line-height: 16px</span><br><span class="line">                font-size: 12px</span><br><span class="line">          .bulletin</span><br><span class="line">            width: 80%</span><br><span class="line">            margin: 0 auto</span><br><span class="line">            .content</span><br><span class="line">              padding: 0 12px</span><br><span class="line">              line-height: 24px</span><br><span class="line">              font-size: 12px</span><br><span class="line">      .detail-close</span><br><span class="line">        position: relative</span><br><span class="line">        width: 32px</span><br><span class="line">        height: 32px</span><br><span class="line">        margin: -64px auto 0 auto &#x2F;&#x2F;使用之前预留了的位置</span><br><span class="line">        clear: both</span><br><span class="line">        font-size: 32px</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>备注:</p>
+<p>text-overflow :ellipsis显示在底部.不是中间,是浏览器的显示处理不同关于文字内容溢出用点点点-省略号表示</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/" rel="tag"># 饿了么教程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E8%AF%84%E4%BB%B7%E5%88%97%E8%A1%A8ratings%E7%BB%84%E4%BB%B6/" rel="next" title="评价列表ratings组件">
+                <i class="fa fa-chevron-left"></i> 评价列表ratings组件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E6%98%9F%E6%98%9F%E7%BB%84%E4%BB%B6star.vue/" rel="prev" title="星星组件star.vue">
+                星星组件star.vue <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

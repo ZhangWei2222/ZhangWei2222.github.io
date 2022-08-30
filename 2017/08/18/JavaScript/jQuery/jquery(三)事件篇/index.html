@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="jQuery," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="jQuery鼠标事件之click与dblclick事件前者单击，后者双击 jQuery鼠标事件之mousedown与mouseup事件jQuery鼠标事件之mousemove事件移动事件 jQuery鼠标事件之mouseover与mouseout事件jQuery鼠标事件之mouseenter与mouseleave事件mouseenter事件只会在绑定它的元素上被调用，而不会在后代节点上被触发 jQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jquery(三)事件篇">
+<meta property="og:url" content="https://super-wei.top/2017/08/18/JavaScript/jQuery/jquery(%E4%B8%89)%E4%BA%8B%E4%BB%B6%E7%AF%87/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="jQuery鼠标事件之click与dblclick事件前者单击，后者双击 jQuery鼠标事件之mousedown与mouseup事件jQuery鼠标事件之mousemove事件移动事件 jQuery鼠标事件之mouseover与mouseout事件jQuery鼠标事件之mouseenter与mouseleave事件mouseenter事件只会在绑定它的元素上被调用，而不会在后代节点上被触发 jQ">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-08-18T07:15:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.008Z">
+<meta property="article:author" content="Wei Zhang">
+<meta property="article:tag" content="jQuery">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2017/08/18/JavaScript/jQuery/jquery(三)事件篇/"/>
+
+
+
+
+
+  <title>jquery(三)事件篇 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/08/18/JavaScript/jQuery/jquery(%E4%B8%89)%E4%BA%8B%E4%BB%B6%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">jquery(三)事件篇</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-18T15:15:47+08:00">
+                2017-08-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.5k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="jQuery鼠标事件之click与dblclick事件"><a href="#jQuery鼠标事件之click与dblclick事件" class="headerlink" title="jQuery鼠标事件之click与dblclick事件"></a>jQuery鼠标事件之click与dblclick事件</h4><p>前者单击，后者双击</p>
+<h4 id="jQuery鼠标事件之mousedown与mouseup事件"><a href="#jQuery鼠标事件之mousedown与mouseup事件" class="headerlink" title="jQuery鼠标事件之mousedown与mouseup事件"></a>jQuery鼠标事件之mousedown与mouseup事件</h4><h4 id="jQuery鼠标事件之mousemove事件"><a href="#jQuery鼠标事件之mousemove事件" class="headerlink" title="jQuery鼠标事件之mousemove事件"></a>jQuery鼠标事件之mousemove事件</h4><p>移动事件</p>
+<h4 id="jQuery鼠标事件之mouseover与mouseout事件"><a href="#jQuery鼠标事件之mouseover与mouseout事件" class="headerlink" title="jQuery鼠标事件之mouseover与mouseout事件"></a>jQuery鼠标事件之mouseover与mouseout事件</h4><h4 id="jQuery鼠标事件之mouseenter与mouseleave事件"><a href="#jQuery鼠标事件之mouseenter与mouseleave事件" class="headerlink" title="jQuery鼠标事件之mouseenter与mouseleave事件"></a>jQuery鼠标事件之mouseenter与mouseleave事件</h4><p>mouseenter事件只会在绑定它的元素上被调用，而不会在后代节点上被触发</p>
+<h4 id="jQuery鼠标事件之hover事件"><a href="#jQuery鼠标事件之hover事件" class="headerlink" title="jQuery鼠标事件之hover事件"></a>jQuery鼠标事件之hover事件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(selector).hover(handlerIn, handlerOut)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>handlerIn(eventObject)：当鼠标指针进入元素时触发执行的事件函数</li>
+<li>handlerOut(eventObject)：当鼠标指针离开元素时触发执行的事件函数<h4 id="jQuery鼠标事件之focusin事件"><a href="#jQuery鼠标事件之focusin事件" class="headerlink" title="jQuery鼠标事件之focusin事件"></a>jQuery鼠标事件之focusin事件</h4>当一个元素，或者其内部任何一个元素获得焦点的时候，例如：input元素，用户在点击聚焦的时候，如果开发者需要捕获这个动作的时候，jQuery提供了一个focusin事件</li>
+</ul>
+<h4 id="jQuery鼠标事件之focusout事件"><a href="#jQuery鼠标事件之focusout事件" class="headerlink" title="jQuery鼠标事件之focusout事件"></a>jQuery鼠标事件之focusout事件</h4><p>当一个元素，或者其内部任何一个元素失去焦点的时候，比如input元素，用户在点击失去焦的时候，如果开发者需要捕获这个动作，jQuery提供了一个focusout事件</p>
+<h4 id="jQuery表单事件之blur与focus事件"><a href="#jQuery表单事件之blur与focus事件" class="headerlink" title="jQuery表单事件之blur与focus事件"></a>jQuery表单事件之blur与focus事件</h4><p>focus与blur事件：不支持冒泡，focusin与focusout支持冒泡</p>
+<h4 id="jQuery表单事件之change事件"><a href="#jQuery表单事件之change事件" class="headerlink" title="jQuery表单事件之change事件"></a>jQuery表单事件之change事件</h4><p>元素，和元素的值都是可以发生改变的，开发者可以通过change事件去监听这些改变的动作</p>
+<p>(1).input元素<br>监听value值的变化，当有改变时，失去焦点后触发change事件。对于单选按钮和复选框，当用户用鼠标做出选择时，该事件立即触发。</p>
+<p>(2).select元素<br>对于下拉选择框，当用户用鼠标作出选择时，该事件立即触发</p>
+<p>(3).textarea元素<br>多行文本输入框，当有改变时，失去焦点后触发change事件</p>
+<h4 id="jQuery表单事件之select事件"><a href="#jQuery表单事件之select事件" class="headerlink" title="jQuery表单事件之select事件"></a>jQuery表单事件之select事件</h4><p>当 textarea 或文本类型的 input 元素中的文本被选择时，会发生 select 事件。</p>
+<p>select事件只能用于<input>元素与<textarea>元素</p>
+<h4 id="jQuery表单事件之submit事件"><a href="#jQuery表单事件之submit事件" class="headerlink" title="jQuery表单事件之submit事件"></a>jQuery表单事件之submit事件</h4><p>(1).具体能触发submit事件的行为：<br> 提交提交</p>
+<p>当某些表单元素获取焦点时，敲击Enter（回车键）</p>
+<p>(2).这里需要特别注意：<br>form元素是有默认提交表单的行为，如果通过submit处理的话，需要禁止浏览器的这个默认行为<br>传统的方式是调用事件对象 e.preventDefault() 来处理， jQuery中可以直接在函数中最后结尾return false即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;#target&quot;).submit(function(data) &#123; </span><br><span class="line">   return false; &#x2F;&#x2F;阻止默认行为，提交表单</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="13-jQuery键盘事件之keydown-与keyup-事件"><a href="#13-jQuery键盘事件之keydown-与keyup-事件" class="headerlink" title="13.jQuery键盘事件之keydown()与keyup()事件"></a>13.jQuery键盘事件之keydown()与keyup()事件</h4><h4 id="14-jQuery键盘事件之keypress-事件"><a href="#14-jQuery键盘事件之keypress-事件" class="headerlink" title="14.jQuery键盘事件之keypress()事件"></a>14.jQuery键盘事件之keypress()事件</h4><p>在input元素上绑定keydown事件会发现一个问题：<br>每次获取的内容都是之前输入的，当前输入的获取不到</p>
+<p>keypress()可以捕获当前的值，但是中文不可以，e.target.value返回之前所有的输入字符，这个时候中文 就会被提取并打印出来！</p>
+<h4 id="15-on-的多事件绑定"><a href="#15-on-的多事件绑定" class="headerlink" title="15.on()的多事件绑定"></a>15.on()的多事件绑定</h4><p>(1).基本用法：.on( events ,[ selector ] ,[ data ] )</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;#elem&quot;).click(function()&#123;&#125;)  &#x2F;&#x2F;快捷方式</span><br><span class="line">$(&quot;#elem&quot;).on(&#39;click&#39;,function()&#123;&#125;) &#x2F;&#x2F;on方式</span><br><span class="line">最大的不同点就是on是可以自定义事件名</span><br></pre></td></tr></table></figure>
+<p>(2).多个事件绑定同一个函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;#elem&quot;).on(&quot;mouseover mouseout&quot;,function()&#123; &#125;);</span><br></pre></td></tr></table></figure>
+<p>(3).多个事件绑定不同函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;#elem&quot;).on(&#123;</span><br><span class="line">    mouseover:function()&#123;&#125;,  </span><br><span class="line">    mouseout:function()&#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>(4).将数据传递到处理程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function greet( event ) &#123;</span><br><span class="line">  alert( &quot;Hello &quot; + event.data.name ); &#x2F;&#x2F;Hello 慕课网</span><br><span class="line">&#125;</span><br><span class="line">$( &quot;button&quot; ).on( &quot;click&quot;, &#123;</span><br><span class="line">  name: &quot;慕课网&quot;</span><br><span class="line">&#125;, greet );</span><br></pre></td></tr></table></figure>
+<p>可以通过第二参数（对象），当一个事件被触发时，要传递给事件处理函数的</p>
+<h4 id="16-on-的高级用法"><a href="#16-on-的高级用法" class="headerlink" title="16.on()的高级用法"></a>16.on()的高级用法</h4><p>事件绑定在最上层div元素上，当用户触发在a元素上，事件将往上冒泡，一直会冒泡在div元素上。如果提供了第二参数，那么事件在往上冒泡的过程中遇到了选择器匹配的元素，将会触发事件回调函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;left&quot;&gt;</span><br><span class="line">    &lt;p class&#x3D;&quot;aaron&quot;&gt;</span><br><span class="line">        &lt;a&gt;目标节点&lt;&#x2F;a&gt; &#x2F;&#x2F;点击在这个元素上</span><br><span class="line">    &lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">$(&quot;div&quot;).on(&quot;click&quot;,&quot;a&quot;,fn)</span><br></pre></td></tr></table></figure>
+<h4 id="17-卸载事件off-方法"><a href="#17-卸载事件off-方法" class="headerlink" title="17.卸载事件off()方法"></a>17.卸载事件off()方法</h4><p>(1).绑定2个事件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;elem&quot;).on(&quot;mousedown mouseup&quot;,fn)</span><br></pre></td></tr></table></figure>
+<p>(2).删除一个事件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;elem&quot;).off(&quot;mousedown&quot;)</span><br></pre></td></tr></table></figure>
+<p>(3).删除所有事件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;elem&quot;).off(&quot;mousedown mouseup&quot;)</span><br></pre></td></tr></table></figure>
+<p>快捷方式删除所有事件，这里不需要传递事件名了，节点上绑定的所有事件讲全部销毁</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;elem&quot;).off()</span><br></pre></td></tr></table></figure>
+<h4 id="18-jQuery事件对象的作用"><a href="#18-jQuery事件对象的作用" class="headerlink" title="18.jQuery事件对象的作用"></a>18.jQuery事件对象的作用</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li class&#x3D;&quot;even1&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">    &lt;li class&#x3D;&quot;even2&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">    &lt;li class&#x3D;&quot;even2&quot;&gt;&lt;&#x2F;li&gt;</span><br><span class="line">    .........</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br></pre></td></tr></table></figure>
+<p>ul有N个子元素li(这里只写了3个)，如果我要响应每一个li的事件，那么常规的方法就是需要给所有的li都单独绑定一个事件监听，这样写法很符合逻辑，但是同时有显得繁琐</p>
+<p>因为li都有一个共同的父元素，而且所有的事件都是一致的，这里我们可以采用要一个技巧来处理，也是常说的”事件委托”</p>
+<p>事件没直接和li元素发生关系，而且绑定父元素了。由于浏览器有事件冒泡的这个特性，我们可以在触发li的时候把这个事件往上冒泡到ul上，因为ul上绑定事件响应所以就能够触发这个动作了。唯一的问题怎么才知道触发的li元素是哪个一个？</p>
+<p>这里就引出了事件对象了</p>
+<blockquote>
+<p>事件对象是用来记录一些事件发生时的相关信息的对象。事件对象只有事件发生时才会产生，并且只能是事件处理函数内部访问，在所有事件处理函数运行结束后，事件对象就被销毁</p>
+</blockquote>
+<p>event.target代表当前触发事件的元素，可以通过当前元素对象的一系列属性来判断是不是我们想要的元素</p>
+<h4 id="19-jQuery事件对象的属性和方法"><a href="#19-jQuery事件对象的属性和方法" class="headerlink" title="19.jQuery事件对象的属性和方法"></a>19.jQuery事件对象的属性和方法</h4><p>事件对象的属于与方法有很多，但是我们经常用的只有那么几个，这里我主要说下作用与区别</p>
+<p>(1).event.type：获取事件的类型<br>触发元素的事件类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;a&quot;).click(function(event) &#123;</span><br><span class="line">  alert(event.type); &#x2F;&#x2F; &quot;click&quot;事件</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>(2).event.pageX 和 event.pageY：获取鼠标当前相对于页面的坐标</p>
+<p>通过这2个属性，可以确定元素在当前页面的坐标值，鼠标相对于文档的左边缘的位置（左边）与 （顶边）的距离，简单来说是从页面左上角开始,即是以页面为参考点,不随滑动条移动而变化</p>
+<p>(3).event.preventDefault()</p>
+<p>方法：阻止默认行为<br>这个用的特别多，在执行这个方法后，如果点击一个链接（a标签），浏览器不会跳转到新的 URL 去了。我们可以用 event.isDefaultPrevented() 来确定这个方法是否(在那个事件对象上)被调用过了</p>
+<p>(4).event.stopPropagation() </p>
+<p>方法：阻止事件冒泡<br>事件是可以冒泡的，为防止事件冒泡到DOM树上，也就是不触发的任何前辈元素上的事件处理函数</p>
+<p>(5).event.which：获取在鼠标单击时，单击的是鼠标的哪个键</p>
+<p>event.which 将 event.keyCode 和 event.charCode 标准化了。event.which也将正常化的按钮按下(mousedown 和 mouseupevents)，左键报告1，中间键报告2，右键报告3</p>
+<p>(6).event.currentTarget : </p>
+<p>在事件冒泡过程中的当前DOM元素<br>冒泡前的当前触发事件的DOM对象, 等同于this.</p>
+<p>(7).this和event.target的区别：</p>
+<p>js中事件是会冒泡的，所以this是可以变化的，但event.target不会变化，它永远是直接接受事件的目标DOM元素；</p>
+<p>(8).this和event.target都是dom对象</p>
+<p>如果要使用jquey中的方法可以将他们转换为jquery对象。比如this和$(this)的使用、event.target和$(event.target)的使用；</p>
+<h4 id="20-jQuery自定义事件之trigger事件"><a href="#20-jQuery自定义事件之trigger事件" class="headerlink" title="20.jQuery自定义事件之trigger事件"></a>20.jQuery自定义事件之trigger事件</h4><p>trigger() 方法触发被选元素的指定事件类型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; src&#x3D;&quot;&#x2F;jquery&#x2F;jquery.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">$(document).ready(function()&#123;</span><br><span class="line">  $(&quot;input&quot;).select(function()&#123;</span><br><span class="line">    $(&quot;input&quot;).after(&quot;文本被选中！&quot;);</span><br><span class="line">  &#125;);</span><br><span class="line">  $(&quot;button&quot;).click(function()&#123;</span><br><span class="line">    $(&quot;input&quot;).trigger(&quot;select&quot;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;FirstName&quot; value&#x3D;&quot;Hello World&quot; &#x2F;&gt;</span><br><span class="line">&lt;br &#x2F;&gt;</span><br><span class="line">&lt;button&gt;激活 input 域的 select 事件&lt;&#x2F;button&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="21-jQuery自定义事件之triggerHandler事件"><a href="#21-jQuery自定义事件之triggerHandler事件" class="headerlink" title="21.jQuery自定义事件之triggerHandler事件"></a>21.jQuery自定义事件之triggerHandler事件</h4><p>triggerHandler() 方法触发被选元素的指定事件类型。但不会执行浏览器默认动作，也不会产生事件冒泡。</p>
+<p>triggerHandler() 方法与 trigger() 方法类似。不同的是它不会触发事件（比如表单提交）的默认行为，而且只影响第一个匹配元素。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; src&#x3D;&quot;&#x2F;jquery&#x2F;jquery.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">$(document).ready(function()&#123;</span><br><span class="line">  $(&quot;input&quot;).select(function()&#123;</span><br><span class="line">    $(&quot;input&quot;).after(&quot;发生 Input select 事件！&quot;);</span><br><span class="line">  &#125;);</span><br><span class="line">  $(&quot;button&quot;).click(function()&#123;</span><br><span class="line">    $(&quot;input&quot;).triggerHandler(&quot;select&quot;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;input type&#x3D;&quot;text&quot; name&#x3D;&quot;FirstName&quot; value&#x3D;&quot;Hello World&quot; &#x2F;&gt;</span><br><span class="line">&lt;br &#x2F;&gt;</span><br><span class="line">&lt;button&gt;激活 input 域的 select 事件&lt;&#x2F;button&gt;</span><br><span class="line">&lt;p&gt;请注意，与 trigger() 方法不同，triggerHandler() 方法不会引起所发生事件的默认行为（文本不会被选中）。&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jQuery/" rel="tag"># jQuery</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/18/JavaScript/jQuery/jquery(%E5%9B%9B)%E5%8A%A8%E7%94%BB%E7%AF%87/" rel="next" title="jquery(四)动画篇">
+                <i class="fa fa-chevron-left"></i> jquery(四)动画篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/18/JavaScript/2017/1.%20dom%E4%BA%8B%E4%BB%B6%E6%8E%A2%E7%A7%98/" rel="prev" title="dom事件探秘">
+                dom事件探秘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E4%B9%8Bclick%E4%B8%8Edblclick%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery鼠标事件之click与dblclick事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E4%B9%8Bmousedown%E4%B8%8Emouseup%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery鼠标事件之mousedown与mouseup事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E4%B9%8Bmousemove%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery鼠标事件之mousemove事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E4%B9%8Bmouseover%E4%B8%8Emouseout%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery鼠标事件之mouseover与mouseout事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E4%B9%8Bmouseenter%E4%B8%8Emouseleave%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery鼠标事件之mouseenter与mouseleave事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E4%B9%8Bhover%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery鼠标事件之hover事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E4%B9%8Bfocusin%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery鼠标事件之focusin事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E9%BC%A0%E6%A0%87%E4%BA%8B%E4%BB%B6%E4%B9%8Bfocusout%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery鼠标事件之focusout事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E8%A1%A8%E5%8D%95%E4%BA%8B%E4%BB%B6%E4%B9%8Bblur%E4%B8%8Efocus%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery表单事件之blur与focus事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E8%A1%A8%E5%8D%95%E4%BA%8B%E4%BB%B6%E4%B9%8Bchange%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery表单事件之change事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E8%A1%A8%E5%8D%95%E4%BA%8B%E4%BB%B6%E4%B9%8Bselect%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery表单事件之select事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jQuery%E8%A1%A8%E5%8D%95%E4%BA%8B%E4%BB%B6%E4%B9%8Bsubmit%E4%BA%8B%E4%BB%B6"><span class="nav-text">jQuery表单事件之submit事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-jQuery%E9%94%AE%E7%9B%98%E4%BA%8B%E4%BB%B6%E4%B9%8Bkeydown-%E4%B8%8Ekeyup-%E4%BA%8B%E4%BB%B6"><span class="nav-text">13.jQuery键盘事件之keydown()与keyup()事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-jQuery%E9%94%AE%E7%9B%98%E4%BA%8B%E4%BB%B6%E4%B9%8Bkeypress-%E4%BA%8B%E4%BB%B6"><span class="nav-text">14.jQuery键盘事件之keypress()事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-on-%E7%9A%84%E5%A4%9A%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A"><span class="nav-text">15.on()的多事件绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-on-%E7%9A%84%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="nav-text">16.on()的高级用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17-%E5%8D%B8%E8%BD%BD%E4%BA%8B%E4%BB%B6off-%E6%96%B9%E6%B3%95"><span class="nav-text">17.卸载事件off()方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#18-jQuery%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">18.jQuery事件对象的作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#19-jQuery%E4%BA%8B%E4%BB%B6%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7%E5%92%8C%E6%96%B9%E6%B3%95"><span class="nav-text">19.jQuery事件对象的属性和方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#20-jQuery%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6%E4%B9%8Btrigger%E4%BA%8B%E4%BB%B6"><span class="nav-text">20.jQuery自定义事件之trigger事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#21-jQuery%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6%E4%B9%8BtriggerHandler%E4%BA%8B%E4%BB%B6"><span class="nav-text">21.jQuery自定义事件之triggerHandler事件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

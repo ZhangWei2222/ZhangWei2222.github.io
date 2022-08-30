@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景js 是单线程的，意味着一个 nodejs 进程只能运行在单个 cpu上面。nodejs 在 io 处理方面是非常优秀的，但是在密集运算型应用中仍然有不足之处，而解决的办法，就是利用多核cpu的并发优势，将 nodejs 进程运行在各个 cpu 上面。而 egg 为我们提供了 egg-cluster 模块，用于多进程管理以及进程间通信。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Egg-Cluster 多进程模型">
+<meta property="og:url" content="https://super-wei.top/2022/03/09/NodeJS/Egg/2.%20Egg-Cluster%20%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="背景js 是单线程的，意味着一个 nodejs 进程只能运行在单个 cpu上面。nodejs 在 io 处理方面是非常优秀的，但是在密集运算型应用中仍然有不足之处，而解决的办法，就是利用多核cpu的并发优势，将 nodejs 进程运行在各个 cpu 上面。而 egg 为我们提供了 egg-cluster 模块，用于多进程管理以及进程间通信。">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203091751391.awebp">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203091756100.awebp">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203091802830.awebp">
+<meta property="article:published_time" content="2022-03-09T09:34:37.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.031Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203091751391.awebp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2022/03/09/NodeJS/Egg/2. Egg-Cluster 多进程模型/"/>
+
+
+
+
+
+  <title>Egg-Cluster 多进程模型 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2022/03/09/NodeJS/Egg/2.%20Egg-Cluster%20%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Egg-Cluster 多进程模型</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-09T17:34:37+08:00">
+                2022-03-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.9k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>js 是单线程的，意味着一个 nodejs 进程只能运行在单个 cpu上面。nodejs 在 io 处理方面是非常优秀的，但是在密集运算型应用中仍然有不足之处，而解决的办法，就是<strong>利用多核cpu的并发优势</strong>，将 nodejs 进程运行在各个 cpu 上面。而 egg 为我们提供了 egg-cluster 模块，用于多进程管理以及进程间通信。</p>
+<a id="more"></a>
+
+
+
+<h2 id="egg-cluster介绍"><a href="#egg-cluster介绍" class="headerlink" title="egg-cluster介绍"></a>egg-cluster介绍</h2><p>简单的说：</p>
+<ul>
+<li>在服务器上同时启动多个进程。</li>
+<li>每个进程里都跑的是同一份源代码（好比把以前一个进程的工作分给多个进程去做）。</li>
+<li>更神奇的是，这些进程可以同时监听一个端口。</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li>负责启动其他进程的叫做 Master 进程，他好比是个『包工头』，不做具体的工作，只负责启动其他进程。</li>
+<li>其他被启动的叫 Worker 进程，顾名思义就是干活的『工人』。它们接收请求，对外提供服务。</li>
+<li>Worker 进程的数量一般根据服务器的 CPU 核数来定，这样就可以完美利用多核资源。</li>
+</ul>
+<h2 id="多进程模型"><a href="#多进程模型" class="headerlink" title="多进程模型"></a>多进程模型</h2><p><img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203091751391.awebp" alt="img"></p>
+<p>master 进程充当了进程管理的工作，不会运行任何业务代码，它负责 agent，worker 进程的 start，reload 工作以及进程间消息转发等工作。</p>
+<p>为什么需要 agent 进程呢？</p>
+<blockquote>
+<p>有些工作其实不需要每个 Worker 都去做，如果都做，一来是浪费资源，更重要的是可能会导致多进程间资源访问冲突。</p>
+<p>Agent<br> 在大部分情况下，我们在写业务代码的时候完全不用考虑 Agent 进程的存在，但是当我们遇到一些场景，只想让代码运行在一个进程上的时候，Agent 进程就到了发挥作用的时候了。 由于 Agent 只有一个，而且会负责许多维持连接的脏活累活，因此它不能轻易挂掉和重启，所以 Agent 进程在监听到未捕获异常时不会退出，但是会打印出错误日志，我们需要对日志中的未捕获异常提高警惕。</p>
+</blockquote>
+<h3 id="为什么不会端口冲突？"><a href="#为什么不会端口冲突？" class="headerlink" title="为什么不会端口冲突？"></a>为什么不会端口冲突？</h3><blockquote>
+<p>当 fork 进程时，明明代码中已经监听了一个端口，为什么 fork 时没有报端口占用？</p>
+</blockquote>
+<p>cluster 的工作原理：<strong>通过进程间ipc通信传递句柄从而共享文件描述符</strong></p>
+<ol>
+<li>在 master-worker 模式中，创建子进程后，父子进程将会创建 ipc 通道，进程间通过 ipc 通道，使用 message 和 send 进行消息传递。用法如下：</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// parent.js</span></span><br><span class="line"><span class="keyword">var</span> n = <span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>).fork(__dirname + <span class="string">&#x27;child.js&#x27;</span>)</span><br><span class="line">n.on(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">m</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;parent get msg:&#x27;</span>+  m)  </span><br><span class="line">&#125;)</span><br><span class="line">n.send(&#123;<span class="attr">hello</span>: <span class="string">&#x27;world&#x27;</span>&#125;)</span><br><span class="line"><span class="comment">// child.js</span></span><br><span class="line">process.on(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">m</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;child get msg&#x27;</span> + m)</span><br><span class="line">&#125;)</span><br><span class="line">process.send(&#123;<span class="attr">hello</span>: <span class="string">&#x27;world&#x27;</span>&#125;)</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>为了解决端口不能重复监听的问题，在 nodev0.5.9 中引入了进程间发送句柄的功能（句柄是一种可以用来标识资源的引用，它的内部 包含了指向对象的文件描述符，比如句柄可以用来标识一个socket对象 ，一个UDP套接字，一个管道等）。send方法出了可以发送数据，还可以发送句柄。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">child.send(params, [sendHandle])</span><br></pre></td></tr></table></figure>
+<p>详细用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// parent.js</span></span><br><span class="line"><span class="keyword">var</span> n = <span class="built_in">require</span>(<span class="string">&#x27;child_process&#x27;</span>).fork(__dirname + <span class="string">&#x27;child.js&#x27;</span>)</span><br><span class="line"><span class="keyword">var</span> server = <span class="built_in">require</span>(<span class="string">&#x27;net&#x27;</span>).createServer();</span><br><span class="line">server.listen(<span class="number">8080</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    n.send(<span class="string">&#x27;server&#x27;</span>, server) <span class="comment">// 发送句柄</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// child.js</span></span><br><span class="line">process.on(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">m, server</span>)</span>&#123;</span><br><span class="line">    server.on(<span class="string">&#x27;connection&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">socket</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;child get msg&#x27;</span> + m)</span><br><span class="line">        socket.end(<span class="string">&#x27;handle by child process&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>通过传递 TCP server，我们可以发现，没有异常了，多个子进程可以监听同个端口 。 </p>
+<p>在 node 句柄发送的过程中，多个进程可以监听到相同的端口，而不引起 EADDRINUSE 异常，这是因为，我们独立启动的进程中，tcp 服务端套接字 socket 的文件描述符并不相同，导致监听相同的端口时会抛出异常，由于独立启动的进程互相之间并不知道文件描述符，所以监听相同端口就会失败，但对于 send() 发送的句柄还原出来的服务而言，他们的文件描述符是相同的，所以监听相同端口不会引起异常。</p>
+<h3 id="进程的启动顺序"><a href="#进程的启动顺序" class="headerlink" title="进程的启动顺序"></a>进程的启动顺序</h3><p><code>egg-cluster/master.js</code> 中承担了初始化，启动 agent 和 app 进程，检测状态等工作。我们看一下构造函数中的代码，整个流程在 constructor 中已经很好的提现出来了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">constructor</span>(<span class="params">options</span>)</span> &#123;</span><br><span class="line">  <span class="built_in">super</span>();</span><br><span class="line">  <span class="built_in">this</span>.options = parseOptions(options);</span><br><span class="line">  <span class="comment">// new 一个 Messenger 实例</span></span><br><span class="line">  <span class="built_in">this</span>.messenger = <span class="keyword">new</span> Messenger(<span class="built_in">this</span>);</span><br><span class="line">  <span class="comment">// 借用 ready 模块的方法</span></span><br><span class="line">  ready.mixin(<span class="built_in">this</span>);</span><br><span class="line">  <span class="built_in">this</span>.isProduction = isProduction();</span><br><span class="line">  <span class="built_in">this</span>.isDebug = isDebug();</span><br><span class="line">  ...</span><br><span class="line">  ...</span><br><span class="line">  <span class="comment">// 根据不同运行环境（local、test、prod）设置日志输出级别</span></span><br><span class="line">  <span class="built_in">this</span>.logger = <span class="keyword">new</span> ConsoleLogger(&#123; <span class="attr">level</span>: process.env.EGG_MASTER_LOGGER_LEVEL || <span class="string">&#x27;INFO&#x27;</span> &#125;);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// master 启动成功后通知 parent、app worker、agent</span></span><br><span class="line"><span class="built_in">this</span>.ready(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">this</span>.isStarted = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">const</span> stickyMsg = <span class="built_in">this</span>.options.sticky ? <span class="string">&#x27; with STICKY MODE!&#x27;</span> : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="built_in">this</span>.logger.info(<span class="string">&#x27;[master] %s started on %s://127.0.0.1:%s (%sms)%s&#x27;</span>,</span><br><span class="line">  frameworkPkg.name, <span class="built_in">this</span>.options.https ? <span class="string">&#x27;https&#x27;</span> : <span class="string">&#x27;http&#x27;</span>,</span><br><span class="line">  <span class="built_in">this</span>.options.port, <span class="built_in">Date</span>.now() - startTime, stickyMsg);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> action = <span class="string">&#x27;egg-ready&#x27;</span>;</span><br><span class="line">  <span class="built_in">this</span>.messenger.send(&#123; action, <span class="attr">to</span>: <span class="string">&#x27;parent&#x27;</span> &#125;);</span><br><span class="line">  <span class="built_in">this</span>.messenger.send(&#123; action, <span class="attr">to</span>: <span class="string">&#x27;app&#x27;</span>, <span class="attr">data</span>: <span class="built_in">this</span>.options &#125;);</span><br><span class="line">  <span class="built_in">this</span>.messenger.send(&#123; action, <span class="attr">to</span>: <span class="string">&#x27;agent&#x27;</span>, <span class="attr">data</span>: <span class="built_in">this</span>.options &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 监听 agent 退出</span></span><br><span class="line"><span class="built_in">this</span>.on(<span class="string">&#x27;agent-exit&#x27;</span>, <span class="built_in">this</span>.onAgentExit.bind(<span class="built_in">this</span>));</span><br><span class="line"><span class="comment">// 监听 agent 启动</span></span><br><span class="line"><span class="built_in">this</span>.on(<span class="string">&#x27;agent-start&#x27;</span>, <span class="built_in">this</span>.onAgentStart.bind(<span class="built_in">this</span>));</span><br><span class="line"><span class="comment">// 监听 app worker 退出</span></span><br><span class="line"><span class="built_in">this</span>.on(<span class="string">&#x27;app-exit&#x27;</span>, <span class="built_in">this</span>.onAppExit.bind(<span class="built_in">this</span>));</span><br><span class="line"><span class="comment">// 监听 app worker 启动</span></span><br><span class="line"><span class="built_in">this</span>.on(<span class="string">&#x27;app-start&#x27;</span>, <span class="built_in">this</span>.onAppStart.bind(<span class="built_in">this</span>));</span><br><span class="line"><span class="comment">// 开发环境下监听 app worker 重启</span></span><br><span class="line"><span class="built_in">this</span>.on(<span class="string">&#x27;reload-worker&#x27;</span>, <span class="built_in">this</span>.onReload.bind(<span class="built_in">this</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听 agent 启动，注意这里只执行一次</span></span><br><span class="line"><span class="built_in">this</span>.once(<span class="string">&#x27;agent-start&#x27;</span>, <span class="built_in">this</span>.forkAppWorkers.bind(<span class="built_in">this</span>));</span><br><span class="line"><span class="comment">// master监听自身的退出及退出后的处理</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// kill(2) Ctrl-C     监听 SIGINT 信号</span></span><br><span class="line">process.once(<span class="string">&#x27;SIGINT&#x27;</span>, <span class="built_in">this</span>.onSignal.bind(<span class="built_in">this</span>, <span class="string">&#x27;SIGINT&#x27;</span>));</span><br><span class="line"><span class="comment">// kill(3) Ctrl-\     监听 SIGQUIT 信号</span></span><br><span class="line">process.once(<span class="string">&#x27;SIGQUIT&#x27;</span>, <span class="built_in">this</span>.onSignal.bind(<span class="built_in">this</span>, <span class="string">&#x27;SIGQUIT&#x27;</span>));</span><br><span class="line"><span class="comment">// kill(15) default   监听 SIGTERM 信号</span></span><br><span class="line">process.once(<span class="string">&#x27;SIGTERM&#x27;</span>, <span class="built_in">this</span>.onSignal.bind(<span class="built_in">this</span>, <span class="string">&#x27;SIGTERM&#x27;</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听 exit 事件</span></span><br><span class="line">process.once(<span class="string">&#x27;exit&#x27;</span>, <span class="built_in">this</span>.onExit.bind(<span class="built_in">this</span>));</span><br><span class="line"><span class="comment">// 监听端口冲突</span></span><br><span class="line">detectPort(<span class="function">(<span class="params">err, port</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">/* istanbul ignore if */</span></span><br><span class="line">  <span class="keyword">if</span> (err) &#123;</span><br><span class="line">    err.name = <span class="string">&#x27;ClusterPortConflictError&#x27;</span>;</span><br><span class="line">    err.message = <span class="string">&#x27;[master] try get free port error, &#x27;</span> + err.message;</span><br><span class="line">    <span class="built_in">this</span>.logger.error(err);</span><br><span class="line">    process.exit(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">this</span>.options.clusterPort = port;</span><br><span class="line">  <span class="built_in">this</span>.forkAgentWorker(); <span class="comment">// 如果端口没有冲突则执行该方法</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>master继承eventEmitter，使用发布订阅模式监听消息。 构造函数中的流程如下:</p>
+<ol>
+<li>使用 <code>detect-port</code> 来获取空闲的端口</li>
+<li><code>forkAgentWorker</code> 使用 child_process.fork() 来启动 agent 进程，启动后通过 <code>process.send </code>通知 master agent 已经启动</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">agent.ready(<span class="function">() =&gt;</span> &#123;</span><br><span class="line"> agent.removeListener(<span class="string">&#x27;error&#x27;</span>, startErrorHandler);</span><br><span class="line"> process.send(&#123; <span class="attr">action</span>: <span class="string">&#x27;agent-start&#x27;</span>, <span class="attr">to</span>: <span class="string">&#x27;master&#x27;</span> &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><code>forkAppWorkers</code>:  agent 启动后，通过 <code>cluster.fork()</code>启动 app_worker 进程。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fork app workers after agent started</span></span><br><span class="line"><span class="built_in">this</span>.once(<span class="string">&#x27;agent-start&#x27;</span>, <span class="built_in">this</span>.forkAppWorkers.bind(<span class="built_in">this</span>));</span><br></pre></td></tr></table></figure>
+<p>这里是使用了 <code>cfork</code> 模块，其本质也是 <code>cluster.fork()</code>，默认启动进程数为 <code>os.cpu.length</code>，也可以通过启动参数来指定 worker 进程的数量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cfork(&#123;</span><br><span class="line">  exec: <span class="built_in">this</span>.getAppWorkerFile(),</span><br><span class="line">  args,</span><br><span class="line">  silent: <span class="literal">false</span>,</span><br><span class="line">  count: <span class="built_in">this</span>.options.workers,</span><br><span class="line">  <span class="comment">// don&#x27;t refork in local env</span></span><br><span class="line">  refork: <span class="built_in">this</span>.isProduction,</span><br><span class="line">  windowsHide: process.platform === <span class="string">&#x27;win32&#x27;</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>启动成功后，通过messenger告知master，worker进程已经ready</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.messenger.send(&#123;</span><br><span class="line">  action: <span class="string">&#x27;app-start&#x27;</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    workerPid: worker.process.pid,</span><br><span class="line">    address,</span><br><span class="line">  &#125;,</span><br><span class="line">  to: <span class="string">&#x27;master&#x27;</span>,</span><br><span class="line">  <span class="keyword">from</span>: <span class="string">&#x27;app&#x27;</span>,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li><code>onAppStart</code>： app worker 启动成功后通知 agent。并告知parent，egg-ready了，并带上 <code>port,address,protocol</code> 等参数</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.ready(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">this</span>.isStarted = <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">const</span> stickyMsg = <span class="built_in">this</span>.options.sticky ? <span class="string">&#x27; with STICKY MODE!&#x27;</span> : <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="built_in">this</span>.logger.info(<span class="string">&#x27;[master] %s started on %s (%sms)%s&#x27;</span>,</span><br><span class="line">                   frameworkPkg.name, <span class="built_in">this</span>[APP_ADDRESS], <span class="built_in">Date</span>.now() - startTime, stickyMsg);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> action = <span class="string">&#x27;egg-ready&#x27;</span>;</span><br><span class="line">  <span class="built_in">this</span>.messenger.send(&#123;</span><br><span class="line">    action,</span><br><span class="line">    to: <span class="string">&#x27;parent&#x27;</span>,</span><br><span class="line">    data: &#123;</span><br><span class="line">      port: <span class="built_in">this</span>[REAL_PORT],</span><br><span class="line">      address: <span class="built_in">this</span>[APP_ADDRESS],</span><br><span class="line">      protocol: <span class="built_in">this</span>[PROTOCOL],</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="built_in">this</span>.messenger.send(&#123;</span><br><span class="line">    action,</span><br><span class="line">    to: <span class="string">&#x27;app&#x27;</span>,</span><br><span class="line">    data: <span class="built_in">this</span>.options,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="built_in">this</span>.messenger.send(&#123;</span><br><span class="line">    action,</span><br><span class="line">    to: <span class="string">&#x27;agent&#x27;</span>,</span><br><span class="line">    data: <span class="built_in">this</span>.options,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// start check agent and worker status</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.isProduction) &#123;</span><br><span class="line">    <span class="built_in">this</span>.workerManager.startCheck();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li><code>startCheck</code>: 如果在生产环境，每隔10s检测 agent 和 worker，如有异常则上报。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// check agent and worker must both alive</span></span><br><span class="line"><span class="comment">// if exception appear 3 times, emit an exception event</span></span><br><span class="line"><span class="function"><span class="title">startCheck</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">  <span class="built_in">this</span>.exception = <span class="number">0</span>;</span><br><span class="line">  <span class="built_in">this</span>.timer = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> count = <span class="built_in">this</span>.count();</span><br><span class="line">    <span class="keyword">if</span> (count.agent &amp;&amp; count.worker) &#123;</span><br><span class="line">      <span class="built_in">this</span>.exception = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">this</span>.exception++;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.exception &gt;= <span class="number">3</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.emit(<span class="string">&#x27;exception&#x27;</span>, count);</span><br><span class="line">      <span class="built_in">clearInterval</span>(<span class="built_in">this</span>.timer);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, <span class="number">10000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>egg文档上的流程图很好的总结了以上过程：</p>
+<img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203091756100.awebp" alt="img" style="zoom: 67%;" />
+
+
+
+<h2 id="进程间消息通讯"><a href="#进程间消息通讯" class="headerlink" title="进程间消息通讯"></a>进程间消息通讯</h2><h3 id="进程间通信原理（ipc）"><a href="#进程间通信原理（ipc）" class="headerlink" title="进程间通信原理（ipc）"></a>进程间通信原理（ipc）</h3><p>IPC 的全称是 Inter-Process Communication，即进程间通信。</p>
+<p>进程间通信的目的是为了让不同的进程能够互相访问资源，并进程协调工作。实现进程间通信的技术有很多，如命名管道、匿名管道、socket、信号量、共享内存、消息队列、Domain Socket 等。</p>
+<p>node 中实现 IPC 通道的是管道技术（pipe）。在 node 中管道是个抽象层面的称呼，具体细节实现由 libuv 提供，在 win下是命名管道（named pipe）实现，在 Unix下，采用 unix Domain Socket 来实现。</p>
+<blockquote>
+<p><strong>Q:那么，进程间是如何通过 ipc 通道去链接的呢？</strong></p>
+<p>父进程在实际创建子进程前，会创建 IPC 通道并监听它，然后才真正创建出子进程，并通过环境变量（NODE_CHANNEL_FD）告诉子进程这个 IPC 通信的文件描述符。子进程在启动的过程中，根据文件描述符去连接这个已存在的 IPC 通道，从而完成父子进程之间的连接。</p>
+</blockquote>
+<h3 id="egg-cluster-中的进程间通信"><a href="#egg-cluster-中的进程间通信" class="headerlink" title="egg-cluster 中的进程间通信"></a>egg-cluster 中的进程间通信</h3><p>cluster 的 IPC 通道只存在于 Master 和 Worker/Agent 之间，Worker 与 Agent 进程互相间是没有的。那么 Worker 之间想通讯该怎么办呢？是的，通过 Master 来转发</p>
+<img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203091802830.awebp" alt="img" style="zoom:67%;" />
+
+<p>在egg-cluster的源码中，封装了一个messageer类来处理进程间通信，<a href="https://link.juejin.cn/?target=https://github.com/eggjs/egg-cluster/blob/master/lib/utils/messenger.js">代码传送门</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * master messenger,provide communication between parent, master, agent and app.</span></span><br><span class="line"><span class="comment"> *             ┌────────┐</span></span><br><span class="line"><span class="comment"> *             │ parent │</span></span><br><span class="line"><span class="comment"> *            /└────────┘\</span></span><br><span class="line"><span class="comment"> *           /     |      \</span></span><br><span class="line"><span class="comment"> *          /  ┌────────┐  \</span></span><br><span class="line"><span class="comment"> *         /   │ master │   \</span></span><br><span class="line"><span class="comment"> *        /    └────────┘    \</span></span><br><span class="line"><span class="comment"> *       /     /         \    \</span></span><br><span class="line"><span class="comment"> *     ┌───────┐         ┌───────┐</span></span><br><span class="line"><span class="comment"> *     │ agent │ ------- │  app  │</span></span><br><span class="line"><span class="comment"> *     └───────┘         └───────┘</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="title">send</span>(<span class="params">data</span>)</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (!data.from) &#123;</span><br><span class="line">    data.from = <span class="string">&#x27;master&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// recognise receiverPid is to who</span></span><br><span class="line">  <span class="keyword">if</span> (data.receiverPid) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data.receiverPid === <span class="built_in">String</span>(process.pid)) &#123;</span><br><span class="line">      data.to = <span class="string">&#x27;master&#x27;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (data.receiverPid === <span class="built_in">String</span>(<span class="built_in">this</span>.master.agentWorker.pid)) &#123;</span><br><span class="line">      data.to = <span class="string">&#x27;agent&#x27;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      data.to = <span class="string">&#x27;app&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// default from -&gt; to rules</span></span><br><span class="line">  <span class="keyword">if</span> (!data.to) &#123;</span><br><span class="line">    <span class="keyword">if</span> (data.from === <span class="string">&#x27;agent&#x27;</span>) data.to = <span class="string">&#x27;app&#x27;</span>;</span><br><span class="line">    <span class="keyword">if</span> (data.from === <span class="string">&#x27;app&#x27;</span>) data.to = <span class="string">&#x27;agent&#x27;</span>;</span><br><span class="line">    <span class="keyword">if</span> (data.from === <span class="string">&#x27;parent&#x27;</span>) data.to = <span class="string">&#x27;master&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// app -&gt; master</span></span><br><span class="line">  <span class="comment">// agent -&gt; master</span></span><br><span class="line">  <span class="keyword">if</span> (data.to === <span class="string">&#x27;master&#x27;</span>) &#123;</span><br><span class="line">    debug(<span class="string">&#x27;%s -&gt; master, data: %j&#x27;</span>, data.from, data);</span><br><span class="line">    <span class="comment">// app/agent to master</span></span><br><span class="line">    <span class="built_in">this</span>.sendToMaster(data);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// master -&gt; parent</span></span><br><span class="line">  <span class="comment">// app -&gt; parent</span></span><br><span class="line">  <span class="comment">// agent -&gt; parent</span></span><br><span class="line">  <span class="keyword">if</span> (data.to === <span class="string">&#x27;parent&#x27;</span>) &#123;</span><br><span class="line">    debug(<span class="string">&#x27;%s -&gt; parent, data: %j&#x27;</span>, data.from, data);</span><br><span class="line">    <span class="built_in">this</span>.sendToParent(data);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// parent -&gt; master -&gt; app</span></span><br><span class="line">  <span class="comment">// agent -&gt; master -&gt; app</span></span><br><span class="line">  <span class="keyword">if</span> (data.to === <span class="string">&#x27;app&#x27;</span>) &#123;</span><br><span class="line">    debug(<span class="string">&#x27;%s -&gt; %s, data: %j&#x27;</span>, data.from, data.to, data);</span><br><span class="line">    <span class="built_in">this</span>.sendToAppWorker(data);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// parent -&gt; master -&gt; agent</span></span><br><span class="line">  <span class="comment">// app -&gt; master -&gt; agent，可能不指定 to</span></span><br><span class="line">  <span class="keyword">if</span> (data.to === <span class="string">&#x27;agent&#x27;</span>) &#123;</span><br><span class="line">    debug(<span class="string">&#x27;%s -&gt; %s, data: %j&#x27;</span>, data.from, data.to, data);</span><br><span class="line">    <span class="built_in">this</span>.sendToAgentWorker(data);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>app/agent  -&gt; master:  通过 <code>master.emit(data.action, data.data)</code> (master 继承自 EventEmitter)</li>
+<li>app/master/agent -&gt; parent:   <code>process.send(data)</code></li>
+<li>parent/agent -&gt; master -&gt; app:  <code>sendmessage(worker, data)</code></li>
+<li>parent/agent -&gt; master -&gt; agent:  <code>sendmessage(this.master.agentWorker, data)</code></li>
+</ol>
+<blockquote>
+<p>注： [<a target="_blank" rel="noopener" href="https://github.com/node-modules/sendmessage/blob/master/index.js">sendmessage</a>]是一个苏千大大写的一个用于处理进程间通信的module（Send a cross process message if message channel is connected.）</p>
+</blockquote>
+<p>为什么多了一个parent？</p>
+<p>原来，parent 就是 master 进程的 parent 进程，一般是 CLI，比如 egg-script start 和 egg-bin，egg-script 中通过<code>(&#39;child_process&#39;).spawn</code> 创建的 master 进程。<code>child_process.spawn()</code> 方法使用给定的 command 衍生一个新进程，并带上 args 中的命令行参数。同时，通过传递<code>detached</code>参数，可以使得在父进程退出后子进程继续执行。<br> <a href="https://link.juejin.cn/?target=http://nodejs.cn/api/child_process.html%23child_process_child_process_spawn_command_args_options">spawn文档传送门</a></p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904056184553486">理解Egg.js中的多进程模型（egg-cluster）</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/09/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/2022/2.%20Egg%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" rel="next" title="Egg源码分析">
+                <i class="fa fa-chevron-left"></i> Egg源码分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/03/09/React/2022/2.%20useMemo%E3%80%81useCallback%E3%80%81useEffect%E5%8C%BA%E5%88%AB/" rel="prev" title="useMemo、useCallback、useEffect区别">
+                useMemo、useCallback、useEffect区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#egg-cluster%E4%BB%8B%E7%BB%8D"><span class="nav-text">egg-cluster介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%BF%9B%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-text">多进程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E4%BC%9A%E7%AB%AF%E5%8F%A3%E5%86%B2%E7%AA%81%EF%BC%9F"><span class="nav-text">为什么不会端口冲突？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%AF%E5%8A%A8%E9%A1%BA%E5%BA%8F"><span class="nav-text">进程的启动顺序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E6%B6%88%E6%81%AF%E9%80%9A%E8%AE%AF"><span class="nav-text">进程间消息通讯</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86%EF%BC%88ipc%EF%BC%89"><span class="nav-text">进程间通信原理（ipc）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#egg-cluster-%E4%B8%AD%E7%9A%84%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="nav-text">egg-cluster 中的进程间通信</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

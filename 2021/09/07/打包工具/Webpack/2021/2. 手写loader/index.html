@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Webpack," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="介绍Loader 类型、重要api、如何编写 Loader">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack-手写loader">
+<meta property="og:url" content="https://super-wei.top/2021/09/07/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/2021/2.%20%E6%89%8B%E5%86%99loader/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="介绍Loader 类型、重要api、如何编写 Loader">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-09-07T09:41:36.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.100Z">
+<meta property="article:author" content="Wei Zhang">
+<meta property="article:tag" content="Webpack">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2021/09/07/打包工具/Webpack/2021/2. 手写loader/"/>
+
+
+
+
+
+  <title>webpack-手写loader | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/09/07/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/2021/2.%20%E6%89%8B%E5%86%99loader/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webpack-手写loader</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-07T17:41:36+08:00">
+                2021-09-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index">
+                    <span itemprop="name">打包工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.3k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>介绍Loader 类型、重要api、如何编写 Loader</p>
+<a id="more"></a>
+
+
+
+<h2 id="Loader-类型"><a href="#Loader-类型" class="headerlink" title="Loader 类型"></a>Loader 类型</h2><h3 id="同步-Loader"><a href="#同步-Loader" class="headerlink" title="同步 Loader"></a>同步 Loader</h3><p>一般来说，<code>Loader</code> 都是同步的，通过 <code>return</code> 或者 <code>this.callback</code> 来同步地返回 <code>source</code>转换后的结果</p>
+<p>如果返回不止一个结果，需要使用 this.callback，返回值要求为 string 或者 Buffer</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> result = someSyncOperation(source); <span class="comment">// 同步逻辑</span></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="异步-Loader"><a href="#异步-Loader" class="headerlink" title="异步 Loader"></a>异步 Loader</h3><p>有的时候，我们需要在 <code>Loader</code> 里做一些异步的事情，比如说需要发送网络请求。如果同步地等着，网络请求就会阻塞整个构建过程，这个时候我们就需要进行异步 <code>Loader</code>，可以这样做：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 告诉 webpack 这次转换是异步的</span></span><br><span class="line">  <span class="keyword">const</span> callback = <span class="built_in">this</span>.async();</span><br><span class="line">  <span class="comment">// 异步逻辑</span></span><br><span class="line">  someAsyncOperation(content, <span class="function"><span class="keyword">function</span>(<span class="params">err, result</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">return</span> callback(err);</span><br><span class="line">    <span class="comment">// 通过 callback 来返回异步处理的结果</span></span><br><span class="line">    callback(<span class="literal">null</span>, result, map, meta);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="Pitching-Loader"><a href="#Pitching-Loader" class="headerlink" title="Pitching Loader"></a>Pitching Loader</h3><p>loader 的执行顺序是从下到上，从右到左的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">    use: [</span><br><span class="line">      &#123; <span class="attr">loader</span>: <span class="string">&#x27;aa-loader&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">loader</span>: <span class="string">&#x27;bb-loader&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">loader</span>: <span class="string">&#x27;cc-loader&#x27;</span> &#125;,</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每个 <code>Loader</code> 都支持一个 <code>pitch</code> 属性，通过 <code>module.exports.pitch</code> 声明。如果该 <code>Loader</code> 声明了 <code>pitch</code>，则该方法会优先于 <code>Loader</code> 的实际方法先执行，官方也给出了执行顺序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">|- aa-loader &#96;pitch&#96;</span><br><span class="line">  |- bb-loader &#96;pitch&#96;</span><br><span class="line">    |- cc-loader &#96;pitch&#96;</span><br><span class="line">      |- requested module is picked up as a dependency</span><br><span class="line">    |- cc-loader normal execution</span><br><span class="line">  |- bb-loader normal execution</span><br><span class="line">|- aa-loader normal execution</span><br></pre></td></tr></table></figure>
+<p>也就是会先从左向右执行一次每个 <code>Loader</code> 的 <code>pitch</code> 方法，再按照从右向左的顺序执行其实际方法。</p>
+<h3 id="Raw-Loader"><a href="#Raw-Loader" class="headerlink" title="Raw Loader"></a>Raw Loader</h3><p>默认情况下，<code>webpack</code> 会把文件进行 <code>UTF-8</code> 编码，然后传给 <code>Loader</code>。通过设置 <code>raw</code>，<code>Loader</code> 就可以接受到原始的 <code>Buffer</code> 数据。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!Buffer.isBuffer(source)) &#123;</span><br><span class="line">    <span class="comment">//...Todo</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> source;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 在 exports.raw === true 时，Webpack 传给 Loader 的 source 是 Buffer 类型的</span></span><br><span class="line"><span class="built_in">module</span>.exports.raw = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tips: <code>Loader</code> 返回的类型也可以是 <code>Buffer</code> 类型的, 在 <code>exports.raw !== true</code> 时，<code>Loader</code> 也可以返回 <code>Buffer</code> 类型的结果</p>
+</blockquote>
+<h2 id="Loader-几个重要api"><a href="#Loader-几个重要api" class="headerlink" title="Loader 几个重要api"></a>Loader 几个重要api</h2><p>所谓 <code>Loader</code>，也只是一个符合 <code>commonjs</code> 规范的 <code>node</code> 模块，它会导出一个可执行函数。</p>
+<p><code>loader runner</code> 会调用这个函数，将文件的内容或者上一个 <code>Loader</code> 处理的结果传递进去。同时，<code>webpack</code> 还为 <code>Loader</code> 提供了一个上下文 <code>this</code>，<a target="_blank" rel="noopener" href="https://webpack.js.org/api/loaders/">其中有很多有用的 <code>api</code></a></p>
+<h3 id="this-callback"><a href="#this-callback" class="headerlink" title="this.callback()"></a>this.callback()</h3><p>在 <code>Loader</code> 中，通常使用 <code>return</code> 来返回一个字符串或者 <code>Buffer</code>。如果需要返回多个结果值时，就需要使用 <code>this.callback</code>，定义如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.callback(</span><br><span class="line">  <span class="comment">// 无法转换时返回 Error，其余情况都返回 null</span></span><br><span class="line">  err: <span class="built_in">Error</span> | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">// 转换结果</span></span><br><span class="line">  content: string | Buffer,</span><br><span class="line">  <span class="comment">// source map，方便调试用的</span></span><br><span class="line">  sourceMap?: SourceMap,</span><br><span class="line">  <span class="comment">// 可以是任何东西。比如 ast</span></span><br><span class="line">  meta?: any</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>一般来说如果调用该函数的话，应该手动 <code>return</code>，告诉 <code>webpack</code> 返回的结果在 <code>this.callback</code> 中，以避免含糊不清的结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.callback(<span class="literal">null</span>, source, sourceMaps);</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="this-async"><a href="#this-async" class="headerlink" title="this.async()"></a>this.async()</h3><p>将当前 <code>Loader</code> 标记为异步 <code>Loader</code>, 在 <code>this.async()</code> 返回值 <code>callback</code> 中返回<code>Loader</code>数据转换结果</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.cacheable(); <span class="comment">// 强制不缓存</span></span><br><span class="line">  <span class="keyword">const</span> callback = <span class="built_in">this</span>.async();</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    callback(<span class="literal">null</span>, source);</span><br><span class="line">  &#125;, <span class="number">2000</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="this-cacheable"><a href="#this-cacheable" class="headerlink" title="this.cacheable()"></a>this.cacheable()</h3><p>有些情况下，有些操作需要耗费大量时间，每一次调用 <code>Loader</code> 转换时都会执行这些费时的操作。</p>
+<p>在处理这类费时的操作时， <code>webapck</code> 会默认缓存所有 <code>Loader</code> 的处理结果，只有当被处理的文件发生变化时，才会重新调用 <code>Loader</code> 去执行转换操作。</p>
+<p><code>webpack</code> 是默认可缓存的，可以执行 <code>this.cacheable(false)</code> 手动关闭缓存。</p>
+<h3 id="this-resource"><a href="#this-resource" class="headerlink" title="this.resource"></a>this.resource</h3><p>当前处理文件的完整请求路径，包括 <code>query</code>，比如 <code>/src/App.vue?type=templpate</code>。</p>
+<h3 id="this-resourcePath"><a href="#this-resourcePath" class="headerlink" title="this.resourcePath"></a>this.resourcePath</h3><p>当前处理文件的路径，不包括 <code>query</code>，比如 <code>/src/App.vue</code>。</p>
+<h3 id="this-resourceQuery"><a href="#this-resourceQuery" class="headerlink" title="this.resourceQuery"></a>this.resourceQuery</h3><p>当前处理文件的 <code>query</code> 字符串，比如 <code>?type=template</code>。比如：在 <code>vue-loader</code> </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> qs = <span class="built_in">require</span>(<span class="string">&#x27;querytring&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> &#123; resourceQuery &#125; = <span class="built_in">this</span>;</span><br><span class="line"><span class="keyword">const</span> rawQuery = resourceQuery.slice(<span class="number">1</span>); <span class="comment">// 删除前面的 ?</span></span><br><span class="line"><span class="keyword">const</span> incomingQuery = qs.parse(rawQuery); <span class="comment">// 解析字符串成对象</span></span><br><span class="line"><span class="comment">// 取 query</span></span><br><span class="line"><span class="keyword">if</span> (incomingQuery.type) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="this-emitFile"><a href="#this-emitFile" class="headerlink" title="this.emitFile"></a>this.emitFile</h3><p>让 <code>webpack</code> 在输出目录新建一个文件，比如：在 <code>file-loader</code> </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> options.emitFile === <span class="string">&#x27;undefined&#x27;</span> || options.emitFile) &#123;</span><br><span class="line">  <span class="built_in">this</span>.emitFile(fileName, content);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="如何写一个Loader"><a href="#如何写一个Loader" class="headerlink" title="如何写一个Loader"></a>如何写一个Loader</h2><h3 id="编写原则"><a href="#编写原则" class="headerlink" title="编写原则"></a>编写原则</h3><ul>
+<li>单一原则：每个 Loader 只做一件事</li>
+<li>链式调用：Webpack 会按顺序链式调用每个  Loader</li>
+<li>统一原则：遵循 Webpack 制定的设计规则和结构，输入与输出均为字符串，各个 Loader 完全独立，即插即用</li>
+<li>无状态原则：在转换不同模块时，不应该在loader中保留状态</li>
+</ul>
+<h3 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> source;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Tips：Loader 函数不要使用箭头函数，很多 Loader 内部方法都需要通过 this 调用, 例如 <code>this.async()</code>, <code>this.cacheable()</code> 等等</p>
+</blockquote>
+<ul>
+<li><p>通过module.exports 导出一个函数</p>
+</li>
+<li><p>函数的默认参数为要处理的文件source</p>
+</li>
+<li><p>函数体中处理资源</p>
+<ul>
+<li>可以通过 <code>loaderUtils.getOptions(this)</code> 获取配置的options对象</li>
+</ul>
+</li>
+<li><p>返回处理后结果（交给下一个 loader 进行处理）</p>
+<ul>
+<li><p>同步操作，如果返回不止一个结果，需要使用 this.callback，返回值要求为 string 或者 Buffer</p>
+</li>
+<li><p>异步操作，需要先通过 this.async() 生成 callback 函数，再用 callback 将处理后的内容输出出去</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="实用工具包"><a href="#实用工具包" class="headerlink" title="实用工具包"></a>实用工具包</h3><p><strong>loader-utils</strong></p>
+<p>它提供了很多有用的工具，最常用的一个就是获取传入 <code>loader</code> 的 <code>options</code>, 具体其他方法可以查看 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/loader-utils">loader-utils</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; getOptions &#125; <span class="keyword">from</span> <span class="string">&#x27;loader-utils&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">loader</span>(<span class="params">src</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 加载 options</span></span><br><span class="line">  <span class="keyword">const</span> options = getOptions(<span class="built_in">this</span>) || &#123;&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>schema-utils</strong></p>
+<p>配合 <code>loader-utils</code>，用于保证 <code>Loader</code> 选项，进行与 <code>JSON Schema</code> 结构一致的校验。schema 的规则使用的是 <a target="_blank" rel="noopener" href="https://github.com/ajv-validator/ajv">avj-schema 规则</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; getOptions &#125; = <span class="built_in">require</span>(<span class="string">&#x27;loader-utils&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> validateOptions = <span class="built_in">require</span>(<span class="string">&#x27;schema-utils&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> TestLoaderOptionsSchema = &#123;</span><br><span class="line">  type: <span class="string">&#x27;object&#x27;</span>,</span><br><span class="line">  properties: &#123;</span><br><span class="line">    minimize: &#123;</span><br><span class="line">      type: <span class="string">&#x27;boolean&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  additionalProperties: <span class="literal">false</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> options = getOptions(<span class="built_in">this</span>);</span><br><span class="line">  validateOptions(TestLoaderOptionsSchema, options, &#123;</span><br><span class="line">    name: <span class="string">&#x27;TestLoader&#x27;</span>,</span><br><span class="line">    baseDataPath: <span class="string">&#x27;options&#x27;</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> source;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="手写-babel-loader"><a href="#手写-babel-loader" class="headerlink" title="手写 babel-loader"></a>手写 babel-loader</h3><p>首先需要装三个包</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/babel">*@*babel</a>/core：js编译器的核心组件</li>
+<li><a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/babel">*@*babel</a>/preset-env：babel 的插件预设，用来提供支持新语法的环境</li>
+<li>loader-utils：一个专门用于写 webpack loader 的工具库</li>
+</ul>
+<p>思路：</p>
+<ul>
+<li>使用 <code>babel</code> 的 <code>transform</code> API 来进行代码的转换 (es6 -&gt; es5)</li>
+<li>里面除了传入 <code>options</code> 之外，还要传入 <code>sourceMaps</code> 确定生成 soureMap 文件，然后 <code>filename</code> 设置 sourcemap 的文件名</li>
+<li>最后是一个异步回调函数，由于是异步的，所以这里就需要 <code>async</code> 这个 API，只要调用它就会自动返回传的参数。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">npm i @babel/core @babel/preset-env loader-utils -D</span><br><span class="line"></span><br><span class="line"><span class="comment">// webpack</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  mode: <span class="string">&#x27;development&#x27;</span>,</span><br><span class="line">  entry: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">    clean: <span class="literal">true</span>, </span><br><span class="line">  &#125;,</span><br><span class="line">  devtool:  <span class="string">&#x27;eval-cheap-module-source-map&#x27;</span>,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">        use: &#123;</span><br><span class="line">          loader: <span class="string">&#x27;./src/loaders/babel-loader&#x27;</span>,</span><br><span class="line">          options: &#123;</span><br><span class="line">            presets: [<span class="string">&#x27;@babel/preset-env&#x27;</span>] <span class="comment">// 使用 @babel/preset-env 来转化</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// babel-loader.js</span></span><br><span class="line"><span class="keyword">const</span> babel = <span class="built_in">require</span>(<span class="string">&#x27;@babel/core&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> loaderUtils = <span class="built_in">require</span>(<span class="string">&#x27;loader-utils&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> (<span class="params">source</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> options = loaderUtils.getOptions(<span class="built_in">this</span>)</span><br><span class="line">    <span class="comment">// 异步返回需要用到 async 这个函数</span></span><br><span class="line">    <span class="keyword">const</span> cb = <span class="built_in">this</span>.async()</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;--this.resourcePath--&#x27;</span>, <span class="built_in">this</span>.resourcePath)</span><br><span class="line">    babel.transform(source, &#123;</span><br><span class="line">        ...options,</span><br><span class="line">        sourceMaps: <span class="literal">true</span>, <span class="comment">// 使用源码映射 生成 .js.map</span></span><br><span class="line">        filename: <span class="built_in">this</span>.resourcePath.split(<span class="string">&#x27;/&#x27;</span>).pop() <span class="comment">// 取出资源文件名,`source-map`指定名字</span></span><br><span class="line">    &#125;, <span class="function">(<span class="params">error, result</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&#x27;--result.code--&#x27;</span>, result.code)</span><br><span class="line">        <span class="keyword">const</span> &#123; code, map &#125; = result</span><br><span class="line">        cb(error, code, map) <span class="comment">// 返回 code 以及 map 文件</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="手写-file-loader、url-loader"><a href="#手写-file-loader、url-loader" class="headerlink" title="手写 file-loader、url-loader"></a>手写 file-loader、url-loader</h3><p>一般使用url-loader，因为url-loader包含file-loader，小文件会生成base64，大文件会用file-loader处理路径发射文件。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack </span></span><br><span class="line">&#123;</span><br><span class="line">  test: /\.(png|jpg)$/,</span><br><span class="line">  use: &#123;</span><br><span class="line">    loader: &#x27;./src/loaders/url-loader.js&#x27;,</span><br><span class="line">    options: &#123;</span><br><span class="line">      limit: 200 * 1024 // 大于200k产生文件，小200k生成base64</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="index-js"><a href="#index-js" class="headerlink" title="index.js"></a>index.js</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> picture <span class="keyword">from</span> <span class="string">&#x27;./assets/demo.png&#x27;</span></span><br><span class="line"><span class="keyword">const</span> img = <span class="built_in">document</span>.createElement(<span class="string">&#x27;img&#x27;</span>)</span><br><span class="line">img.src = picture</span><br><span class="line"><span class="built_in">document</span>.body.appendChild(img)</span><br></pre></td></tr></table></figure>
+<h4 id="file-loader"><a href="#file-loader" class="headerlink" title="file-loader"></a>file-loader</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loaderUtils = <span class="built_in">require</span>(<span class="string">&#x27;loader-utils&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> (<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 根据 loaderContext 生成文件, 这个文件是一串 hash + .jpg 作为后缀名的</span></span><br><span class="line">  <span class="keyword">const</span> fileName = loaderUtils.interpolateName(<span class="built_in">this</span>, <span class="string">&#x27;[hash].[ext]&#x27;</span>, &#123;</span><br><span class="line">    content: source</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;--fileName--&#x27;</span>, fileName) <span class="comment">// e759a16dc242b9ff834fa1022a54964a.png</span></span><br><span class="line">  <span class="built_in">this</span>.emitFile(fileName, source)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`module.exports = &quot;<span class="subst">$&#123;fileName&#125;</span>&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports.raw = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打包后：</span></span><br><span class="line"><span class="comment">// &quot;./src/cat.gif&quot;: (function(module, exports) &#123;</span></span><br><span class="line"><span class="comment">//   module.exports=&quot;f39f46fb006762fe76521230792edc1a.gif&quot;</span></span><br><span class="line"><span class="comment">// &#125;),</span></span><br></pre></td></tr></table></figure>
+<h4 id="url-loader"><a href="#url-loader" class="headerlink" title="url-loader"></a>url-loader</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loaderUtils = <span class="built_in">require</span>(<span class="string">&#x27;loader-utils&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> mime = <span class="built_in">require</span>(<span class="string">&#x27;mime&#x27;</span>) <span class="comment">// mime 是一个判断文件类型的工具包，生成 base64 的时候还需要注明图片类型</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> (<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; limit &#125; = loaderUtils.getOptions(<span class="built_in">this</span>)</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;--limit&#x27;</span>, limit, source.length)</span><br><span class="line">  <span class="keyword">if</span> (limit &amp;&amp; source.length &lt; limit) &#123;</span><br><span class="line">    <span class="comment">// 图片没有超过设定的限制大小就返回 base64</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">`module.exports = &quot;data:<span class="subst">$&#123;mime.getType(<span class="built_in">this</span>.resourcePath)&#125;</span>;base64,<span class="subst">$&#123;source.toString(<span class="string">&#x27;base64&#x27;</span>)&#125;</span>&quot;`</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 图片超过了就调用 file-loader 返回图片本身路径</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">require</span>(<span class="string">&#x27;./file-loader&#x27;</span>).call(<span class="built_in">this</span>, source)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 让 source 变成二进制的 buffer</span></span><br><span class="line"><span class="built_in">module</span>.exports.raw = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 打包后</span></span><br><span class="line"><span class="comment">// &quot;./src/smallpic.png&quot;: (function(module, exports) &#123;</span></span><br><span class="line"><span class="comment">//     module.exports=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAD....&quot;</span></span><br><span class="line"><span class="comment">// &#125;)</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="手写-less-loader、css-loader、style-loader"><a href="#手写-less-loader、css-loader、style-loader" class="headerlink" title="手写 less-loader、css-loader、style-loader"></a>手写 less-loader、css-loader、style-loader</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  test: /\.less$/,</span><br><span class="line">  use: [&#x27;style-loader&#x27;, &#x27;css-loader&#x27;, &#x27;less-loader&#x27;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="index-less"><a href="#index-less" class="headerlink" title="index.less"></a>index.less</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@color:</span> red;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">  <span class="attribute">background</span>: <span class="variable">@color</span>;</span><br><span class="line">  <span class="attribute">background</span>: url(<span class="string">./assets/demo.jpg</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="index-js-1"><a href="#index-js-1" class="headerlink" title="index.js"></a>index.js</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./index.less&#x27;</span></span><br></pre></td></tr></table></figure>
+<h4 id="less-loader"><a href="#less-loader" class="headerlink" title="less-loader"></a>less-loader</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> less = <span class="built_in">require</span>(<span class="string">&#x27;less&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span> (<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> css = <span class="string">&#x27;&#x27;</span></span><br><span class="line">  less.render(source, <span class="function">(<span class="params">err, style</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;--less-loader--&#x27;</span>, style)</span><br><span class="line">    css = style.css</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">return</span> css</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="style-loader"><a href="#style-loader" class="headerlink" title="style-loader"></a>style-loader</h4><p>使用 <code>JSON.stringfy</code> 可以将源码转换成字符串，而且把里面的回车都转成\r\n</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> loaderUtils = <span class="built_in">require</span>(<span class="string">&#x27;loader-utils&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将css插入到html头部</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loader</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> str = <span class="string">`</span></span><br><span class="line"><span class="string">    const style = document.createElement(&#x27;style&#x27;)</span></span><br><span class="line"><span class="string">    style.innerHTML = <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(source)&#125;</span> </span></span><br><span class="line"><span class="string">    document.head.appendChild(style)</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">  <span class="keyword">return</span> str</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = loader</span><br></pre></td></tr></table></figure>
+<h4 id="css-loader"><a href="#css-loader" class="headerlink" title="css-loader"></a>css-loader</h4><ul>
+<li>处理<code>css</code>中的图片链接，把<code>url</code>转换成<code>require</code></li>
+<li>解析<code>@import</code>语法</li>
+</ul>
+<p>思路：</p>
+<ul>
+<li>以匹配 <code>url</code> 为界点将代码分成三个部分，前两个部分都在循环匹配 <code>url</code>，然后将 <code>url</code> 里的路径改为 <code>require</code> 引入。匹配修改完成之后再截取剩下的第三部分</li>
+<li>返回的模块是一个字符串</li>
+<li><code>style-loader</code> 在使用 <code>require</code> 引入时，就可以直接执行</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loader</span>(<span class="params">source</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 惰性匹配 url(xxx) 这个东西, 用 g 表示全局查找，因为 less 文件里不只是只有一个 url</span></span><br><span class="line">  <span class="keyword">let</span> reg = <span class="regexp">/url\((.+?)\)/g</span>   </span><br><span class="line">  <span class="comment">// 匹配的指针位置</span></span><br><span class="line">  <span class="keyword">let</span> pos = <span class="number">0</span>;</span><br><span class="line">  <span class="comment">// 当前匹配的结果</span></span><br><span class="line">  <span class="keyword">let</span> current;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 这个数组本质上就是保存一个代码段</span></span><br><span class="line">  <span class="keyword">let</span> arr = [<span class="string">&#x27;let list = []&#x27;</span>]</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 在 source 中循环匹配 reg</span></span><br><span class="line">  <span class="keyword">while</span> (current = reg.exec(source)) &#123;</span><br><span class="line">    <span class="comment">// 匹配到了 [&#x27;url(./assets/demo.jpg)&#x27;, &#x27;./assets/demo.jpg&#x27;]</span></span><br><span class="line">    <span class="keyword">const</span> [matchUrl, g] = current  </span><br><span class="line">    <span class="comment">// ↓ lastPos 位置</span></span><br><span class="line">    <span class="comment">// url(./assets/demo.jpg)</span></span><br><span class="line">    <span class="keyword">const</span> lastIndex = reg.lastIndex - matchUrl.length    <span class="comment">// 拿到css从开始到url链接之前的index</span></span><br><span class="line">    <span class="keyword">const</span> preCode = source.slice(pos, lastIndex)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 截取第一部分</span></span><br><span class="line">    arr.push(<span class="string">`list.push(<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(preCode)&#125;</span>)`</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指针移动</span></span><br><span class="line">    <span class="comment">// pos 位置             ↓</span></span><br><span class="line">    <span class="comment">// url(./assets/demo.jpg)</span></span><br><span class="line">    pos = reg.lastIndex</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 截取第二部分</span></span><br><span class="line">    <span class="comment">// 把 g 替换成 require 的写法</span></span><br><span class="line">    <span class="comment">// 即 &#x27;./assets/demo.jpg&#x27; =&gt; require(&#x27;./assets/demo.jpg&#x27;)</span></span><br><span class="line">    arr.push(<span class="string">`list.push(&#x27;url(&#x27;+ require(<span class="subst">$&#123;g&#125;</span>) +&#x27;)&#x27;)`</span>)    <span class="comment">// 图片地址改成require形式放回去</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 截取第三部分 拼上url地址到结尾的代码</span></span><br><span class="line">  arr.push(<span class="string">`list.push(<span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(source.slice(pos))&#125;</span>)`</span>) </span><br><span class="line"></span><br><span class="line">  <span class="comment">// 将整个 less 文件作为一个模块返回，而这个模块是一整个字符串</span></span><br><span class="line">  <span class="comment">// 当 style-loader require 引入时，里面的代码就可以直接执行了</span></span><br><span class="line">  arr.push(<span class="string">`module.exports = list.join(&#x27;&#x27;)`</span>)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 为了好看，每行代码之间增加一个回车</span></span><br><span class="line">  <span class="keyword">return</span> arr.join(<span class="string">&#x27;\r\n&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = loader</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最后返回的code</span></span><br><span class="line"><span class="comment">// let list = []</span></span><br><span class="line"><span class="comment">// list.push(&quot;body &#123;\n  background: #f938ab;\n  background: &quot;)</span></span><br><span class="line"><span class="comment">// list.push(&#x27;url(&#x27;+ require(&quot;./smallpic.png&quot;) +&#x27;)&#x27;)</span></span><br><span class="line"><span class="comment">// list.push(&quot;;\n&#125;\n&quot;)</span></span><br></pre></td></tr></table></figure>
+<h4 id="style-loader添加pitch"><a href="#style-loader添加pitch" class="headerlink" title="style-loader添加pitch"></a>style-loader添加pitch</h4><p>为什么要加pitch：将 <code>CSS</code> 代码插入到 <code>DOM</code> 中，如果按照顺序从 <code>css-loader</code> 接收到一个 <code>js</code> 字符串的话，就无法获取到真实的 <code>CSS</code> 样式了。所以正确的做法是先执行 <code>style-loader</code>，在它里面去执行 <code>css-loader</code> ，拿到经过处理的 <code>CSS</code> 内容，再插入到 <code>DOM</code> 中。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">loader.pitch = <span class="function"><span class="keyword">function</span> (<span class="params">remainingRequest</span>) </span>&#123;  </span><br><span class="line">  <span class="comment">// pitch 执行的顺序是 style-loader css-loader less-loader</span></span><br><span class="line"><span class="comment">// 这里 remainingRequest 剩余请求表示的就是 css-loader!less-loader!./index.less</span></span><br><span class="line"><span class="comment">// 也就是剩下的还没操作的 css-loader less-loader</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">// stringifyRequest 绝对路径转相对路径</span></span><br><span class="line">  <span class="keyword">const</span> url = loaderUtils.stringifyRequest(<span class="built_in">this</span>, <span class="string">&#x27;!!&#x27;</span> + remainingRequest)  </span><br><span class="line">  <span class="comment">//&quot;!!../loader/css-loader.js!../loader/less-loader.js!./index.less&quot; 内联 loader，优先级是 从右往左</span></span><br><span class="line">  <span class="comment">// 两个!!的作用是：表示执行完 less-loader 和 css-loader 就不会调用 style-loader 去执行了</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">const</span> str = <span class="string">`</span></span><br><span class="line"><span class="string">    let style = document.createElement(&#x27;style&#x27;)</span></span><br><span class="line"><span class="string">    style.innerHTML = require(<span class="subst">$&#123;url&#125;</span>)</span></span><br><span class="line"><span class="string">    document.head.appendChild(style)`</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> str</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，这里使用 <code>stringifyRequest</code> 的意义在于，由于 webpack 在将模块路径转换为模块 id 之前<strong>会计算哈希值</strong>，因此在这里<strong>必须避免使用绝对路径</strong>，以确保不同编译之间的哈希值保持一致。</p>
+</blockquote>
+<p>打包后</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&quot;./src/index.less&quot;: (function(module, exports, __webpack_require__) &#123;</span><br><span class="line">  let style = document.createElement(&#x27;style&#x27;)</span><br><span class="line">  style.innerHTML = __webpack_require__(/*! !../loader/css-loader.js!../loader/less-loader.js!./index.less */ &quot;./loader/css-loader.js!./loader/less-loader.js!./src/index.less&quot;)</span><br><span class="line">  document.head.appendChild(style)</span><br><span class="line">&#125;),</span><br><span class="line"></span><br><span class="line">&quot;./loader/css-loader.js!./loader/less-loader.js!./src/index.less&quot;: (function(module, exports, __webpack_require__) &#123;</span><br><span class="line">  let list = []</span><br><span class="line">  list.push(&quot;body &#123;\n  background: #f938ab;\n  background-image: &quot;)</span><br><span class="line">  list.push(&#x27;url(&#x27;+ __webpack_require__(/*! ./smallpic.png */ &quot;./src/smallpic.png&quot;) +&#x27;)&#x27;)</span><br><span class="line">  list.push(&quot;;\n&#125;\n&quot;)</span><br><span class="line">  module.exports = list.join(&#x27;&#x27;)</span><br><span class="line">&#125;),</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://github.com/axuebin/articles/issues/38">前端工程师都得掌握的 webpack Loader</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.dazhuanlan.com/yitumoon/topics/1663801">从Webpack本质开始(二):手写loader</a></p>
+<h2 id="仓库"><a href="#仓库" class="headerlink" title="仓库"></a><a target="_blank" rel="noopener" href="https://github.com/ZhangWei2222/webpack5-demo">仓库</a></h2>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Webpack/" rel="tag"># Webpack</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/05/Vue3/2021/11.%20toRef%E3%80%81toRefs%E5%8C%BA%E5%88%AB/" rel="next" title="Vue3-toRef、toRefs区别">
+                <i class="fa fa-chevron-left"></i> Vue3-toRef、toRefs区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/09/10/Babel/1.%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" rel="prev" title="Babel-使用手册">
+                Babel-使用手册 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Loader-%E7%B1%BB%E5%9E%8B"><span class="nav-text">Loader 类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5-Loader"><span class="nav-text">同步 Loader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5-Loader"><span class="nav-text">异步 Loader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pitching-Loader"><span class="nav-text">Pitching Loader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Raw-Loader"><span class="nav-text">Raw Loader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loader-%E5%87%A0%E4%B8%AA%E9%87%8D%E8%A6%81api"><span class="nav-text">Loader 几个重要api</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#this-callback"><span class="nav-text">this.callback()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this-async"><span class="nav-text">this.async()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this-cacheable"><span class="nav-text">this.cacheable()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this-resource"><span class="nav-text">this.resource</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this-resourcePath"><span class="nav-text">this.resourcePath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this-resourceQuery"><span class="nav-text">this.resourceQuery</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#this-emitFile"><span class="nav-text">this.emitFile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%86%99%E4%B8%80%E4%B8%AALoader"><span class="nav-text">如何写一个Loader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E5%8E%9F%E5%88%99"><span class="nav-text">编写原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="nav-text">基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%94%A8%E5%B7%A5%E5%85%B7%E5%8C%85"><span class="nav-text">实用工具包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%86%99-babel-loader"><span class="nav-text">手写 babel-loader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%86%99-file-loader%E3%80%81url-loader"><span class="nav-text">手写 file-loader、url-loader</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#index-js"><span class="nav-text">index.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#file-loader"><span class="nav-text">file-loader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#url-loader"><span class="nav-text">url-loader</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%86%99-less-loader%E3%80%81css-loader%E3%80%81style-loader"><span class="nav-text">手写 less-loader、css-loader、style-loader</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#index-less"><span class="nav-text">index.less</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#index-js-1"><span class="nav-text">index.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#less-loader"><span class="nav-text">less-loader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#style-loader"><span class="nav-text">style-loader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#css-loader"><span class="nav-text">css-loader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#style-loader%E6%B7%BB%E5%8A%A0pitch"><span class="nav-text">style-loader添加pitch</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%93%E5%BA%93"><span class="nav-text">仓库</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

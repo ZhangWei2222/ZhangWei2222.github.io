@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Vuex,Vue," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Vuex.Store 构造函数 判断是否自动安装vue  初始化内部变量，将dispatch与commit调用的this绑定为store对象本身，否则在组件内部this.dispatch时的this会指向组件的vm  是否严格模式  执行installModule（初始化module）  执行resetStoreVM（通过VM使store“响应式”）  调用插件、devtool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vuex源码分析(Store构造函数)">
+<meta property="og:url" content="https://super-wei.top/2019/12/03/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Vue/vuex%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%89%8B%E5%86%8C/vuex%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(Store%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0)/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="Vuex.Store 构造函数 判断是否自动安装vue  初始化内部变量，将dispatch与commit调用的this绑定为store对象本身，否则在组件内部this.dispatch时的this会指向组件的vm  是否严格模式  执行installModule（初始化module）  执行resetStoreVM（通过VM使store“响应式”）  调用插件、devtool">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-12-03T08:51:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.168Z">
+<meta property="article:author" content="Wei Zhang">
+<meta property="article:tag" content="Vuex">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2019/12/03/源码分析/Vue/vuex源码分析手册/vuex源码分析(Store构造函数)/"/>
+
+
+
+
+
+  <title>vuex源码分析(Store构造函数) | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2019/12/03/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Vue/vuex%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%89%8B%E5%86%8C/vuex%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(Store%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">vuex源码分析(Store构造函数)</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-03T16:51:47+08:00">
+                2019-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" itemprop="url" rel="index">
+                    <span itemprop="name">源码分析</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.2k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Vuex-Store-构造函数"><a href="#Vuex-Store-构造函数" class="headerlink" title="Vuex.Store 构造函数"></a>Vuex.Store 构造函数</h1><ol>
+<li><p>判断是否自动安装vue</p>
+</li>
+<li><p>初始化内部变量，将dispatch与commit调用的this绑定为store对象本身，否则在组件内部this.dispatch时的this会指向组件的vm</p>
+</li>
+<li><p>是否严格模式</p>
+</li>
+<li><p>执行installModule（初始化module）</p>
+</li>
+<li><p>执行resetStoreVM（通过VM使store“响应式”）</p>
+</li>
+<li><p>调用插件、devtool</p>
+</li>
+</ol>
+<a id="more"></a>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">Store</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">options = &#123;&#125;</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 判断window.vue是否存在，如果不存在那么就安装</span></span><br><span class="line">    <span class="keyword">if</span> (!Vue &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">window</span> !== <span class="string">&quot;undefined&quot;</span> &amp;&amp; <span class="built_in">window</span>.Vue) &#123;</span><br><span class="line">      install(<span class="built_in">window</span>.Vue);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 开发过程的判断：创建store实例之前必须先使用这个方法Vue.use(Vuex)，并且判断promise是否可用</span></span><br><span class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">&quot;production&quot;</span>) &#123;</span><br><span class="line">      <span class="comment">// 必须使用 Vue.use(Vuex) 创建 store 实例</span></span><br><span class="line">      assert(Vue, <span class="string">`must call Vue.use(Vuex) before creating a store instance.`</span>);</span><br><span class="line">      <span class="comment">// 因为vuex中使用了Promise，Promise是es6的语法，但是有的浏览器并不支持es6所以我们需要在package.json中加入babel-polyfill用来支持es6</span></span><br><span class="line">      assert(</span><br><span class="line">        <span class="keyword">typeof</span> <span class="built_in">Promise</span> !== <span class="string">&quot;undefined&quot;</span>,</span><br><span class="line">        <span class="string">`vuex requires a Promise polyfill in this browser.`</span></span><br><span class="line">      );</span><br><span class="line">      <span class="comment">// Store 函数必须使用 new 操作符调用</span></span><br><span class="line">      assert(</span><br><span class="line">        <span class="built_in">this</span> <span class="keyword">instanceof</span> Store,</span><br><span class="line">        <span class="string">`store must be called with the new operator.`</span></span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 提取参数</span></span><br><span class="line">    <span class="keyword">const</span> &#123;</span><br><span class="line">      <span class="comment">/* 插件默认是空数组，包含应用在 store 上的插件方法。这些插件直接接收 store 作为唯一参数，可以监听 mutation（用于外部地数据持久化、记录或调试）或者提交 mutation （用于内部数据，例如 websocket 或 某些观察者）*/</span></span><br><span class="line">      plugins = [],</span><br><span class="line">      <span class="comment">/* 默认是false，使 Vuex store 进入严格模式，在严格模式下，任何 mutation 处理函数以外修改 Vuex state 都会抛出错误。*/</span></span><br><span class="line">      strict = <span class="literal">false</span></span><br><span class="line">    &#125; = options;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化store内部状态</span></span><br><span class="line">    <span class="comment">/* 用来判断严格模式下是否是用mutation修改state的 */</span></span><br><span class="line">    <span class="built_in">this</span>._committing = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">/* 存放action */</span></span><br><span class="line">    <span class="built_in">this</span>._actions = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">    <span class="comment">// 用来存储所有对 action 变化的订阅者</span></span><br><span class="line">    <span class="built_in">this</span>._actionSubscribers = [];</span><br><span class="line">    <span class="comment">/* 存放mutation */</span></span><br><span class="line">    <span class="built_in">this</span>._mutations = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">    <span class="comment">/* 存放getter */</span></span><br><span class="line">    <span class="built_in">this</span>._wrappedGetters = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">    <span class="comment">// 模块收集器，构造模块树形结构</span></span><br><span class="line">    <span class="built_in">this</span>._modules = <span class="keyword">new</span> ModuleCollection(options);</span><br><span class="line">    <span class="comment">/* 根据namespace存放module */</span></span><br><span class="line">    <span class="built_in">this</span>._modulesNamespaceMap = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">    <span class="comment">// 用来存储所有对 mutation 变化的订阅者</span></span><br><span class="line">    <span class="built_in">this</span>._subscribers = [];</span><br><span class="line">    <span class="comment">// 用于使用 $watch 观测 getters</span></span><br><span class="line">    <span class="built_in">this</span>._watcherVM = <span class="keyword">new</span> Vue();</span><br><span class="line">    <span class="comment">// 用来存放生成的本地 getters 的缓存</span></span><br><span class="line">    <span class="built_in">this</span>._makeLocalGettersCache = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 将dispatch与commit调用的this绑定为store对象本身，否则在组件内部this.dispatch时的this会指向组件的vm */</span></span><br><span class="line">    <span class="keyword">const</span> store = <span class="built_in">this</span>;</span><br><span class="line">    <span class="keyword">const</span> &#123; dispatch, commit &#125; = <span class="built_in">this</span>;</span><br><span class="line">    <span class="comment">/* 为dispatch与commit绑定this（Store实例本身） */</span></span><br><span class="line">    <span class="built_in">this</span>.dispatch = <span class="function"><span class="keyword">function</span> <span class="title">boundDispatch</span>(<span class="params">type, payload</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> dispatch.call(store, type, payload);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="built_in">this</span>.commit = <span class="function"><span class="keyword">function</span> <span class="title">boundCommit</span>(<span class="params">type, payload, options</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> commit.call(store, type, payload, options);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 严格模式</span></span><br><span class="line">    <span class="built_in">this</span>.strict = strict;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> state = <span class="built_in">this</span>._modules.root.state;</span><br><span class="line">    <span class="built_in">this</span>._wrappedGetters;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化根模块，递归注册所有的子模块，收集所有module的getter到_wrappedGetters中去，this._modules.root代表根module才独有保存的Module对象</span></span><br><span class="line">    installModule(<span class="built_in">this</span>, state, [], <span class="built_in">this</span>._modules.root);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过vm重设store，新建Vue对象使用Vue内部的响应式实现注册state以及computed</span></span><br><span class="line">    resetStoreVM(<span class="built_in">this</span>, state);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// apply plugins</span></span><br><span class="line">    <span class="comment">// 执行每个插件里边的函数</span></span><br><span class="line">    plugins.forEach(<span class="function"><span class="params">plugin</span> =&gt;</span> plugin(<span class="built_in">this</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* devtool插件 */</span></span><br><span class="line">    <span class="keyword">const</span> useDevtools =</span><br><span class="line">      options.devtools !== <span class="literal">undefined</span> ? options.devtools : Vue.config.devtools;</span><br><span class="line">    <span class="keyword">if</span> (useDevtools) &#123;</span><br><span class="line">      devtoolPlugin(<span class="built_in">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="class-ModuleCollection"><a href="#class-ModuleCollection" class="headerlink" title="class ModuleCollection"></a>class ModuleCollection</h2><p>上面有句<code>this._modules = new ModuleCollection(options);</code></p>
+<p><strong>作用：</strong>收集模块，构造模块树结构</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">ModuleCollection</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">rawRootModule</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 注册根模块 参数 rawRootModule 也就是 Vuex.Store 的 options 参数</span></span><br><span class="line">    <span class="comment">// 未加工过的模块（用户自定义的），根模块</span></span><br><span class="line">    <span class="built_in">this</span>.register([], rawRootModule, <span class="literal">false</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">get</span>(<span class="params">path</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> path.reduce(<span class="function">(<span class="params"><span class="built_in">module</span>, key</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">module</span>.getChild(key);</span><br><span class="line">    &#125;, <span class="built_in">this</span>.root);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">getNamespace</span>(<span class="params">path</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="built_in">module</span> = <span class="built_in">this</span>.root;</span><br><span class="line">    <span class="keyword">return</span> path.reduce(<span class="function">(<span class="params">namespace, key</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">module</span> = <span class="built_in">module</span>.getChild(key);</span><br><span class="line">      <span class="keyword">return</span> namespace + (<span class="built_in">module</span>.namespaced ? key + <span class="string">&quot;/&quot;</span> : <span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;, <span class="string">&quot;&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">update</span>(<span class="params">rawRootModule</span>)</span> &#123;</span><br><span class="line">    update([], <span class="built_in">this</span>.root, rawRootModule);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 注册模块</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Array&#125;</span> </span>path 路径</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Object&#125;</span> </span>rawModule 原始未加工的模块</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param <span class="type">&#123;Boolean&#125;</span> </span>runtime runtime 默认是 true，动态注册的模块runtime为false</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="title">register</span>(<span class="params">path, rawModule, runtime = <span class="literal">true</span></span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 非生产环境 断言判断用户自定义的模块是否符合要求</span></span><br><span class="line">    <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">&quot;production&quot;</span>) &#123;</span><br><span class="line">      assertRawModule(path, rawModule);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> newModule = <span class="keyword">new</span> Module(rawModule, runtime);</span><br><span class="line">    <span class="keyword">if</span> (path.length === <span class="number">0</span>) &#123;</span><br><span class="line">      <span class="built_in">this</span>.root = newModule;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> parent = <span class="built_in">this</span>.get(path.slice(<span class="number">0</span>, -<span class="number">1</span>));</span><br><span class="line">      parent.addChild(path[path.length - <span class="number">1</span>], newModule);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 递归注册子模块</span></span><br><span class="line">    <span class="keyword">if</span> (rawModule.modules) &#123;</span><br><span class="line">      forEachValue(rawModule.modules, <span class="function">(<span class="params">rawChildModule, key</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.register(path.concat(key), rawChildModule, runtime);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="title">unregister</span>(<span class="params">path</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> parent = <span class="built_in">this</span>.get(path.slice(<span class="number">0</span>, -<span class="number">1</span>));</span><br><span class="line">    <span class="keyword">const</span> key = path[path.length - <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">if</span> (!parent.getChild(key).runtime) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    parent.removeChild(key);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="class-Module"><a href="#class-Module" class="headerlink" title="class Module"></a>class Module</h3><p>接下来看看Module的实例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// store 的模块 基础数据结构，包括一些属性和方法</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">Module</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="title">constructor</span>(<span class="params">rawModule, runtime</span>)</span> &#123;</span><br><span class="line">    <span class="comment">// 接收参数 runtime</span></span><br><span class="line">    <span class="built_in">this</span>.runtime = runtime;</span><br><span class="line">    <span class="comment">// 存储子模块</span></span><br><span class="line">    <span class="built_in">this</span>._children = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">    <span class="comment">// 存储原始未加工的模块</span></span><br><span class="line">    <span class="built_in">this</span>._rawModule = rawModule;</span><br><span class="line">    <span class="comment">// 模块 state</span></span><br><span class="line">    <span class="keyword">const</span> rawState = rawModule.state;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 原始Store 可能是函数，也可能是是对象，是假值，则赋值空对象。</span></span><br><span class="line">    <span class="built_in">this</span>.state = (<span class="keyword">typeof</span> rawState === <span class="string">&quot;function&quot;</span> ? rawState() : rawState) || &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="installModule-函数"><a href="#installModule-函数" class="headerlink" title="installModule 函数"></a>installModule 函数</h2><ol>
+<li>为module加上namespace名字空间（如果有）</li>
+<li>注册mutation、action以及getter，同时递归安装所有子module。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 初始化module */</span></span><br><span class="line"><span class="comment">/* @store: 表示当前Store实例</span></span><br><span class="line"><span class="comment">/* @rootState: 表示根state</span></span><br><span class="line"><span class="comment">/* @path: 我们可以将一个store实例看成module的集合。每一个集合也是store的实例。那么path就可以想象成一种层级关系，当你有了rootState和path后，就可以在Path路径中找到local State。然后每次getters或者setters改变的就是localState</span></span><br><span class="line"><span class="comment">/* @module:表示当前安装的模块</span></span><br><span class="line"><span class="comment">/* @hot：当动态改变modules或者热更新的时候为true */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">installModule</span>(<span class="params">store, rootState, path, <span class="built_in">module</span>, hot</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/* 是否是根module */</span></span><br><span class="line">  <span class="keyword">const</span> isRoot = !path.length;</span><br><span class="line">  <span class="comment">/* 获取module的namespace */</span></span><br><span class="line">  <span class="keyword">const</span> namespace = store._modules.getNamespace(path);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 如果有namespace，检查是否重复，不重复则在_modulesNamespaceMap中注册 */</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">module</span>.namespaced) &#123;</span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">      store._modulesNamespaceMap[namespace] &amp;&amp;</span><br><span class="line">      process.env.NODE_ENV !== <span class="string">&quot;production&quot;</span></span><br><span class="line">    ) &#123;</span><br><span class="line">      <span class="built_in">console</span>.error(</span><br><span class="line">        <span class="string">`[vuex] duplicate namespace <span class="subst">$&#123;namespace&#125;</span> for the namespaced module <span class="subst">$&#123;path.join(</span></span></span><br><span class="line"><span class="string"><span class="subst">          <span class="string">&quot;/&quot;</span></span></span></span><br><span class="line"><span class="string"><span class="subst">        )&#125;</span>`</span></span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">    store._modulesNamespaceMap[namespace] = <span class="built_in">module</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 注册state</span></span><br><span class="line">  <span class="comment">// 如果不是根并且不是热重载的情况</span></span><br><span class="line">  <span class="keyword">if</span> (!isRoot &amp;&amp; !hot) &#123;</span><br><span class="line">    <span class="comment">/* 获取父级的state */</span></span><br><span class="line">    <span class="keyword">const</span> parentState = getNestedState(rootState, path.slice(<span class="number">0</span>, -<span class="number">1</span>));</span><br><span class="line">    <span class="comment">// 模块名称</span></span><br><span class="line">    <span class="keyword">const</span> moduleName = path[path.length - <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// state 注册</span></span><br><span class="line">    store._withCommit(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (process.env.NODE_ENV !== <span class="string">&quot;production&quot;</span>) &#123;</span><br><span class="line">        <span class="comment">// 有相同的模块名会报错</span></span><br><span class="line">        <span class="keyword">if</span> (moduleName <span class="keyword">in</span> parentState) &#123;</span><br><span class="line">          <span class="built_in">console</span>.warn(</span><br><span class="line">            <span class="string">`[vuex] state field &quot;<span class="subst">$&#123;moduleName&#125;</span>&quot; was overridden by a module with the same name at &quot;<span class="subst">$&#123;path.join(</span></span></span><br><span class="line"><span class="string"><span class="subst">              <span class="string">&quot;.&quot;</span></span></span></span><br><span class="line"><span class="string"><span class="subst">            )&#125;</span>&quot;`</span></span><br><span class="line">          );</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">/* 将子module设置称响应式的 */</span></span><br><span class="line">      Vue.set(parentState, moduleName, <span class="built_in">module</span>.state);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * module.context 这个赋值主要是给 helpers 中 mapState、mapGetters、mapMutations、mapActions四个辅助函数使用的。</span></span><br><span class="line"><span class="comment">   * 生成本地的dispatch、commit、getters和state。</span></span><br><span class="line"><span class="comment">   * 主要作用就是抹平差异化，不需要用户再传模块参数。</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">const</span> local = (<span class="built_in">module</span>.context = makeLocalContext(store, namespace, path));</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 遍历注册mutation */</span></span><br><span class="line">  <span class="built_in">module</span>.forEachMutation(<span class="function">(<span class="params">mutation, key</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> namespacedType = namespace + key;</span><br><span class="line">    registerMutation(store, namespacedType, mutation, local);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 遍历注册action */</span></span><br><span class="line">  <span class="built_in">module</span>.forEachAction(<span class="function">(<span class="params">action, key</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> type = action.root ? key : namespace + key;</span><br><span class="line">    <span class="keyword">const</span> handler = action.handler || action;</span><br><span class="line">    registerAction(store, type, handler, local);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 遍历注册getter */</span></span><br><span class="line">  <span class="built_in">module</span>.forEachGetter(<span class="function">(<span class="params">getter, key</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> namespacedType = namespace + key;</span><br><span class="line">    registerGetter(store, namespacedType, getter, local);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 递归安装mudule */</span></span><br><span class="line">  <span class="built_in">module</span>.forEachChild(<span class="function">(<span class="params">child, key</span>) =&gt;</span> &#123;</span><br><span class="line">    installModule(store, rootState, path.concat(key), child, hot);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="resetStoreVM-函数"><a href="#resetStoreVM-函数" class="headerlink" title="resetStoreVM 函数"></a>resetStoreVM 函数</h2><ol>
+<li><p>遍历wrappedGetters，使用Object.defineProperty方法为每一个getter绑定上get方法，这样我们就可以在组件里访问this.$store.getter.test就等同于访问store._vm.test</p>
+</li>
+<li><p>然后new一个Vue对象来实现数据的“响应式化”，运用Vue.js内部提供的数据双向绑定功能来实现store的数据与视图的同步更新</p>
+</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 通过vm重设store，新建Vue对象使用Vue内部的响应式实现注册state以及computed */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resetStoreVM</span>(<span class="params">store, state, hot</span>) </span>&#123;</span><br><span class="line">  <span class="comment">/* 存放之前的vm对象 */</span></span><br><span class="line">  <span class="keyword">const</span> oldVm = store._vm;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 绑定 store.getter</span></span><br><span class="line">  store.getters = &#123;&#125;;</span><br><span class="line">  <span class="comment">// 重置 本地getters的缓存</span></span><br><span class="line">  store._makeLocalGettersCache = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line">  <span class="comment">// 注册时收集的处理后的用户自定义的 wrappedGetters</span></span><br><span class="line">  <span class="keyword">const</span> wrappedGetters = store._wrappedGetters;</span><br><span class="line">  <span class="comment">// 声明 计算属性 computed 对象</span></span><br><span class="line">  <span class="keyword">const</span> computed = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 通过Object.defineProperty为每一个getter方法设置get方法，比如获取this.$store.getters.test的时候获取的是store._vm.test，也就是Vue对象的computed属性 */</span></span><br><span class="line">  forEachValue(wrappedGetters, <span class="function">(<span class="params">fn, key</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// use computed to leverage its lazy-caching mechanism</span></span><br><span class="line">    <span class="comment">// direct inline function use will lead to closure preserving oldVm.</span></span><br><span class="line">    <span class="comment">// using partial to return function with only arguments preserved in closure environment.</span></span><br><span class="line">    computed[key] = partial(fn, store);</span><br><span class="line">    <span class="built_in">Object</span>.defineProperty(store.getters, key, &#123;</span><br><span class="line">      get: <span class="function">() =&gt;</span> store._vm[key],</span><br><span class="line">      enumerable: <span class="literal">true</span> <span class="comment">// for local getters</span></span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 使用一个 Vue 实例对象存储 state 树</span></span><br><span class="line">  <span class="comment">// 阻止警告 用户添加的一些全局mixins</span></span><br><span class="line">  <span class="comment">// 声明变量 silent 存储用户设置的静默模式配置</span></span><br><span class="line">  <span class="keyword">const</span> silent = Vue.config.silent;</span><br><span class="line">  <span class="comment">/* Vue.config.silent暂时设置为true的目的是在new一个Vue实例的过程中不会报出一切警告 */</span></span><br><span class="line">  Vue.config.silent = <span class="literal">true</span>;</span><br><span class="line">  <span class="comment">/*  这里new了一个Vue对象，运用Vue内部的响应式实现注册state以及computed */</span></span><br><span class="line">  store._vm = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    data: &#123;</span><br><span class="line">      $$state: state</span><br><span class="line">    &#125;,</span><br><span class="line">    computed</span><br><span class="line">  &#125;);</span><br><span class="line">  Vue.config.silent = silent;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/* 使能严格模式，保证修改store只能通过mutation */</span></span><br><span class="line">  <span class="keyword">if</span> (store.strict) &#123;</span><br><span class="line">    enableStrictMode(store);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (oldVm) &#123;</span><br><span class="line">    <span class="comment">/* 解除旧vm的state的引用，以及销毁旧的Vue对象 */</span></span><br><span class="line">    <span class="keyword">if</span> (hot) &#123;</span><br><span class="line">      <span class="comment">// 热加载为 true</span></span><br><span class="line">      <span class="comment">// 设置  oldVm._data.$$state = null</span></span><br><span class="line">      store._withCommit(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        oldVm._data.$$state = <span class="literal">null</span>;</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 实例销毁</span></span><br><span class="line">    Vue.nextTick(<span class="function">() =&gt;</span> oldVm.$destroy());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vuex/" rel="tag"># Vuex</a>
+          
+            <a href="/tags/Vue/" rel="tag"># Vue</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/03/Vue/2019/15.%20%E3%80%90%E5%88%86%E4%BA%AB%E3%80%91vue%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/" rel="next" title="【分享】vue原理分析">
+                <i class="fa fa-chevron-left"></i> 【分享】vue原理分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/12/04/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Vue/vuex%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E6%89%8B%E5%86%8C/vuex%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(Store%E5%AE%9E%E4%BE%8B%E6%96%B9%E6%B3%95)/" rel="prev" title="vuex源码分析(Store实例方法)">
+                vuex源码分析(Store实例方法) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vuex-Store-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-text">Vuex.Store 构造函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#class-ModuleCollection"><span class="nav-text">class ModuleCollection</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#class-Module"><span class="nav-text">class Module</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#installModule-%E5%87%BD%E6%95%B0"><span class="nav-text">installModule 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resetStoreVM-%E5%87%BD%E6%95%B0"><span class="nav-text">resetStoreVM 函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

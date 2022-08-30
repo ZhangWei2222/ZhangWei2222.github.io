@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="二维码原理优点二维码出现之前，在需要使用类似编码的场景时，采用的都是一维码（条形码）；但是条形码承载的信息太少，只能用于一些很简单的场景，因此条形码除了用于商品等信息，并没有广泛流行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有趣的二维码">
+<meta property="og:url" content="https://super-wei.top/2021/12/07/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/2021/2.%20%E6%9C%89%E8%B6%A3%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="二维码原理优点二维码出现之前，在需要使用类似编码的场景时，采用的都是一维码（条形码）；但是条形码承载的信息太少，只能用于一些很简单的场景，因此条形码除了用于商品等信息，并没有广泛流行。">
+<meta property="og:locale">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DAQ3Fx6t7fEMveWianwRxMpGKQ0IRKg2ofEm7ZjXicX8ZKMw6DyJwxkrQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5Dy0ibT7ufysK3XM0Ricqf2499xib6tYUxEL9yqNCpT0xSkvvicAyRrROttQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DOiaiazqNK1ialOJtY8YpciaKAIRagFq2HFjLHjlqKwpx7r85WSDLU7pJtA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5D9Pn2kDCyBHjRia6EgLcqwtyQRJ0DOyMT68IRsm7FhdxiaQJK2ticJW1aA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DWzRM7PaVsQbQb5VTXMeonuUlibOE2dOrLGn78QbtJpczxiapWekZFgDQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DIw7ib99ETx8qmBEKo9bDPSBtZraFEHSrtvcWiang5Vokn50giawicY6u9g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DvuBRribju2Zk0mMqa2eDVebnD4dlta9wwDicR05xtwGvsna6Y1XaxicnQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5Ddh73BLXrmPRmboa3SicDjzSTB8LsAEeVsuWCeWNvQB9l2Wht3TSG2Fg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DfFZwGFuFdz0yicRB0VJumQdJzCnf70J6rVyNWBibgmRMeUkIw8rYQ4Nw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5Dict8bg6Xt5aN4JIlZeDI7gQbHicdrJUrTkE0jy7zc1JfGib1uWzvzkHiaQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DM1wwx5xcMgr5urOTCQLB3tv95Ozn85BicBIn3gUmXMx2lo5Bf4fk87Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_gif/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DQVreAPZHNv1K54kQnznYXFjdx48aY2W6D6IA0XdGK31wL1uc238hqg/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DiaVXHeSEN0IjTU8qLKoPfeGCDqX783hhYiaJ8Fz745oBBs4SuPOsojMg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DUSajaTicvicmxgGRjIElM46QzRZYa9WVEoSaxOsvvfpIWKHNN0Ut6psw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="article:published_time" content="2021-12-07T02:42:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.102Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DAQ3Fx6t7fEMveWianwRxMpGKQ0IRKg2ofEm7ZjXicX8ZKMw6DyJwxkrQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2021/12/07/技术实现/2021/2. 有趣的二维码/"/>
+
+
+
+
+
+  <title>有趣的二维码 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/12/07/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/2021/2.%20%E6%9C%89%E8%B6%A3%E7%9A%84%E4%BA%8C%E7%BB%B4%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">有趣的二维码</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-07T10:42:47+08:00">
+                2021-12-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">技术实现</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.9k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="二维码原理"><a href="#二维码原理" class="headerlink" title="二维码原理"></a>二维码原理</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><p>二维码出现之前，在需要使用类似编码的场景时，采用的都是一维码（条形码）；但是条形码承载的信息太少，只能用于一些很简单的场景，因此条形码除了用于商品等信息，并没有广泛流行。</p>
+<a id="more"></a>
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DAQ3Fx6t7fEMveWianwRxMpGKQ0IRKg2ofEm7ZjXicX8ZKMw6DyJwxkrQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<p>二维码具有以下优点：</p>
+<ul>
+<li>高密度编码，信息容量大：可容纳多达 1850 个大写字母或 2710 个数字或 1108 个字节，或 500 多个汉字，比普通条码信息容量约高几十倍。</li>
+<li>编码范围广：该条码可以把图片、声音、文字、签字、指纹等可以数字化的信息进行编码，用条码表示出来；可以表示多种语言文字；可表示图像数据。</li>
+<li>容错能力强，具有纠错功能：这使得二维条码因穿孔、污损等引起局部损坏时，照样可以正确得到识读，损毁面积达 50% 仍可恢复信息。</li>
+<li>译码可靠性高：它比普通条码译码错误率百万分之二要低得多，误码率不超过千万分之一。</li>
+<li>可引入加密措施：保密性、防伪性好。</li>
+<li>成本低，易制作，持久耐用。</li>
+<li>条码符号形状、尺寸大小比例可变。</li>
+<li>二维条码可以使用激光或CCD阅读器识读。</li>
+</ul>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>我们可以先试着生成一个二维码。<a target="_blank" rel="noopener" href="https://kazuhikoarase.github.io/qrcode-generator/js/demo/">https://kazuhikoarase.github.io/qrcode-generator/js/demo/</a></p>
+<hr>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5Dy0ibT7ufysK3XM0Ricqf2499xib6tYUxEL9yqNCpT0xSkvvicAyRrROttQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<hr>
+<p>如图可以发现，二维码有 4 个可变项，其中主要的 2 个为：</p>
+<ul>
+<li>版本（TypeNumber）</li>
+</ul>
+<p>一共有 40 个尺寸，对应 40 个版本；Version1是 21<em>21 的矩形，之后每增加一个版本，就增加4的尺寸，即（v-1）</em>4+21，最高是Version40，177*177 的正方形。</p>
+<ul>
+<li>容错率（ErrorCorrectionLevel）</li>
+</ul>
+<p>二维码容错率即是指二维码图标被遮挡多少后，仍可以被扫描出来的能力。容错率越高，则二维码图片能被遮挡的部分越多。二维码有 4 个容错等级：</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DOiaiazqNK1ialOJtY8YpciaKAIRagFq2HFjLHjlqKwpx7r85WSDLU7pJtA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<p>根据以上配置不同，<strong>相同的内容，在不同的配置下产生的二维码不一样，但扫出的内容是一样的</strong>。</p>
+<h3 id="设计原理"><a href="#设计原理" class="headerlink" title="设计原理"></a>设计原理</h3><p>日常我们看到的二维码就是一张由黑白色块混合在一起的一张图片，我们肯定也知道这些黑白色块就是内容的某种编码，但其实除了内容外，二维码还有许多其他辅助扫码识别的信息。</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5D9Pn2kDCyBHjRia6EgLcqwtyQRJ0DOyMT68IRsm7FhdxiaQJK2ticJW1aA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<p>如上图，按右侧标识的从上到下的顺序，分别是：</p>
+<h4 id="功能区："><a href="#功能区：" class="headerlink" title="功能区："></a>功能区：</h4><ul>
+<li><p>位置探测图形：位于左上、左下、右上的三个矩形，可以说是二维码最重要的组成部分。</p>
+</li>
+<li><ul>
+<li>确定二维码的放置方向：不管顺着扫倒着扫，都可以准确找到第一个编码字符的位置（左上矩形的右边）；如果任一矩形被遮挡，扫描设备将无法定位。</li>
+<li>确定编码字符的边界：确定编码字符的上下左右边界，不被周围其他信息干扰。</li>
+</ul>
+</li>
+<li><p>位置探测图形分隔符：位置探测图形周围的白边，用于分割位置探测图形和数据。</p>
+</li>
+<li><p>定位图形：三个位置探测图形之间的两根“线”，用于确定二维码符号中模块的坐标（相当于坐标轴）。</p>
+</li>
+<li><p>校正图形：用于校正定位（只有版本2以上有），版本越高个数越多，以校正可能发生的定位偏移。</p>
+</li>
+</ul>
+<p>从谷歌搜二维码图片，可以观察下，这些二维码都具有位置探测图形、位置探测图形分隔符及定位图形。其中第三幅，定位图形不太对，也确实就扫不出来。</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DWzRM7PaVsQbQb5VTXMeonuUlibOE2dOrLGn78QbtJpczxiapWekZFgDQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<h4 id="数据区："><a href="#数据区：" class="headerlink" title="数据区："></a>数据区：</h4><ul>
+<li>格式信息：存放包括纠错码类型、掩码类型等信息。</li>
+<li>数据和纠错码字：最主要的部分，用于存放数据和纠错信息。</li>
+</ul>
+<p>除掉定位区以及格式信息，数据和纠错码字的排布如下：</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DIw7ib99ETx8qmBEKo9bDPSBtZraFEHSrtvcWiang5Vokn50giawicY6u9g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<h3 id="生成流程"><a href="#生成流程" class="headerlink" title="生成流程"></a>生成流程</h3><img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DvuBRribju2Zk0mMqa2eDVebnD4dlta9wwDicR05xtwGvsna6Y1XaxicnQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<p>在所有数据都完成放置之后，还有一步操作：添加掩码。掩码主要是为了避免，如果出现大面积的空白或黑块，导致我们扫描识别的困难。常用的掩码如下：</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5Ddh73BLXrmPRmboa3SicDjzSTB8LsAEeVsuWCeWNvQB9l2Wht3TSG2Fg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<p>数据经过掩码后，基本不会再出现大面积的黑块和白块，利于扫描。</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DfFZwGFuFdz0yicRB0VJumQdJzCnf70J6rVyNWBibgmRMeUkIw8rYQ4Nw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<blockquote>
+<p>掩码只会与数据区进行 XOR，不会影响功能区。</p>
+</blockquote>
+<h3 id="代码概览"><a href="#代码概览" class="headerlink" title="代码概览"></a>代码概览</h3><p>只要遵循以上二维码的规范，生成对应的二维码图形即可，具体实现逻辑不影响。这里我们参考<a target="_blank" rel="noopener" href="https://github.com/alphatr/jquery-qrcode">jquery-qrcode</a>，简单看下实现，主要流程如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">makeImpl : <span class="function"><span class="keyword">function</span>(<span class="params">test, maskPattern</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.moduleCount = <span class="built_in">this</span>.typeNumber * <span class="number">4</span> + <span class="number">17</span>;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.modules = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="built_in">this</span>.moduleCount);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> row = <span class="number">0</span>; row &lt; <span class="built_in">this</span>.moduleCount; row++) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">this</span>.modules[row] = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="built_in">this</span>.moduleCount);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> col = <span class="number">0</span>; col &lt; <span class="built_in">this</span>.moduleCount; col++) &#123;</span><br><span class="line">      <span class="built_in">this</span>.modules[row][col] = <span class="literal">null</span>;<span class="comment">//(col + row) % 3;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.setupPositionProbePattern(<span class="number">0</span>, <span class="number">0</span>);<span class="comment">// 位置探测图形</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.setupPositionProbePattern(<span class="built_in">this</span>.moduleCount - <span class="number">7</span>, <span class="number">0</span>);<span class="comment">// 位置探测图形</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.setupPositionProbePattern(<span class="number">0</span>, <span class="built_in">this</span>.moduleCount - <span class="number">7</span>);<span class="comment">// 位置探测图形</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.setupPositionAdjustPattern(); <span class="comment">// 校正图形</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.setupTimingPattern(); <span class="comment">// 定位图形（坐标轴）</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.setupTypeInfo(test, maskPattern); <span class="comment">// 版本信息</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.typeNumber &gt;= <span class="number">7</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.setupTypeNumber(test);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">this</span>.dataCache == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="built_in">this</span>.dataCache = QRCode.createData(<span class="built_in">this</span>.typeNumber, <span class="built_in">this</span>.errorCorrectLevel, <span class="built_in">this</span>.dataList); <span class="comment">// 生成数据</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.mapData(<span class="built_in">this</span>.dataCache, maskPattern); <span class="comment">// 加入掩码</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>生成二维数据后，再把点一一绘制出来即可：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> createCanvas  = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">// create the qrcode itself</span></span><br><span class="line">  <span class="keyword">var</span> qrcode  = <span class="keyword">new</span> QRCode(options.typeNumber, options.correctLevel);</span><br><span class="line">  qrcode.addData(options.text);</span><br><span class="line">  qrcode.make();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// create canvas element</span></span><br><span class="line">  <span class="keyword">var</span> canvas  = <span class="built_in">document</span>.createElement(<span class="string">&#x27;canvas&#x27;</span>);</span><br><span class="line">  canvas.width  = options.width;</span><br><span class="line">  canvas.height = options.height;</span><br><span class="line">  <span class="keyword">var</span> ctx   = canvas.getContext(<span class="string">&#x27;2d&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// compute tileW/tileH based on options.width/options.height</span></span><br><span class="line">  <span class="keyword">var</span> tileW = options.width  / qrcode.getModuleCount();</span><br><span class="line">  <span class="keyword">var</span> tileH = options.height / qrcode.getModuleCount();</span><br><span class="line"></span><br><span class="line">  <span class="comment">// draw in the canvas</span></span><br><span class="line">  <span class="keyword">for</span>( <span class="keyword">var</span> row = <span class="number">0</span>; row &lt; qrcode.getModuleCount(); row++ )&#123;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">var</span> col = <span class="number">0</span>; col &lt; qrcode.getModuleCount(); col++ )&#123;</span><br><span class="line">      ctx.fillStyle = qrcode.isDark(row, col) ? options.foreground : options.background;</span><br><span class="line">      <span class="keyword">var</span> w = (<span class="built_in">Math</span>.ceil((col+<span class="number">1</span>)*tileW) - <span class="built_in">Math</span>.floor(col*tileW));</span><br><span class="line">      <span class="keyword">var</span> h = (<span class="built_in">Math</span>.ceil((row+<span class="number">1</span>)*tileH) - <span class="built_in">Math</span>.floor(row*tileH));</span><br><span class="line">      ctx.fillRect(<span class="built_in">Math</span>.round(col*tileW),<span class="built_in">Math</span>.round(row*tileH), w, h);  </span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// return just built canvas</span></span><br><span class="line">  <span class="keyword">return</span> canvas;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="艺术二维码"><a href="#艺术二维码" class="headerlink" title="艺术二维码"></a>艺术二维码</h2><p>日常我们见到的二维码都是黑白的，但其实二维码可以多姿多彩。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5Dict8bg6Xt5aN4JIlZeDI7gQbHicdrJUrTkE0jy7zc1JfGib1uWzvzkHiaQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片">这里有很多样式，可以试一试<a target="_blank" rel="noopener" href="https://qrbtf.com/%E3%80%82">https://qrbtf.com/。</a></p>
+<p>二维码之所以可以五颜六色，是因为二维码的有用信息只是 0 和 1，至于 0 和 1 用什么信息表达，只要扫码软件可以识别就行。目前的扫码软件一般都是对图片进行灰度处理，所以二维码上的点无论如何表达，<strong>只要经过灰度处理后 0 和 1 没有颠倒，则信息不会出错，不会影响扫码结果。</strong></p>
+<p>艺术二维码实现起来也不难，<strong>只要区分特定的数据区，并用特定的图片渲染即可</strong>，有兴趣可以参考<a target="_blank" rel="noopener" href="https://github.com/252860883/ArtQRCode%E3%80%82">https://github.com/252860883/ArtQRCode。</a></p>
+<p>更简单一点的，也可以直接降低黑白透明度，背景渲染特定的图片；如果只是网页上显示，还可以做成 gif 动图形式。</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DM1wwx5xcMgr5urOTCQLB3tv95Ozn85BicBIn3gUmXMx2lo5Bf4fk87Q/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom: 50%;" /> <img src="https://mmbiz.qpic.cn/mmbiz_gif/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DQVreAPZHNv1K54kQnznYXFjdx48aY2W6D6IA0XdGK31wL1uc238hqg/640?wx_fmt=gif&tp=webp&wxfrom=5&wx_lazy=1" alt="图片" style="zoom:50%;" /></p>
+<p>不过，艺术二维码由于颜色更丰富干扰信息更多，因此相比黑白二维码，艺术二维码对扫描软件的要求也更高。</p>
+<h2 id="小程序码"><a href="#小程序码" class="headerlink" title="小程序码"></a>小程序码</h2><p>小程序码和二维码虽然看起来完全不一样，但是它们的设计思想及生成流程是基本一样的。</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DiaVXHeSEN0IjTU8qLKoPfeGCDqX783hhYiaJ8Fz745oBBs4SuPOsojMg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom: 50%;" />
+
+<ul>
+<li>具有位置探测图形；</li>
+<li>支持3种容量：36 射线、54 射线和 72 射线；</li>
+<li>具有 L、M、Q、H 4种容错级别；</li>
+<li>掩码操作均匀0、1码点；</li>
+</ul>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIrQ5IFbpY46fkSUrOpJdZ5DUSajaTicvicmxgGRjIElM46QzRZYa9WVEoSaxOsvvfpIWKHNN0Ut6psw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;" />
+
+
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/tLKQLe1IjGv5vkDfhXIK2Q">有趣的二维码</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/05/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%93%88%E5%B8%8C%E8%A1%A8/1.%20LRU%20%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6/" rel="next" title="LRU 缓存机制">
+                <i class="fa fa-chevron-left"></i> LRU 缓存机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/07/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%AD%97%E7%AC%A6%E4%B8%B2/1.%20%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2/" rel="prev" title="最长回文子串">
+                最长回文子串 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E7%BB%B4%E7%A0%81%E5%8E%9F%E7%90%86"><span class="nav-text">二维码原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E5%8E%9F%E7%90%86"><span class="nav-text">设计原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD%E5%8C%BA%EF%BC%9A"><span class="nav-text">功能区：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8C%BA%EF%BC%9A"><span class="nav-text">数据区：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%B5%81%E7%A8%8B"><span class="nav-text">生成流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%A6%82%E8%A7%88"><span class="nav-text">代码概览</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%89%BA%E6%9C%AF%E4%BA%8C%E7%BB%B4%E7%A0%81"><span class="nav-text">艺术二维码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A0%81"><span class="nav-text">小程序码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="大致结构1234567891011&#x2F;* 建立响应式数据 *&#x2F;function reactice(obj)&amp;#123;&amp;#125;&#x2F;* 声明响应函数cb(依赖响应式数据) *&#x2F;function effect(cb)&amp;#123;&amp;#125;&#x2F;* 依赖收集：建立 数据&amp;cb 映射关系 *&#x2F;function track(target,key)&amp;#123;&amp;#125;&#x2F;* 触发更新：根据映射关系，执">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue3-手写reactivity模块">
+<meta property="og:url" content="https://super-wei.top/2021/02/05/Vue3/2021/9.%20%E6%89%8B%E5%86%99reactivity%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="大致结构1234567891011&#x2F;* 建立响应式数据 *&#x2F;function reactice(obj)&amp;#123;&amp;#125;&#x2F;* 声明响应函数cb(依赖响应式数据) *&#x2F;function effect(cb)&amp;#123;&amp;#125;&#x2F;* 依赖收集：建立 数据&amp;cb 映射关系 *&#x2F;function track(target,key)&amp;#123;&amp;#125;&#x2F;* 触发更新：根据映射关系，执">
+<meta property="og:locale">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2pwZy9UODFiQVYwTk5OOFpHVFVQYW9ua2R5WVFXMmowRXEyNUhHSGliN2R0ZDJZbURnTWZuREZRSkVSRE9DM2ZaeXNBMTg3OHd3RlhGT1JIRnVUQlFabVRJcncvNjQw?x-oss-process=image/format,png">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a7206eb3878747cab987c5592fcba1f0~tplv-k3u1fbpfcp-watermark.image">
+<meta property="article:published_time" content="2021-02-05T02:32:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.060Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2pwZy9UODFiQVYwTk5OOFpHVFVQYW9ua2R5WVFXMmowRXEyNUhHSGliN2R0ZDJZbURnTWZuREZRSkVSRE9DM2ZaeXNBMTg3OHd3RlhGT1JIRnVUQlFabVRJcncvNjQw?x-oss-process=image/format,png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2021/02/05/Vue3/2021/9. 手写reactivity模块/"/>
+
+
+
+
+
+  <title>Vue3-手写reactivity模块 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/02/05/Vue3/2021/9.%20%E6%89%8B%E5%86%99reactivity%E6%A8%A1%E5%9D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue3-手写reactivity模块</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-02-05T10:32:47+08:00">
+                2021-02-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue3/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue3</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.8k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="大致结构"><a href="#大致结构" class="headerlink" title="大致结构"></a>大致结构</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 建立响应式数据 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reactice</span>(<span class="params">obj</span>)</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 声明响应函数cb(依赖响应式数据) */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">effect</span>(<span class="params">cb</span>)</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 依赖收集：建立 数据&amp;cb 映射关系 */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">track</span>(<span class="params">target,key</span>)</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 触发更新：根据映射关系，执行cb */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">trigger</span>(<span class="params">target,key</span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+
+
+<h2 id="手写reactivity模块"><a href="#手写reactivity模块" class="headerlink" title="手写reactivity模块"></a>手写reactivity模块</h2><h3 id="配置-Webpack-开发环境"><a href="#配置-Webpack-开发环境" class="headerlink" title="配置 Webpack 开发环境"></a>配置 Webpack 开发环境</h3><p>安装依赖</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add webpack webpack-dev-server webpack-cli html-webpack-plugin @babel/core babel-loader @babel/preset-env -D</span><br></pre></td></tr></table></figure>
+<p>webpack.config.js 文件编写</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>)</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  entry: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  devtool: <span class="string">&#x27;source-map&#x27;</span>,</span><br><span class="line">  <span class="built_in">module</span>: &#123;</span><br><span class="line">    rules: [</span><br><span class="line">      &#123;</span><br><span class="line">        test: <span class="regexp">/\.js/</span>,</span><br><span class="line">        use: <span class="string">&#x27;babel-loader&#x27;</span>,</span><br><span class="line">        exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;,</span><br><span class="line">  plugins: [</span><br><span class="line">    <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">      template: <span class="string">&#x27;./public/index.html&#x27;</span>,</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>配置.babelrc 文件</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;presets&quot;</span>: [<span class="string">&quot;@babel/preset-env&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行脚本配置</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;build:dev&quot;: &quot;webpack --mode development&quot;,</span><br><span class="line">    &quot;serve&quot;: &quot;webpack-dev-server&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用 Vue3 响应式模块</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; reactive, effect &#125; <span class="keyword">from</span> <span class="string">&#x27;@vue/reactivity&#x27;</span></span><br><span class="line"><span class="keyword">let</span> state = reactive(&#123;</span><br><span class="line">  name: <span class="string">&#x27;Hello&#x27;</span>,</span><br><span class="line">  age: <span class="number">18</span></span><br><span class="line">&#125;)</span><br><span class="line">effect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(state.name)</span><br><span class="line">&#125;)</span><br><span class="line">state.name = <span class="string">&#x27;world&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="目录结构搭建"><a href="#目录结构搭建" class="headerlink" title="目录结构搭建"></a>目录结构搭建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">computed.js</span><br><span class="line">effect.js</span><br><span class="line">index.js</span><br><span class="line">reactive.js</span><br><span class="line">ref.js</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里我们要实现的方法分别用 <code>reactive</code> 、<code>effect</code> 、<code>ref</code> 、 <code>computed</code>方法。在 index 文件中统一整合这些方法进行导出</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> &#123; computed &#125; <span class="keyword">from</span> <span class="string">&#x27;./computed&#x27;</span></span><br><span class="line"><span class="keyword">export</span> &#123; effect &#125; <span class="keyword">from</span> <span class="string">&#x27;./effect&#x27;</span></span><br><span class="line"><span class="keyword">export</span> &#123; reactive &#125; <span class="keyword">from</span> <span class="string">&#x27;./reactive&#x27;</span></span><br><span class="line"><span class="keyword">export</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&#x27;./ref&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="reactive-实现"><a href="#reactive-实现" class="headerlink" title="reactive 实现"></a>reactive 实现</h3><p>reactive 函数：将 <code>target</code> 变成响应式对象，并返回</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mutableHandlers &#125; <span class="keyword">from</span> <span class="string">&#x27;./baseHandlers&#x27;</span> <span class="comment">// 代理相关逻辑</span></span><br><span class="line"><span class="keyword">import</span> &#123; isObject &#125; <span class="keyword">from</span> <span class="string">&#x27;./util&#x27;</span> <span class="comment">// 工具方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">reactive</span>(<span class="params">target</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 根据不同参数创建不同响应式对象</span></span><br><span class="line">  <span class="keyword">return</span> createReactiveObject(target, mutableHandlers)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createReactiveObject</span>(<span class="params">target, baseHandler</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 不是对象不需要代理，直接返回</span></span><br><span class="line">  <span class="keyword">if</span> (!isObject(target)) &#123;</span><br><span class="line">    <span class="keyword">return</span> target</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 创建 Proxy 代理</span></span><br><span class="line">  <span class="keyword">const</span> observed = <span class="keyword">new</span> <span class="built_in">Proxy</span>(target, baseHandler)</span><br><span class="line">  <span class="keyword">return</span> observed</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="baseHandlers-js"><a href="#baseHandlers-js" class="headerlink" title="baseHandlers.js"></a>baseHandlers.js</h4><p>是 <code>Proxy</code> 的第二个参数<code>handler</code>，它承载监控对象变化，依赖收集，视图更新等各项重大责任</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; isObject, hasOwn, hasChanged &#125; <span class="keyword">from</span> <span class="string">&#x27;./util&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; reactive &#125; <span class="keyword">from</span> <span class="string">&#x27;./reactive&#x27;</span></span><br><span class="line"><span class="keyword">const</span> get = createGetter()</span><br><span class="line"><span class="keyword">const</span> set = createSetter()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createGetter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">target, key, receiver</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 对获取的值进行放射</span></span><br><span class="line">    <span class="keyword">const</span> res = <span class="built_in">Reflect</span>.get(target, key, receiver)</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;属性获取&#x27;</span>, key)</span><br><span class="line">    <span class="keyword">if</span> (isObject(res)) &#123;</span><br><span class="line">      <span class="comment">// 如果获取的值是对象类型，则返回当前对象的代理对象</span></span><br><span class="line">      <span class="keyword">return</span> reactive(res)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createSetter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">set</span>(<span class="params">target, key, value, receiver</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 获取原始值</span></span><br><span class="line">    <span class="keyword">const</span> oldValue = target[key]</span><br><span class="line">    <span class="comment">// 需要判断修改属性还是新增属性</span></span><br><span class="line">    <span class="comment">// 必须：否则例如数组 arr.push(4)，将会触发两次更新，一次是新增4，一次是修改数组的length</span></span><br><span class="line">    <span class="keyword">const</span> hadKey = hasOwn(target, key)</span><br><span class="line">    <span class="keyword">const</span> result = <span class="built_in">Reflect</span>.set(target, key, value, receiver)</span><br><span class="line">    <span class="keyword">if</span> (!hadKey) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;属性新增&#x27;</span>, key, value)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hasChanged(value, oldValue)) &#123;  <span class="comment">// 如果原始值于新设置的值一样，则不作处理</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;属性值被修改&#x27;</span>, key, value)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> mutableHandlers = &#123;</span><br><span class="line">  get, <span class="comment">// 当获取属性时调用此方法</span></span><br><span class="line">  set, <span class="comment">// 当修改属性时调用此方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里我只对最常用到的 get 和 set 方法进行处理，还应该处理<code>has</code>、<code>deleteProperty</code>、<code>ownKeys</code>。这里暂且跳过这些实现</p>
+</blockquote>
+<p>使用 reactive 方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; computed, ref, reactive, effect &#125; = Vue;</span><br><span class="line"><span class="keyword">const</span> proxy = reactive(&#123;<span class="attr">name</span>:<span class="string">&#x27;yp&#x27;</span>, <span class="attr">goods</span>:[<span class="string">&#x27;手机&#x27;</span>,<span class="string">&#x27;鞋子&#x27;</span>]&#125;);</span><br><span class="line">proxy.name = <span class="string">&#x27;youpin&#x27;</span>;</span><br><span class="line">proxy.lessons[<span class="number">0</span>] = <span class="string">&#x27;小米手机&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里当我们获取属性和更改属性值时就可以触发对应的 set 和 get 方法</p>
+</blockquote>
+<h3 id="effect-实现"><a href="#effect-实现" class="headerlink" title="effect 实现"></a>effect 实现</h3><p>我们再来看 effect 的实现，默认 effect 会立即执行，当依赖的值发生变化时 effect 会重新执行（会在初始化执行的时候存储跟其有关的数据依赖，当依赖数据发生变化的时候，则会再次触发 <code>effect</code> 传递的函数）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建effect时可以传递参数，computed也是基于effect来实现的，只是增加了一些options参数条件而已</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">effect</span>(<span class="params">fn, options = &#123;&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 创建响应式 effect</span></span><br><span class="line">  <span class="keyword">const</span> effect = createReactiveEffect(fn, options)</span><br><span class="line">  <span class="keyword">if</span> (!options.lazy) &#123;</span><br><span class="line">    effect() <span class="comment">// 默认effect应该立即被执行</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> effect</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> uid = <span class="number">0</span></span><br><span class="line"><span class="keyword">const</span> effectStack = [] <span class="comment">// 存放effect的队列</span></span><br><span class="line"><span class="keyword">let</span> activeEffect <span class="comment">// 当前正在执行的effect</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建响应式 effect</span></span><br><span class="line"><span class="comment">// 作用：为了将 fn 变成响应式函数，监控数据变化，执行 fn 函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createReactiveEffect</span>(<span class="params">fn, options</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 创建的响应式函数</span></span><br><span class="line">  <span class="keyword">const</span> effect = <span class="function"><span class="keyword">function</span> <span class="title">reactiveEffect</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 防止不停更改属性导致死循环</span></span><br><span class="line">    <span class="keyword">if</span> (!effectStack.includes(effect)) &#123;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        effectStack.push(effect) <span class="comment">// 将当前effect放到栈中</span></span><br><span class="line">        activeEffect = effect <span class="comment">// 标记当前运行的effect</span></span><br><span class="line">        <span class="keyword">return</span> fn() <span class="comment">// 执行用户定义的方法</span></span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        effectStack.pop() <span class="comment">// 执行完毕后出栈</span></span><br><span class="line">        activeEffect = effectStack[effectStack.length - <span class="number">1</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  effect.options = options <span class="comment">// effect所有属性</span></span><br><span class="line">  effect.id = uid++ <span class="comment">// effect的标号</span></span><br><span class="line">  effect.deps = [] <span class="comment">// effect函数对应的属性</span></span><br><span class="line">  <span class="keyword">return</span> effect</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>createReactiveEffect</code> 将原来的 <code>fn</code> 转变成一个 <code>reactvieEffect</code> ， 并将当前的 <code>effect</code> 挂到全局的 <code>activeEffect</code> 上，目的是为了一会与当前所依赖的属性做好对应关系。</p>
+<p>我们必须要将依赖属性构造成 <code>&#123; prop : [effect,effect] &#125;</code> 这种结构，才能保证依赖属性变化的时候，依次去触发与之相关的 <code>effect</code>，因此，需要在 <code>get</code> 属性的时候，做属性的依赖收集，将属性与 <code>effect</code> 关联起来。</p>
+<h3 id="依赖收集、触发更新-调用"><a href="#依赖收集、触发更新-调用" class="headerlink" title="依赖收集、触发更新 调用"></a>依赖收集、触发更新 调用</h3><p>在 effect 方法调用时会对属性进行取值，此时可以进行依赖收集。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 收集属性对应的effect</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">track</span>(<span class="params">target, type, key</span>) </span>&#123;&#125;</span><br><span class="line"><span class="comment">// 触发属性对应effect执行</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">trigger</span>(<span class="params">target, type, key</span>) </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="operations-js"><a href="#operations-js" class="headerlink" title="operations.js"></a>operations.js</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> TrackOpTypes = &#123;</span><br><span class="line">  GET: <span class="string">&#x27;get&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> TriggerOpTypes = &#123;</span><br><span class="line">  SET: <span class="string">&#x27;set&#x27;</span>,</span><br><span class="line">  ADD: <span class="string">&#x27;add&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="定义收集类型和触发类型"><a href="#定义收集类型和触发类型" class="headerlink" title="定义收集类型和触发类型"></a>定义收集类型和触发类型</h4><p>在获取对象的属性时，会触发 <code>getHandler</code> ，再次做属性的依赖收集，即 <code>Vue2</code> 中的发布订阅。</p>
+<p>在 <code>getHandler</code> 中获取属性的时候，做一次 <code>track(target, key)</code> 操作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createGetter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">target, key, receiver</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> res = <span class="built_in">Reflect</span>.get(target, key, receiver)</span><br><span class="line">    <span class="comment">// 取值时依赖收集</span></span><br><span class="line">    track(target, TrackOpTypes.GET, key)</span><br><span class="line">    <span class="keyword">if</span> (isObject(res)) &#123;</span><br><span class="line">      <span class="keyword">return</span> reactive(res)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述已经完成了依赖收集，剩下就是监控数据变化，触发更新操作，即在 <code>setHandler</code> 中添加 <code>trigger</code> 触发操作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createSetter</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">set</span>(<span class="params">target, key, value, receiver</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> oldValue = target[key]</span><br><span class="line">    <span class="keyword">const</span> hadKey = hasOwn(target, key)</span><br><span class="line">    <span class="keyword">const</span> result = <span class="built_in">Reflect</span>.set(target, key, value, receiver)</span><br><span class="line">    <span class="keyword">if</span> (!hadKey) &#123;</span><br><span class="line">      <span class="comment">// 设置值时触发更新 - ADD</span></span><br><span class="line">      trigger(target, TriggerOpTypes.ADD, key)</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hasChanged(value, oldValue)) &#123;</span><br><span class="line">      <span class="comment">// 设置值时触发更新 - SET</span></span><br><span class="line">      trigger(target, TriggerOpTypes.SET, key, value, oldValue)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2pwZy9UODFiQVYwTk5OOFpHVFVQYW9ua2R5WVFXMmowRXEyNUhHSGliN2R0ZDJZbURnTWZuREZRSkVSRE9DM2ZaeXNBMTg3OHd3RlhGT1JIRnVUQlFabVRJcncvNjQw?x-oss-process=image/format,png" alt="img"></p>
+<h3 id="track-的实现"><a href="#track-的实现" class="headerlink" title="track 的实现"></a>track 的实现</h3><p>整个 <code>track</code> 的数据结构大概是这样</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment">* 最外层是 WeakMap，其 key 是 target 对象，值是一个 map</span></span><br><span class="line"><span class="comment">* map 中包含 target 的属性，key 为每一个属性 ， 值为属性对应的 `effect` </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">     key  		       val(map)</span><br><span class="line">&#123;<span class="attr">name</span> : <span class="string">&#x27;hello&#x27;</span>, <span class="attr">age</span>: <span class="number">18</span>&#125;     &#123;  <span class="attr">name</span> : <span class="built_in">Set</span>(effect,effect) ， age : <span class="built_in">Set</span>() &#125;</span><br></pre></td></tr></table></figure>
+<p>目的就是将 <code>target</code>，<code>key</code>，<code>effect</code> 之间做好对应的关系映射。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> targetMap = <span class="keyword">new</span> <span class="built_in">WeakMap</span>();</span><br><span class="line"><span class="comment">// 依赖收集</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">track</span>(<span class="params">target, type, key</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// activeEffect 为空</span></span><br><span class="line">  <span class="keyword">if</span> (activeEffect == <span class="literal">undefined</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="comment">// 说明取值的属性，不依赖于 effect</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 判断 target 对象是否收集过依赖</span></span><br><span class="line">  <span class="keyword">let</span> depsMap = targetMap.get(target)</span><br><span class="line">  <span class="comment">// 不存在构建</span></span><br><span class="line">  <span class="keyword">if</span> (!depsMap) &#123;</span><br><span class="line">    <span class="comment">// 如果没有map，增加map</span></span><br><span class="line">    targetMap.set(target, (depsMap = <span class="keyword">new</span> <span class="built_in">Map</span>()))</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 判断要收集的 key 中是否收集过 effect</span></span><br><span class="line">  <span class="keyword">let</span> dep = depsMap.get(key) <span class="comment">// 取对应属性的依赖表</span></span><br><span class="line">  <span class="keyword">if</span> (!dep) &#123;</span><br><span class="line">    <span class="comment">// 如果没有则构建set</span></span><br><span class="line">    depsMap.set(key, (dep = <span class="keyword">new</span> <span class="built_in">Set</span>()))</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 如果未收集过当前依赖则添加</span></span><br><span class="line">  <span class="keyword">if</span> (!dep.has(activeEffect)) &#123;</span><br><span class="line">    dep.add(activeEffect)</span><br><span class="line">    activeEffect.deps.push(dep)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a7206eb3878747cab987c5592fcba1f0~tplv-k3u1fbpfcp-watermark.image" alt="targetMap"></p>
+<h3 id="trigger-实现"><a href="#trigger-实现" class="headerlink" title="trigger 实现"></a>trigger 实现</h3><p>触发更新操作</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">trigger</span>(<span class="params">target, type, key</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 获取 target 的依赖</span></span><br><span class="line">  <span class="keyword">const</span> depsMap = targetMap.get(target);</span><br><span class="line">  <span class="comment">// 没有依赖收集，直接返回</span></span><br><span class="line">  <span class="keyword">if</span> (!depsMap) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 执行单个 effect</span></span><br><span class="line">  <span class="keyword">const</span> run = <span class="function">(<span class="params">effects</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (effects) &#123;effects.forEach(<span class="function"><span class="params">effect</span> =&gt;</span> effect());&#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 有key 就找到对应的key的依赖执行</span></span><br><span class="line">  <span class="keyword">if</span> (key !== <span class="keyword">void</span> <span class="number">0</span>) &#123;</span><br><span class="line">    run(depsMap.get(key));</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 对数组新增会触发 length 对应的依赖</span></span><br><span class="line">  <span class="keyword">if</span> (type == TriggerOpTypes.ADD) &#123;</span><br><span class="line">    run(depsMap.get(isArray(target) ? <span class="string">&#x27;length&#x27;</span> : <span class="string">&#x27;&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="ref-实现"><a href="#ref-实现" class="headerlink" title="ref 实现"></a>ref 实现</h3><p>ref的原理就是将一个普通值，转化成对象，并且在获取和设置值时可以增加依赖收集和触发更新的功能</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; isObject &#125; <span class="keyword">from</span> <span class="string">&#x27;lodash&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; reactive &#125; <span class="keyword">from</span> <span class="string">&#x27;./reactive&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; track, trigger &#125; <span class="keyword">from</span> <span class="string">&#x27;./effect&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; hasChanged &#125; <span class="keyword">from</span> <span class="string">&#x27;./util&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; TriggerOpTypes, TrackOpTypes &#125; <span class="keyword">from</span> <span class="string">&#x27;./operations&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">ref</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> createRef(value)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">convert</span>(<span class="params">rawValue</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> isObject(rawValue) ? reactive(rawValue) : rawValue</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createRef</span>(<span class="params">rawValue</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> value = convert(rawValue)</span><br><span class="line">  <span class="keyword">let</span> r = &#123;</span><br><span class="line">    __v_isRef: <span class="literal">true</span>, <span class="comment">// 标识是ref类型</span></span><br><span class="line">    <span class="keyword">get</span> <span class="title">value</span>() &#123;</span><br><span class="line">      <span class="comment">// 取值依赖收集</span></span><br><span class="line">      track(r, TrackOpTypes.GET, <span class="string">&#x27;value&#x27;</span>)</span><br><span class="line">      <span class="keyword">return</span> value</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span> <span class="title">value</span>(<span class="params">newVal</span>) &#123;</span><br><span class="line">      <span class="comment">// 设置时触发更新</span></span><br><span class="line">      <span class="keyword">if</span> (hasChanged(newVal, rawValue)) &#123;</span><br><span class="line">        rawValue = newVal</span><br><span class="line">        value = newVal</span><br><span class="line">        trigger(r, TriggerOpTypes.SET, <span class="string">&#x27;value&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="computed-实现"><a href="#computed-实现" class="headerlink" title="computed 实现"></a>computed 实现</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; isFunction &#125; <span class="keyword">from</span> <span class="string">&quot;../shared/utils&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; effect, track, trigger &#125; <span class="keyword">from</span> <span class="string">&quot;./effect&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; TrackOpTypes, TriggerOpTypes &#125; <span class="keyword">from</span> <span class="string">&quot;./operation&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">computed</span>(<span class="params">getterOptions</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> getter;</span><br><span class="line">  <span class="keyword">let</span> setter;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (isFunction(getterOptions)) &#123;</span><br><span class="line">    getter = getterOptions;</span><br><span class="line">    setter = <span class="function">() =&gt;</span> &#123;&#125;;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    getter = getterOptions.get;</span><br><span class="line">    setter = getterOptions.set;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> dirty = <span class="literal">true</span>; <span class="comment">// 默认是脏的数据，控制是否需要重新计算</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> computed;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算属性本质也是一个effect，其回调函数就是计算属性的getter</span></span><br><span class="line">  <span class="keyword">let</span> runner = effect(getter, &#123;</span><br><span class="line">    lazy: <span class="literal">true</span>, <span class="comment">// 默认是非立即执行，等到取值的时候再执行</span></span><br><span class="line">    computed: <span class="literal">true</span>, <span class="comment">// 标识这个effect是计算属性的effect</span></span><br><span class="line">    scheduler: <span class="function">() =&gt;</span> &#123; <span class="comment">// 数据发生变化的时候不是直接执行当前effect，而是执行这个scheduler弄脏数据</span></span><br><span class="line">      <span class="keyword">if</span> (!dirty) &#123; <span class="comment">// 如果数据是干净的</span></span><br><span class="line">        dirty = <span class="literal">true</span>; <span class="comment">// 弄脏数据，计算属性依赖的值发生变化，执行 scheduler</span></span><br><span class="line">        trigger(computed, TriggerOpTypes.SET, <span class="string">&quot;value&quot;</span>); <span class="comment">// 数据变化后，触发value依赖</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> value;</span><br><span class="line"></span><br><span class="line">  computed = &#123;</span><br><span class="line">    <span class="keyword">get</span> <span class="title">value</span>() &#123;</span><br><span class="line">      <span class="keyword">if</span> (dirty) &#123;</span><br><span class="line">        value = runner(); <span class="comment">// 等到取值的时候再执行计算属性内部创建的effect</span></span><br><span class="line">        dirty = <span class="literal">false</span>; <span class="comment">// 取完值后数据就不是脏的了</span></span><br><span class="line">        track(computed, TrackOpTypes.GET, <span class="string">&quot;value&quot;</span>); <span class="comment">// 对计算属性对象收集value属性</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> value;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span> <span class="title">value</span>(<span class="params">newVal</span>) &#123;</span><br><span class="line">      setter(newVal);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> computed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>计算属性也是一个 effect，标记<code>effect</code> <code>lazy:true</code> 和 <code>computed:true</code>,提供 scheduler 方法,在依赖数据更新时会调用 schedular 方法.</p>
+</blockquote>
+<blockquote>
+<p>计算属性需要标记<code>__v_isRef</code> 说明计算属性取值时，会自动获取 value 属性.</p>
+</blockquote>
+<blockquote>
+<p>计算属性会根据 dirty 值进行缓存。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">trigger</span>(<span class="params">target, type, key, value, oldValue</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> depsMap = targetMap.get(target)</span><br><span class="line">  <span class="keyword">if</span> (!depsMap) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> effects = <span class="keyword">new</span> <span class="built_in">Set</span>()</span><br><span class="line">  <span class="keyword">const</span> computedRunners = <span class="keyword">new</span> <span class="built_in">Set</span>()</span><br><span class="line">  <span class="keyword">const</span> add = <span class="function">(<span class="params">effectsToAdd</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (effectsToAdd) &#123;</span><br><span class="line">      effectsToAdd.forEach(<span class="function">(<span class="params">effect</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (effect.options.computed) &#123;</span><br><span class="line">          computedRunners.add(effect)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          effects.add(effect)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (key !== <span class="keyword">void</span> <span class="number">0</span>) &#123;</span><br><span class="line">    add(depsMap.get(key))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (TriggerOpTypes.ADD) &#123;</span><br><span class="line">    add(depsMap.get(isArray(target) ? <span class="string">&#x27;length&#x27;</span> : <span class="string">&#x27;&#x27;</span>))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> run = <span class="function">(<span class="params">effect</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (effect.options.scheduler) &#123;</span><br><span class="line">      effect.options.scheduler(effect)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      effect()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  computedRunners.forEach(run)</span><br><span class="line">  effects.forEach(run)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当触发更新时需要分开执行计算属性和 effect，计算属性的优先级高于 effect，确保 effect 在执行时可以获得正确计算属性对应的结果</p>
+</blockquote>
+<h2 id="代码仓库"><a href="#代码仓库" class="headerlink" title="代码仓库"></a><a target="_blank" rel="noopener" href="https://github.com/ZhangWei2222/vue3_reactivity">代码仓库</a></h2><h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6885624435865288718">聊一聊 Vue3 中响应式原理</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000022871354">Vue 3 响应式原理及实现</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/p6p7qsw6ua47a2sb/article/details/106293469">带你了解 vue-next（Vue 3.0）之 炉火纯青</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904053638447117">深度解析：Vue3如何巧妙的实现强大的computed</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000023380448">Vue3响应式原理与reactive、effect、computed实现</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiaoheibanfe/p/14131508.html">Vue3源码解析（computed-计算属性）</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/02/04/Vue3/2021/8.%20%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/" rel="next" title="Vue3-响应式原理">
+                <i class="fa fa-chevron-left"></i> Vue3-响应式原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/02/20/JavaScript/2021/6.%20typeof%E4%B8%8Einstanceof%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" rel="prev" title="js-typeof与instanceof实现原理">
+                js-typeof与instanceof实现原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E8%87%B4%E7%BB%93%E6%9E%84"><span class="nav-text">大致结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%86%99reactivity%E6%A8%A1%E5%9D%97"><span class="nav-text">手写reactivity模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-Webpack-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-text">配置 Webpack 开发环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E6%90%AD%E5%BB%BA"><span class="nav-text">目录结构搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reactive-%E5%AE%9E%E7%8E%B0"><span class="nav-text">reactive 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#baseHandlers-js"><span class="nav-text">baseHandlers.js</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#effect-%E5%AE%9E%E7%8E%B0"><span class="nav-text">effect 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%E3%80%81%E8%A7%A6%E5%8F%91%E6%9B%B4%E6%96%B0-%E8%B0%83%E7%94%A8"><span class="nav-text">依赖收集、触发更新 调用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#operations-js"><span class="nav-text">operations.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E6%94%B6%E9%9B%86%E7%B1%BB%E5%9E%8B%E5%92%8C%E8%A7%A6%E5%8F%91%E7%B1%BB%E5%9E%8B"><span class="nav-text">定义收集类型和触发类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#track-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-text">track 的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#trigger-%E5%AE%9E%E7%8E%B0"><span class="nav-text">trigger 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ref-%E5%AE%9E%E7%8E%B0"><span class="nav-text">ref 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#computed-%E5%AE%9E%E7%8E%B0"><span class="nav-text">computed 实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E4%BB%93%E5%BA%93"><span class="nav-text">代码仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="实现效果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计和实现@人的功能">
+<meta property="og:url" content="https://super-wei.top/2021/12/09/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/2021/3.%20%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0@%E4%BA%BA%E7%9A%84%E5%8A%9F%E8%83%BD/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="实现效果">
+<meta property="og:locale">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4u5UzbF2npb2oAn4B7sY8r7DjF1nWp9FtogXicGlonYWDIWEzBgKTaUw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4OqicB8a7fu9lufTgKDd1JwcjEgLicczbvciaXFc0Wcia1TfLlfZaEG9MCA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4Te0SLLA9QDISMCZ422SrKu8XrRjPj9xdm1hSV0181SFwBNYqbrmozg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4UP5ZcjXFb1x7ia10quzZSDJ0rIlsYUEWmEnfvDpce39EgEIJs1kEsQA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/59e84c56_6081_4213_acb1_3710585e5c4c.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/c606b614_3e2d_4b66_82d0_5300764af9ad.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190308160538842.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/22130230_ec73_4d5f_8efa_6f9adf9f5765.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/88dc5637_73aa_4957_a52b_dfcd02dc1a63.png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya44R8WgDL1Abusv4r0JLux5SicXEdQV6iaaxIs9Y74vbnbxNUzgIZWz5Sg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4wIQLe80URPDTib2TW5RAeOWLFPiczIfK04rtLAOwyCfxsnHZtiaBezpDQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4mas5gjhwmicfTTXza1m4HCeTrOyYoMnSKvWh0RtXpzkKNo3UiaSRVPMA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/05337097_4663_4af7_b55e_eafd60d1c7a0.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/f8d1df99_05f5_435c_95d3_808a9a5fa67e.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/75c5631e_6029_4824_b2e2_66bd6fee81b8.png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya44U6Fe0Yo6VnOiawkS2ia7icn0915GFZ5R6icIUnfpM2gFvq7n1q3GJRo4A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4HBYmldl3Tj2B6ZxUxicib54BX9p591ebnyzm8YFmqPRzcGnV1fiblxesg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/34bd2cbd_5ecf_4cc6_8db1_3ac92bce2d01.png">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4p59s4icoevLu7fBZV7l89ODE5JqibAHrJSTnRghZvBZgiaAtw2PsMqnpg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/72a4a862_aced_4c02_bf11_e59752b4d3ee.png">
+<meta property="og:image" content="https://img.youpin.mi-img.com/luban/e95c7350_ba7c_4df2_a233_9de1ab8daf9a.png">
+<meta property="article:published_time" content="2021-12-09T02:15:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.102Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4u5UzbF2npb2oAn4B7sY8r7DjF1nWp9FtogXicGlonYWDIWEzBgKTaUw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2021/12/09/技术实现/2021/3. 设计和实现@人的功能/"/>
+
+
+
+
+
+  <title>设计和实现@人的功能 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/12/09/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/2021/3.%20%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E7%8E%B0@%E4%BA%BA%E7%9A%84%E5%8A%9F%E8%83%BD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">设计和实现@人的功能</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-09T10:15:47+08:00">
+                2021-12-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">技术实现</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.7k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  14 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4u5UzbF2npb2oAn4B7sY8r7DjF1nWp9FtogXicGlonYWDIWEzBgKTaUw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:67%;" />
+
+<a id="more"></a>
+
+
+
+<h2 id="业内实现"><a href="#业内实现" class="headerlink" title="业内实现"></a>业内实现</h2><h3 id="微博"><a href="#微博" class="headerlink" title="微博"></a>微博</h3><img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4OqicB8a7fu9lufTgKDd1JwcjEgLicczbvciaXFc0Wcia1TfLlfZaEG9MCA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;" />
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4Te0SLLA9QDISMCZ422SrKu8XrRjPj9xdm1hSV0181SFwBNYqbrmozg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;" />
+
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4UP5ZcjXFb1x7ia10quzZSDJ0rIlsYUEWmEnfvDpce39EgEIJs1kEsQA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;" />
+
+<p>微博的实现比较简单，就是<strong>通过正则匹配，最后用空格表示匹配结束</strong>，所以实现上是直接使用了<strong>textarea标签</strong>。但是这个实现必须依赖的一个事情是：<strong>用户名必须唯一</strong>。</p>
+<p>微博的用户名就是唯一的，所以，当把输入框文本提交给后台时，也无须做任何处理。后台可以根据字符串中的 “@” 和 “@后方的空格” 找出每个 “所谓的人名” 然后检索数据库找出其对应的用户信息。</p>
+<h3 id="QQ空间"><a href="#QQ空间" class="headerlink" title="QQ空间"></a>QQ空间</h3><p><img src="https://img.youpin.mi-img.com/luban/59e84c56_6081_4213_acb1_3710585e5c4c.png" alt="image-20211209142733770"></p>
+<p><img src="https://img.youpin.mi-img.com/luban/c606b614_3e2d_4b66_82d0_5300764af9ad.png" alt="image-20211209142702266"></p>
+<p>qq空间 的实现跟微博类似，也是<strong>以@开始，空格结尾做匹配</strong>。但是使用的是 <strong>contenteditable</strong> 这个属性进行富文本操作，相似之处在于qq空间 的 ID 也是唯一。不同在于，qq空间是允许同名的，它把用户信息藏到了一个标签里，后台就能读取到唯一的用户信息了。</p>
+<h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><ol>
+<li>监听用户输入，匹配用户以@开头的文字。</li>
+<li>调用搜索弹窗，展示搜索出来的用户列表。</li>
+<li>监听上、下、回车键控制列表选择，监听ESC键关闭搜索弹窗。</li>
+<li>选择需要@的用户，把对应的HTML文本替换到原文本上。在HTML文本上添加用户的元数据。</li>
+</ol>
+<p>一般来说，如果像平常用的 Lark 搜索，我们是不会通过唯一的『工号』去进行搜索，而是通过名字，但是名字会出现重复，所以就不太适合用textarea的方式，而是用contenteditable，把@文本替换成HTML标签特殊化标记。</p>
+<h2 id="关键步骤"><a href="#关键步骤" class="headerlink" title="关键步骤"></a>关键步骤</h2><h3 id="1-获得用户的光标位置"><a href="#1-获得用户的光标位置" class="headerlink" title="1. 获得用户的光标位置"></a>1. 获得用户的光标位置</h3><h4 id="范围（Range）"><a href="#范围（Range）" class="headerlink" title="范围（Range）"></a>范围（Range）</h4><h5 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h5><p>Range是指html文档中的区域，如用户用鼠标拖动选中的区域，如下图：<br><img src="https://img-blog.csdnimg.cn/20190308160538842.png" alt="在这里插入图片描述"><br>通过Range对象，可以获取用户选中的区域，或者指定选中区域，得到Range的起点和终点、修改或者复制里边的文本，甚至是html。在富文本编辑器开发中，经常会使用到这些功能。 </p>
+<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><p>现在让我们来选择<code>&quot;Example: &lt;i&gt;italic&lt;/i&gt;&quot;</code>。它是 <code>&lt;p&gt;</code> 的前两个子节点（文本节点也算在内）：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;p&quot;</span>&gt;</span>Example: <span class="tag">&lt;<span class="name">i</span>&gt;</span>italic<span class="tag">&lt;/<span class="name">i</span>&gt;</span> and <span class="tag">&lt;<span class="name">b</span>&gt;</span>bold<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://img.youpin.mi-img.com/luban/22130230_ec73_4d5f_8efa_6f9adf9f5765.png" alt="image-20211209145507199"></p>
+<p><img src="https://img.youpin.mi-img.com/luban/88dc5637_73aa_4957_a52b_dfcd02dc1a63.png" alt="image-20211209145544400"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个范围</span></span><br><span class="line"><span class="keyword">let</span> range = <span class="keyword">new</span> Range();</span><br><span class="line"></span><br><span class="line">range.setStart(p, <span class="number">0</span>);</span><br><span class="line">range.setEnd(p, <span class="number">2</span>); <span class="comment">// 唯一要注意的是终点要在起点之后。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 范围的 toString 以文本形式返回其内容（不带标签）</span></span><br><span class="line"><span class="built_in">console</span>.log(range); <span class="comment">// Example: italic</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 将此范围应用于文档选择（后文有解释）</span></span><br><span class="line"><span class="built_in">document</span>.getSelection().addRange(range);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>range.setStart(p, 0)</code> —— 将起点设置为 <code>&lt;p&gt;</code> 的第 0 个子节点（即文本节点 <code>&quot;Example: &quot;</code>）。</li>
+<li><code>range.setEnd(p, 2)</code> —— 覆盖范围至（但不包括）<code>&lt;p&gt;</code> 的第 2 个子节点（即文本节点 <code>&quot; and &quot;</code>，但由于不包括末节点，所以最后选择的节点是 <code>&lt;i&gt;</code>）。</li>
+</ul>
+<p>也可以选择部分文本，像下面，我们只需要<strong>将起点和终点设置为文本节点中的相对偏移量</strong>即可。</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya44R8WgDL1Abusv4r0JLux5SicXEdQV6iaaxIs9Y74vbnbxNUzgIZWz5Sg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom: 50%;" />
+
+<p>我们需要创建一个范围，它：</p>
+<ul>
+<li>从 <code>&lt;p&gt;</code> 的第一个子节点的位置 2 开始（选择 “Ex<strong>ample:</strong> “ 中除前两个字母外的所有字母）</li>
+<li>到 <code>&lt;b&gt;</code> 的第一个子节点的位置 3 结束（选择 “<strong>bol</strong>d” 的前三个字母，就这些）：</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> range = <span class="keyword">new</span> Range();</span><br><span class="line"></span><br><span class="line">range.setStart(p.firstChild, <span class="number">2</span>);</span><br><span class="line">range.setEnd(p.querySelector(<span class="string">&#x27;b&#x27;</span>).firstChild, <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">alert(range); <span class="comment">// ample: italic and bol</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用此范围进行选择（后文有解释）</span></span><br><span class="line"><span class="built_in">window</span>.getSelection().addRange(range);</span><br></pre></td></tr></table></figure>
+
+
+<h5 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h5><p>具有以下属性：</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4wIQLe80URPDTib2TW5RAeOWLFPiczIfK04rtLAOwyCfxsnHZtiaBezpDQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;" />
+
+<ul>
+<li><p><code>startContainer</code>，<code>startOffset</code> —— 起始节点和偏移量，</p>
+<ul>
+<li>在上例中：分别是 <p> 中的第一个文本节点和 2。</li>
+</ul>
+</li>
+<li><p><code>endContainer</code>，<code>endOffset</code> —— 结束节点和偏移量，</p>
+<ul>
+<li>在上例中：分别是 <b> 中的第一个文本节点和 3。</li>
+</ul>
+</li>
+<li><p><code>collapsed</code> —— 布尔值，如果范围在同一点上开始和结束（所以范围内没有内容）则为 true，</p>
+<ul>
+<li>在上例中：false</li>
+</ul>
+</li>
+<li><p><code>commonAncestorContainer</code> —— 在范围内的所有节点中最近的共同祖先节点，</p>
+<ul>
+<li>在上例中：<p></li>
+</ul>
+</li>
+</ul>
+<h4 id="选择（Selection）"><a href="#选择（Selection）" class="headerlink" title="选择（Selection）"></a>选择（Selection）</h4><h5 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h5><blockquote>
+<p><code>Range</code> 是<strong>用于管理选择范围的通用对象</strong>。</p>
+</blockquote>
+<p>文档选择是由 <code>Selection</code> 对象表示的，可通过 <code>window.getSelection()</code> 或 <code>document.getSelection()</code> 来获取。表示用户选择的文本范围或光标的当前位置。</p>
+<p>根据 <strong>Selection API 规范</strong>[1] 一个选择可以包括零个或多个范围。不过实际上，只有 Firefox 允许使用 Ctrl+click (Mac 上用 Cmd+click) 在文档中选择多个范围。</p>
+<p>这是在 Firefox 中做的一个具有 3 个范围的选择的截图：</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4mas5gjhwmicfTTXza1m4HCeTrOyYoMnSKvWh0RtXpzkKNo3UiaSRVPMA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:33%;" />
+
+<p>其他浏览器最多支持 1 个范围。正如我们将看到的，某些 <code>Selection</code> 方法暗示可能有多个范围，但同样，在除 Firefox 之外的所有浏览器中，范围最多是 1。</p>
+<h5 id="术语"><a href="#术语" class="headerlink" title="术语"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42420703/article/details/84892528">术语</a></h5><p>与范围相似，选择的起点称为“锚点（anchor）”，终点称为“焦点（focus）”。</p>
+<ul>
+<li><p>锚点（anchor）</p>
+<ul>
+<li>锚指的是一个选区的起始点。当我们使用鼠标选择一个区域的时候，锚点就是我们鼠标按下瞬间的那个点。在用户拖动鼠标时，锚点是不会变的。</li>
+</ul>
+</li>
+<li><p>焦点（focus）</p>
+<ul>
+<li>选区的焦点是该选区的终点，当您用鼠标框选一个选区的时候，焦点是你的鼠标松开瞬间所记录的那个点。随着用户拖动鼠标，焦点的位置会随着改变。</li>
+</ul>
+</li>
+<li><p>范围（range）</p>
+<ul>
+<li>范围指的是文档中连续的一部分。一个范围包括整个节点，也可以包含节点的一部分，例如文本节点的一部分。用户通常下只能选择一个范围。“范围”会被作为range对象返回。Range对象也能通过DOM创建、增加、删减。</li>
+</ul>
+</li>
+</ul>
+<h5 id="属性-1"><a href="#属性-1" class="headerlink" title="属性"></a>属性</h5><p>主要的选择属性有：</p>
+<ul>
+<li><code>anchorNode</code> —— 返回该选区起点所在的节点</li>
+<li><code>anchorOffset</code> —— 返回一个数字，表示该选区起点在<code>anchorNode</code>中的位置偏移量<ul>
+<li>如果 anchorNode 是文字节点，那么返回的就是从该文字节点的第一个字开始，直到被选中的第一个字之间的字数（如果第一个字就被选中，那么偏移量为零）</li>
+<li>如果 anchorNode 是一个元素，那么返回的就是在选区第一个节点之前的同级节点总数。(这些节点都是 anchorNode 的子节点)</li>
+</ul>
+</li>
+<li><code>focusNode</code> —— 返回该选区终点所在的节点</li>
+<li><code>focusOffset</code> —— 返回一个数字，表示该选区终点在<code>focusNode</code>中的位置偏移量<ul>
+<li>如果 <code>focusNode</code> 是文字节点，那么选区末尾未被选中的第一个字，在该文字节点中是第几个字（从0开始计），就返回它</li>
+<li>如果 <code>focusNode</code> 是一个元素，那么返回的就是在选区末尾之后第一个节点之前的同级节点总数</li>
+</ul>
+</li>
+<li><code>isCollapsed</code> —— 返回一个布尔值，用于判断选区的起始点和终点是否在同一位置</li>
+<li><code>rangeCount</code> —— 选择中的范围数，除 Firefox 外，其他浏览器最多为 <code>1</code>。</li>
+</ul>
+<h5 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h5><ul>
+<li><code>getRangeAt(i)</code> —— 返回选区开始的节点（Node）（或者说返回包含所选文本的startOffset和endOffset索引的Range对象）。在除 Firefox 之外的所有浏览器中，仅使用 <code>0</code>。</li>
+<li><code>addRange(range)</code> —— 将 <code>range</code> 添加到选择中。如果选择已有关联的范围，则除 Firefox 外的所有浏览器都将忽略该调用。</li>
+<li><code>removeRange(range)</code> —— 从选择中删除 <code>range</code>。</li>
+<li><code>removeAllRanges()</code> —— 删除所有范围。</li>
+<li><code>empty()</code> —— <code>removeAllRanges</code> 的别名。</li>
+</ul>
+<h5 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h5><blockquote>
+<p><strong>在文档中，选择的终点可能在起点之前</strong></p>
+</blockquote>
+<p>有很多选择内容的方式，取决于用户的操作：鼠标，热键，手机上的点击等。</p>
+<p>其中的某些方式，例如鼠标，允许从两个方向创建相同的选择：“从左到右”和“从右到左”。</p>
+<p>如果在文档中，选择的起点（anchor）在终点（focus）之前，则称此选择具有 “forward” 方向。</p>
+<p>例如，如果用户使用鼠标从 “Example” 开始选择到 “italic”：</p>
+<p><img src="https://img.youpin.mi-img.com/luban/05337097_4663_4af7_b55e_eafd60d1c7a0.png" alt="image-20211209150945923"></p>
+<p>否则，如果是从 “italic” 的末尾开始选择到 “Example”，则所选内容将被定向为 “backward”，其焦点（focus）将在锚点（anchor）之前：</p>
+<p><img src="https://img.youpin.mi-img.com/luban/f8d1df99_05f5_435c_95d3_808a9a5fa67e.png" alt="image-20211209150951765"></p>
+<p>这与始终指向前方的 <code>Range</code> 对象不同：范围的起点不能在终点之后。</p>
+<h5 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h5><img src="https://img.youpin.mi-img.com/luban/75c5631e_6029_4824_b2e2_66bd6fee81b8.png" alt="image-20211209151247946" style="zoom:67%;" />
+
+
+
+<h5 id="综上所述"><a href="#综上所述" class="headerlink" title="综上所述"></a>综上所述</h5><p>一般我们只有一个 Range，当我们的光标在 contenteditable 的 div 上闪动的时候，其实就有了一个 Range，这个 Range 的开始和结束位置都是一样的。另外，我们还可以直接通过 <code>Selection.focusNode</code>获取到对应的节点，通过 <code>Selection.focusOffset</code> 获取到对应的偏移量。就像下图：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya44U6Fe0Yo6VnOiawkS2ia7icn0915GFZ5R6icIUnfpM2gFvq7n1q3GJRo4A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片"></p>
+<p>这样，我们就获取到了光标的位置以及对应的TextNode对象。</p>
+<h3 id="2-获取需要-的用户"><a href="#2-获取需要-的用户" class="headerlink" title="2. 获取需要@的用户"></a>2. 获取需要@的用户</h3><p>从步骤一我们获得了光标在对应Node节点的偏移量，以及对应的Node节点。那么就可以通过<code>textContent</code>方法获取整个文本。</p>
+<p>一般来说，通过一个简单的正则就可以获取@的内容了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取光标所在的开始/结束节点，的偏移量</span></span><br><span class="line"><span class="keyword">const</span> getCursorIndex = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> selection = <span class="built_in">window</span>.getSelection();</span><br><span class="line">  <span class="comment">// 这里换成 anchorOffset 也一样，因为Range 的开始和结束位置都是一样的</span></span><br><span class="line">  <span class="keyword">return</span> selection?.focusOffset;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取光标所在的开始/结束节点</span></span><br><span class="line"><span class="keyword">const</span> getRangeNode = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> selection = <span class="built_in">window</span>.getSelection();</span><br><span class="line">  <span class="comment">// 这里换成 anchorNode 也一样，因为Range 的开始和结束位置都是一样的</span></span><br><span class="line">  <span class="keyword">return</span> selection?.focusNode; </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取 @ 用户</span></span><br><span class="line"><span class="keyword">const</span> getAtUser = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> content = getRangeNode()?.textContent || <span class="string">&quot;&quot;</span>; </span><br><span class="line">  <span class="keyword">const</span> regx = <span class="regexp">/@([^@\s]*)$/</span>;</span><br><span class="line">  <span class="keyword">const</span> match = regx.exec(content.slice(<span class="number">0</span>, getCursorIndex())); </span><br><span class="line">  <span class="keyword">if</span> (match &amp;&amp; match.length === <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> match[<span class="number">1</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">undefined</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>因为@的插入可能是末尾，可能是中间，所以我们在判断前，还需要截取光标前的文本。</p>
+<img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4HBYmldl3Tj2B6ZxUxicib54BX9p591ebnyzm8YFmqPRzcGnV1fiblxesg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom: 50%;" />
+
+<p>所以简单地slice一下就好了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">content.slice(<span class="number">0</span>, getCursorIndex())</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="3-弹窗展示以及按键拦截"><a href="#3-弹窗展示以及按键拦截" class="headerlink" title="3. 弹窗展示以及按键拦截"></a>3. 弹窗展示以及按键拦截</h3><p>弹窗是否展示的逻辑，跟判断@用户类似，都是同一个正则。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 是否展示 @</span></span><br><span class="line"><span class="keyword">const</span> showAt = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> node = getRangeNode();</span><br><span class="line">  <span class="keyword">if</span> (!node || node.nodeType !== Node.TEXT_NODE) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">const</span> content = node.textContent || <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="keyword">const</span> regx = <span class="regexp">/@([^@\s]*)$/</span>;</span><br><span class="line">  <span class="keyword">const</span> match = regx.exec(content.slice(<span class="number">0</span>, getCursorIndex()));</span><br><span class="line">  <span class="keyword">return</span> match &amp;&amp; match.length === <span class="number">2</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>弹窗需要出现在正确的位置，幸好现代浏览器有不少好用的API。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getRangeRect = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> selection = <span class="built_in">window</span>.getSelection();</span><br><span class="line">  <span class="keyword">const</span> range = selection?.getRangeAt(<span class="number">0</span>)!;</span><br><span class="line">  <span class="comment">// 拿到当前 range 的位置，即当前选区的位置，不要和 selection?.focusNode（选区终点所在地的节点），selection?.focusOffset（选区终点在focusNode中的位置偏移量） 搞混了</span></span><br><span class="line">  <span class="keyword">const</span> rect = range.getClientRects()[<span class="number">0</span>]; <span class="comment">// 表示选区在屏幕上所占的区域</span></span><br><span class="line">  <span class="keyword">const</span> LINE_HEIGHT = <span class="number">30</span>;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    x: rect.x,</span><br><span class="line">    y: rect.y + LINE_HEIGHT</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://img.youpin.mi-img.com/luban/34bd2cbd_5ecf_4cc6_8db1_3ac92bce2d01.png" alt="image-20211209161718334"></p>
+<p>当出现弹窗之后，我们还需要拦截掉输入框的『上』、『下』、『回车』的操作，否则在输入框响应这些按键会让光标位置偏移到其他地方。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> handleKeyDown = <span class="function">(<span class="params">e: any</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (showDialog) &#123;</span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">      e.code === <span class="string">&quot;ArrowUp&quot;</span> ||</span><br><span class="line">      e.code === <span class="string">&quot;ArrowDown&quot;</span> ||</span><br><span class="line">      e.code === <span class="string">&quot;Enter&quot;</span></span><br><span class="line">    ) &#123;</span><br><span class="line">      e.preventDefault();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br></pre></td></tr></table></figure>
+<p>然后在弹窗里面监听这些按键，实现上下选择、回车确定、关闭弹窗的功能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> keyDownHandler = <span class="function">(<span class="params">e: any</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (visibleRef.current) &#123;</span><br><span class="line">    <span class="keyword">if</span> (e.code === <span class="string">&quot;Escape&quot;</span>) &#123;</span><br><span class="line">      props.onHide();</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (e.code === <span class="string">&quot;ArrowDown&quot;</span>) &#123;</span><br><span class="line">      setIndex(<span class="function">(<span class="params">oldIndex</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.min(oldIndex + <span class="number">1</span>, (usersRef.current?.length || <span class="number">0</span>) - <span class="number">1</span>);</span><br><span class="line">       &#125;);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (e.code === <span class="string">&quot;ArrowUp&quot;</span>) &#123;</span><br><span class="line">      setIndex(<span class="function">(<span class="params">oldIndex</span>) =&gt;</span> <span class="built_in">Math</span>.max(<span class="number">0</span>, oldIndex - <span class="number">1</span>));</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (e.code === <span class="string">&quot;Enter&quot;</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (</span><br><span class="line">        indexRef.current !== <span class="literal">undefined</span> &amp;&amp;</span><br><span class="line">        usersRef.current?.[indexRef.current]</span><br><span class="line">      ) &#123;</span><br><span class="line">        props.onPickUser(usersRef.current?.[indexRef.current]);</span><br><span class="line">        setIndex(-<span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-替换-文本为定制标签"><a href="#4-替换-文本为定制标签" class="headerlink" title="4. 替换@文本为定制标签"></a>4. 替换@文本为定制标签</h3><img src="https://mmbiz.qpic.cn/mmbiz_png/ndgH50E7pIpugHUWCE4BzVVbEW3qvya4p59s4icoevLu7fBZV7l89ODE5JqibAHrJSTnRghZvBZgiaAtw2PsMqnpg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1" alt="图片" style="zoom:50%;" />
+
+<h4 id="1-把原来的-TextNode-进行切块"><a href="#1-把原来的-TextNode-进行切块" class="headerlink" title="1. 把原来的 TextNode 进行切块"></a>1. 把原来的 TextNode 进行切块</h4><p>假如文本是：『请帮我泡一杯咖啡@ABC，这是后面的内容』</p>
+<p>那么我们需要根据光标的位置，替换掉@ABC文本，然后分成前后两块：『请帮我泡一杯咖啡』、『这是后面的内容』。</p>
+<h4 id="2-创建-At-标签"><a href="#2-创建-At-标签" class="headerlink" title="2. 创建 At 标签"></a>2. 创建 At 标签</h4><p>为了能实现删除键能把删除全部删除，需要把 at 标签的内容包裹起来。（这样写会有个小问题，接着往后看~）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> createAtButton = <span class="function">(<span class="params">user: User</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> btn = <span class="built_in">document</span>.createElement(<span class="string">&quot;span&quot;</span>);</span><br><span class="line">  btn.style.display = <span class="string">&quot;inline-block&quot;</span>;</span><br><span class="line">  btn.dataset.user = <span class="built_in">JSON</span>.stringify(user);</span><br><span class="line">  btn.className = <span class="string">&quot;at-button&quot;</span>;</span><br><span class="line">  btn.contentEditable = <span class="string">&quot;false&quot;</span>;</span><br><span class="line">  btn.textContent = <span class="string">`@<span class="subst">$&#123;user.name&#125;</span>`</span>;</span><br><span class="line">  <span class="keyword">return</span> btn;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="3-把标签插进去"><a href="#3-把标签插进去" class="headerlink" title="3. 把标签插进去"></a>3. 把标签插进去</h4><p>首先，我们可以获取 focusNode 节点，然后就可以获取它的父节点以及兄弟节点。现在需要做的是，把旧的文本节点删除，然后在原来的位置上依次插入『请帮我泡一杯咖啡』、【@ABC】、『这是后面的内容』。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> replaceAtUser = <span class="function">(<span class="params">user: User</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> node = getRangeNode();</span><br><span class="line">  <span class="keyword">if</span> (node) &#123;</span><br><span class="line">    <span class="keyword">const</span> content = node?.textContent || <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="keyword">const</span> endIndex = getCursorIndex();</span><br><span class="line">    <span class="keyword">const</span> preSlice = replaceString(content.slice(<span class="number">0</span>, endIndex), <span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="keyword">const</span> restSlice = content.slice(endIndex); </span><br><span class="line">    <span class="keyword">const</span> parentNode = node?.parentNode!; <span class="comment">// 拿到父节点</span></span><br><span class="line">    <span class="keyword">const</span> nextNode = node?.nextSibling; <span class="comment">// 拿到兄弟节点，有可能它的后面有@定制标签</span></span><br><span class="line">    <span class="keyword">const</span> previousTextNode = <span class="keyword">new</span> Text(preSlice); <span class="comment">// 拿到前面的文本</span></span><br><span class="line">    <span class="keyword">const</span> nextTextNode = <span class="keyword">new</span> Text(restSlice); <span class="comment">// 拿到后面的文本</span></span><br><span class="line">    <span class="keyword">const</span> atButton = createAtButton(user); <span class="comment">// @定制标签</span></span><br><span class="line">    parentNode.removeChild(node); <span class="comment">// 把旧的文本节点删除</span></span><br><span class="line">    <span class="keyword">if</span> (nextNode) &#123; <span class="comment">// 如果后面有定制标签，则在前面依次插入（在中间@的情况）</span></span><br><span class="line">      <span class="comment">// 使用方法：document.getElementById(&quot;myList&quot;).insertBefore(newItem,existingItem);</span></span><br><span class="line">      parentNode.insertBefore(previousTextNode, nextNode); </span><br><span class="line">      parentNode.insertBefore(atButton, nextNode);</span><br><span class="line">      parentNode.insertBefore(nextTextNode, nextNode);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 如果后面没有定制标签，则直接插入到父节点（在后面@的情况）</span></span><br><span class="line">      parentNode.appendChild(previousTextNode);</span><br><span class="line">      parentNode.appendChild(atButton);</span><br><span class="line">      parentNode.appendChild(nextTextNode);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ... 重置光标位置</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="4-重置光标的位置"><a href="#4-重置光标的位置" class="headerlink" title="4. 重置光标的位置"></a>4. 重置光标的位置</h4><p>我们这一顿操作之前，因为原来的文本节点丢失，所以我们的光标也失去了。这时候就需要重新把光标定位到 at 标签之后。简单来说就是把光标定位到 nextTextNode 节点之前即可。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> range = <span class="keyword">new</span> Range();</span><br><span class="line">range.setStart(nextTextNode, <span class="number">0</span>);</span><br><span class="line">range.setEnd(nextTextNode, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">const</span> selection = <span class="built_in">window</span>.getSelection();</span><br><span class="line">selection?.removeAllRanges();</span><br><span class="line">selection?.addRange(range);</span><br></pre></td></tr></table></figure>
+<h4 id="5-优化-标签"><a href="#5-优化-标签" class="headerlink" title="5. 优化@标签"></a>5. 优化@标签</h4><p>综上，创建了@标签后，我们会发现有点小问题</p>
+<p><img src="https://img.youpin.mi-img.com/luban/72a4a862_aced_4c02_bf11_e59752b4d3ee.png" alt="image-20211209173543264"></p>
+<p><img src="https://img.youpin.mi-img.com/luban/e95c7350_ba7c_4df2_a233_9de1ab8daf9a.png" alt="image-20211209173419536"></p>
+<p>这时候光标就定位到了『按钮边框内』，但光标的位置实际上是正确的。</p>
+<p>为了优化这个问题，我们可以把内容区弄宽一点，比如左右加个空格，然后用标签包裹一层</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> nextTextNode = <span class="keyword">new</span> Text(<span class="string">&quot;\u200b&quot;</span> + restSlice);</span><br><span class="line"><span class="keyword">const</span> createAtButton = <span class="function">(<span class="params">user: User</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> btn = <span class="built_in">document</span>.createElement(<span class="string">&quot;span&quot;</span>);</span><br><span class="line">  btn.style.display = <span class="string">&quot;inline-block&quot;</span>;</span><br><span class="line">  btn.dataset.user = <span class="built_in">JSON</span>.stringify(user);</span><br><span class="line">  btn.className = <span class="string">&quot;at-button&quot;</span>;</span><br><span class="line">  btn.contentEditable = <span class="string">&quot;false&quot;</span>;</span><br><span class="line">  btn.textContent = <span class="string">`@<span class="subst">$&#123;user.name&#125;</span>`</span>;</span><br><span class="line">  <span class="keyword">const</span> wrapper = <span class="built_in">document</span>.createElement(<span class="string">&quot;span&quot;</span>);</span><br><span class="line">  wrapper.style.display = <span class="string">&quot;inline-block&quot;</span>;</span><br><span class="line">  wrapper.contentEditable = <span class="string">&quot;false&quot;</span>;</span><br><span class="line">  <span class="keyword">const</span> spaceElem = <span class="built_in">document</span>.createElement(<span class="string">&quot;span&quot;</span>); <span class="comment">// 前后添加一个『0宽字符』：\u200b</span></span><br><span class="line">  spaceElem.style.whiteSpace = <span class="string">&quot;pre&quot;</span>;</span><br><span class="line">  spaceElem.textContent = <span class="string">&quot;\u200b&quot;</span>; </span><br><span class="line">  spaceElem.contentEditable = <span class="string">&quot;false&quot;</span>;</span><br><span class="line">  <span class="keyword">const</span> clonedSpaceElem = spaceElem.cloneNode(<span class="literal">true</span>);</span><br><span class="line">  wrapper.appendChild(spaceElem);</span><br><span class="line">  wrapper.appendChild(btn);</span><br><span class="line">  wrapper.appendChild(clonedSpaceElem);</span><br><span class="line">  <span class="keyword">return</span> wrapper;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/vmp51tr1PHceTeZ9VflNag">Twitter和微博都在用的 @ 人的功能是如何设计与实现的？</a></p>
+<p><a target="_blank" rel="noopener" href="https://zh.javascript.info/selection-range">选择（Selection）和范围（Range）</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/12/07/JavaScript/2021/34.%20Array.from%20%E5%88%9B%E5%BB%BA%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84/" rel="next" title="Array.from 创建二维数组">
+                <i class="fa fa-chevron-left"></i> Array.from 创建二维数组
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/12/09/TypeScript/2021/1.%20ts%E4%B8%AD%E7%AC%A6%E5%8F%B7%E7%9A%84%E7%94%A8%E6%B3%95/" rel="prev" title="ts中!与?的用法">
+                ts中!与?的用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="nav-text">实现效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%86%85%E5%AE%9E%E7%8E%B0"><span class="nav-text">业内实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E5%8D%9A"><span class="nav-text">微博</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QQ%E7%A9%BA%E9%97%B4"><span class="nav-text">QQ空间</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E8%B7%AF"><span class="nav-text">基本思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%AD%A5%E9%AA%A4"><span class="nav-text">关键步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%8E%B7%E5%BE%97%E7%94%A8%E6%88%B7%E7%9A%84%E5%85%89%E6%A0%87%E4%BD%8D%E7%BD%AE"><span class="nav-text">1. 获得用户的光标位置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8C%83%E5%9B%B4%EF%BC%88Range%EF%BC%89"><span class="nav-text">范围（Range）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-text">例子</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-text">属性</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%EF%BC%88Selection%EF%BC%89"><span class="nav-text">选择（Selection）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D-1"><span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD"><span class="nav-text">术语</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7-1"><span class="nav-text">属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-text">方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-text">注意</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90-1"><span class="nav-text">例子</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%BC%E4%B8%8A%E6%89%80%E8%BF%B0"><span class="nav-text">综上所述</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E9%9C%80%E8%A6%81-%E7%9A%84%E7%94%A8%E6%88%B7"><span class="nav-text">2. 获取需要@的用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BC%B9%E7%AA%97%E5%B1%95%E7%A4%BA%E4%BB%A5%E5%8F%8A%E6%8C%89%E9%94%AE%E6%8B%A6%E6%88%AA"><span class="nav-text">3. 弹窗展示以及按键拦截</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%9B%BF%E6%8D%A2-%E6%96%87%E6%9C%AC%E4%B8%BA%E5%AE%9A%E5%88%B6%E6%A0%87%E7%AD%BE"><span class="nav-text">4. 替换@文本为定制标签</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%8A%8A%E5%8E%9F%E6%9D%A5%E7%9A%84-TextNode-%E8%BF%9B%E8%A1%8C%E5%88%87%E5%9D%97"><span class="nav-text">1. 把原来的 TextNode 进行切块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA-At-%E6%A0%87%E7%AD%BE"><span class="nav-text">2. 创建 At 标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E6%8A%8A%E6%A0%87%E7%AD%BE%E6%8F%92%E8%BF%9B%E5%8E%BB"><span class="nav-text">3. 把标签插进去</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E9%87%8D%E7%BD%AE%E5%85%89%E6%A0%87%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-text">4. 重置光标的位置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E4%BC%98%E5%8C%96-%E6%A0%87%E7%AD%BE"><span class="nav-text">5. 优化@标签</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

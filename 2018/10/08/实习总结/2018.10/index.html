@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="百田," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="2018.10.081.使用chorme开发者工具中的performance">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2018.1">
+<meta property="og:url" content="https://super-wei.top/2018/10/08/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/2018.10/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="2018.10.081.使用chorme开发者工具中的performance">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-10-08T07:25:10.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.090Z">
+<meta property="article:author" content="Wei Zhang">
+<meta property="article:tag" content="百田">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2018/10/08/实习总结/2018.10/"/>
+
+
+
+
+
+  <title>2018.1 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2018/10/08/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/2018.10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2018.1</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-08T15:25:10+08:00">
+                2018-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/" itemprop="url" rel="index">
+                    <span itemprop="name">实习总结</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.1k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="2018-10-08"><a href="#2018-10-08" class="headerlink" title="2018.10.08"></a>2018.10.08</h3><p>1.使用chorme开发者工具中的performance</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">统计汇总扇形图：</span><br><span class="line">HTML 蓝色</span><br><span class="line">脚本 黄色</span><br><span class="line">样式表 紫色</span><br><span class="line">媒体文件 绿色</span><br><span class="line">其他资源 灰色</span><br></pre></td></tr></table></figure>
+<p>2.demo工作模式</p>
+<p>因为代码很多时候是多人合作，在开发时，先开个demo完成自己的功能再迁移过去。</p>
+<p>3.vue性能优化</p>
+<p>不要老想在技术的角度解决问题，要试着从设计上去规避问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- 慎用deep watch</span><br><span class="line">- 尽可能的减少watch的数量</span><br><span class="line">- v-show v-if</span><br><span class="line">    涉及权限相关，v-if</span><br><span class="line">    没有涉及权限</span><br><span class="line">        根据用户点击的频次选择</span><br><span class="line">            频繁切换 v-show</span><br><span class="line">            不频繁 v-if</span><br><span class="line">- 不要过多在模板里写表达式与判断</span><br><span class="line">- 循环调用子组件时添加key (item,index) in arr :key&#x3D;&#39;index&#39;</span><br><span class="line">- 对路由组件进行懒加载，即调用到对应的组件时才加载它，否则不加载</span><br><span class="line">  const login &#x3D; ()&#x3D;&gt; import(&#39;@&#x2F;pages&#x2F;login&#39;) 类似这种</span><br><span class="line">- style scoped</span><br></pre></td></tr></table></figure>
+<h3 id="2018-10-09"><a href="#2018-10-09" class="headerlink" title="2018.10.09"></a>2018.10.09</h3><p>1.ES6常见特性</p>
+<ul>
+<li>forEach 遍历函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">arr.forEach((v,index)&#x3D;&gt;&#123;</span><br><span class="line">    if(v&#x3D;&#x3D;a) &#123;</span><br><span class="line">        &#x2F;&#x2F;执行</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>箭头函数</li>
+<li>map和get</li>
+<li>proxyTable</li>
+</ul>
+<p>2.循环遍历</p>
+<blockquote>
+<p>一共有83个语料，需要将其分成三个类别：普通、难度、段位。<br>原先想着把83分别遍历三次，推到每个类别。好的方法：取出一个语料，分别与普通的，难度的，段位的语料匹配，检查是否存在level,range等字段。</p>
+</blockquote>
+<p>3.indexOf findIndex</p>
+<blockquote>
+<p>indexOf() 可返回某个指定的字符串值在字符串中首次出现的位置。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stringObject.indexOf(searchvalue,fromindex)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>searchvalue</td>
+<td>必需。规定需检索的字符串值。</td>
+</tr>
+<tr>
+<td>fromindex</td>
+<td>可选的整数参数。规定在字符串中开始检索的位置。它的合法取值是 0 到 stringObject.length - 1。如省略该参数，则将从字符串的首字符开始检索。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>findIndex() 查找目标元素，找到就返回元素的位置，找不到就返回-1。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let a &#x3D; arr.findIndex((v,index) &#x3D;&gt; &#123;</span><br><span class="line">    if(v&#x3D;&#x3D;b) return index</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="2018-10-10"><a href="#2018-10-10" class="headerlink" title="2018.10.10"></a>2018.10.10</h3><p>1.如何把对象数组的一部分属性推到新数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">循环：</span><br><span class="line">创建新数组m</span><br><span class="line">m.name &#x3D; ...</span><br><span class="line">array.push(m)</span><br></pre></td></tr></table></figure>
+<p>2.es6字符串转数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[...num]</span><br></pre></td></tr></table></figure>
+<h3 id="2018-10-11"><a href="#2018-10-11" class="headerlink" title="2018.10.11"></a>2018.10.11</h3><p>1.发现打开vscode cup到达100%</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search.followSymlinks:false</span><br></pre></td></tr></table></figure>
+<p>2.关于创建数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; new Array(2)</span><br><span class="line">&#x3D;&gt; (2)[empty x 2]创建的是2个undefine</span><br><span class="line"></span><br><span class="line">push b &#x3D; [ [],[] ] </span><br><span class="line">&#x3D;&gt; (2)[ Array(0),Array(0) ]</span><br></pre></td></tr></table></figure>
+<h3 id="2018-10-12"><a href="#2018-10-12" class="headerlink" title="2018.10.12"></a>2018.10.12</h3><p>赋值问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">data &#x3D; new Array()</span><br><span class="line">data.num &#x3D; 1</span><br><span class="line">&#x3D;&gt; console.log(data.num) &#x3D;&gt; 1</span><br><span class="line">但这不是以属性的方法挂载，而是成为了一个方法，正确赋值：</span><br><span class="line">data &#x3D; new Object()</span><br></pre></td></tr></table></figure>
+<h3 id="2018-10-17"><a href="#2018-10-17" class="headerlink" title="2018.10.17"></a>2018.10.17</h3><p>前端架构设计</p>
+<ul>
+<li>前端架构是一系列工具和流程的集合，旨在提升前端代码的质量，并实现高效、可持续的工作流</li>
+<li>模块化内容</li>
+<li>四个核心<ul>
+<li>代码</li>
+<li>流程</li>
+<li>测试</li>
+<li>文档</li>
+</ul>
+</li>
+</ul>
+<p>HTML</p>
+<ul>
+<li>模块化标记</li>
+<li>模块化css理论</li>
+<li>OOCSS方法(object-oriented css 面向对象的css)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">div.toggle simple</span><br><span class="line">    div.toggle-control open</span><br><span class="line">        div.toggle-title</span><br><span class="line">    div.toggle-details open</span><br></pre></td></tr></table></figure>
+<ul>
+<li>SMACSS方法(Scalable and Modular Architecture for CSS 模块化架构的可扩展css)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">div.toggle toggle-simple</span><br><span class="line">    div.toggle-control is-active</span><br><span class="line">        div.toggle-title</span><br><span class="line">    div.toggle-details is-active</span><br></pre></td></tr></table></figure>
+<ul>
+<li>差异：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">OOCSS -&gt; 通过皮肤进行修改</span><br><span class="line">SMACSS -&gt; 通过子模块进行修改</span><br></pre></td></tr></table></figure>
+<ul>
+<li>BEM方法<ul>
+<li>块名_元素_修饰符</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>补充<ul>
+<li>OOCSS两个主要的原则<ul>
+<li>分离结构和外观</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">simple 皮肤使用直角</span><br><span class="line">comple 皮肤使用圆角</span><br></pre></td></tr></table></figure>
+<pre><code>    - 分离容器和内容
+</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">可复用的css类名toggle-title.无论放到哪里都可复用</span><br></pre></td></tr></table></figure>
+<pre><code>- SMACSS把样式系统分成五个具体类别
+    - 基础(不加CSS类名，会以什么外观显示)
+    - 布局(把页面分成一些区域)
+    - 模块(设计中的模块化，可复用的单元，toggle,toggle_title)
+    - 状态(描述在特定的状态或情况下，模块或布局的显示方式 is-active)
+    - 主题(一个可选的视觉外观层，可更换不同主题)
+</code></pre>
+<ul>
+<li><p>CSS</p>
+<ul>
+<li><p>单一联真原则</p>
+<blockquote>
+<p>规定你创建的所有东西必须有单一的，高度聚焦的理由</p>
+</blockquote>
+</li>
+<li><p>单一样式来源</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>组件修饰符</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">div.calendar calendar_nested</span><br><span class="line">    div.calendar_header</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>JS<br>可复用</li>
+</ul>
+<h3 id="2018-10-18"><a href="#2018-10-18" class="headerlink" title="2018.10.18"></a>2018.10.18</h3><p>require引入Js</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">require( [path + &#39;js&#39;],function(a)&#123;</span><br><span class="line">    xxx</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">path的路径不能带@</span><br></pre></td></tr></table></figure>
+<h3 id="2018-10-24"><a href="#2018-10-24" class="headerlink" title="2018.10.24"></a>2018.10.24</h3><p>1.package.json和package-lock.json的区别</p>
+<table>
+<thead>
+<tr>
+<th>package.json</th>
+<th>package-lock.json</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主要用来定义项目中需要依赖的包</td>
+<td>在’npm install’时候生成一份文件，用以记录当前状态下实际安装的各个npm package的具体来源和版本号</td>
+</tr>
+</tbody></table>
+<p>2.生产模式和开发模式</p>
+<table>
+<thead>
+<tr>
+<th>生产模式</th>
+<th>开发模式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>npm install –save</td>
+<td>npm install –save-dev</td>
+</tr>
+<tr>
+<td>npm i xxx -S</td>
+<td>npm i xxx -D</td>
+</tr>
+<tr>
+<td>线上环境要用的，运行时的模式</td>
+<td>本地调试和打包时要用的</td>
+</tr>
+</tbody></table>
+<p>3.flex</p>
+<p>flex支持IE10，Edge…</p>
+<h3 id="2018-10-25"><a href="#2018-10-25" class="headerlink" title="2018.10.25"></a>2018.10.25</h3><p>1.引入外部icons</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- 把整个打包文件引入（阿里图库）</span><br><span class="line"></span><br><span class="line">- 在main.js引入</span><br><span class="line">import &#39;@&#x2F;assets&#x2F;fonts&#x2F;b-iconfont.css&#39;</span><br><span class="line"></span><br><span class="line">- iconfont.css改 </span><br><span class="line">[class^&#x3D;&quot;b-icon&quot;], [class*&#x3D;&quot; b-icon&quot;] &#123;</span><br><span class="line">  font-family:&quot;b-FontFamily&quot; !important;</span><br><span class="line">  &#x2F;* 以下内容参照第三方图标库本身的规则 *&#x2F;</span><br><span class="line">  font-size: 18px;</span><br><span class="line">  font-style:normal;</span><br><span class="line">  -webkit-font-smoothing: antialiased;</span><br><span class="line">  -moz-osx-font-smoothing: grayscale;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.如何获取音频时间</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;audio v-on:durationchange&#x3D;&#39;row.edit.duration&#x3D;$event.target.duration&#39; :src&#x3D;&#39;row.edit.url&#39; &gt;</span><br><span class="line"></span><br><span class="line">注意：audio一开始不会立即创建dom的</span><br></pre></td></tr></table></figure>
+<p>3.处理时间函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function formatTime(sc) &#123;</span><br><span class="line">  let str &#x3D; &quot;&quot;</span><br><span class="line">  if (sc &gt; 0) &#123;</span><br><span class="line">    let m &#x3D; parseInt(sc &#x2F; 60)</span><br><span class="line">    str +&#x3D; ((m &gt;&#x3D; 10) ? m : (&#39;0&#39; + m));</span><br><span class="line"></span><br><span class="line">    let s &#x3D; parseInt(sc - m * 60)</span><br><span class="line">    str +&#x3D; &quot;:&quot;</span><br><span class="line">    str +&#x3D; ((s &gt;&#x3D; 10) ? s : (&#39;0&#39; + s));</span><br><span class="line">    return str;</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    str &#x3D; &quot;00:00&quot;</span><br><span class="line">    return str</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">formatTime(60) &#x3D;&gt; 01:00</span><br></pre></td></tr></table></figure>
+
+<h3 id="2018-10-29"><a href="#2018-10-29" class="headerlink" title="2018.10.29"></a>2018.10.29</h3><p>子组件给父组件传东西</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">子：</span><br><span class="line">close() &#123;</span><br><span class="line">    this.$emit(&#39;closed&#39;,true)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">父：</span><br><span class="line">&lt;子组件 @closed&#x3D;&#39;closeAudio&#39;&gt;&lt;&#x2F;子组件&gt;</span><br><span class="line">closeAudio(e) &#123;</span><br><span class="line">    console.log(e)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2018-10-31"><a href="#2018-10-31" class="headerlink" title="2018.10.31"></a>2018.10.31</h3><p>OAuth2.0</p>
+<h5 id="1-是什么？"><a href="#1-是什么？" class="headerlink" title="1.是什么？"></a>1.是什么？</h5><blockquote>
+<p>授权的协议，只要授权方和被授权方遵守这个协议去写代码提供服务，双方就是实现了OAuth模式</p>
+</blockquote>
+<h5 id="2-例子：豆瓣和QQ"><a href="#2-例子：豆瓣和QQ" class="headerlink" title="2.例子：豆瓣和QQ"></a>2.例子：豆瓣和QQ</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">打开豆瓣-&gt;需要登录（无账号，不想注册豆瓣账号）-&gt;用QQ授权登录-&gt;登录豆瓣</span><br></pre></td></tr></table></figure>
+<p>豆瓣-&gt;客户端，QQ-&gt;认证服务器，OAuth2.0就是客户端和认证服务器之间由于相互不信任而产生的一个授权协议。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">用户浏览器-&gt;&gt;豆瓣网站: GET&#x2F;leadToAuthorize 1</span><br><span class="line">豆瓣网站-&gt;&gt;用户浏览器: 302 location:&#x2F;authorize?callback&#x3D;&#x2F;callback 1</span><br><span class="line"></span><br><span class="line">用户浏览器-&gt;&gt;QQ授权服务: GET&#x2F;authorize 1</span><br><span class="line">QQ授权服务-&gt;&gt;用户浏览器: 200返回QQ登录页面 2-1</span><br><span class="line"></span><br><span class="line">用户浏览器-&gt;&gt;QQ授权服务: POST&#x2F;login 2-2</span><br><span class="line">QQ授权服务-&gt;&gt;用户浏览器: 302 location:&#x2F;callback?code&#x3D;xxx 2-2</span><br><span class="line"></span><br><span class="line">用户浏览器-&gt;&gt;豆瓣网站: GET&#x2F;callback?code&#x3D;xxx 3</span><br><span class="line">豆瓣网站-&gt;&gt;QQ授权服务: POST&#x2F;getToken?code&#x3D;xxx 3 4</span><br><span class="line">QQ授权服务-&gt;&gt;豆瓣网站: 200&#123;token:YYY&#125; 3 4</span><br><span class="line">豆瓣网站-&gt;&gt;QQ授权服务: GET&#x2F;getResource?token&#x3D;yyy 3 5</span><br><span class="line">QQ授权服务-&gt;&gt;豆瓣网站: 200&#123;userame:tom,age:18&#125; 3 5</span><br><span class="line">豆瓣网站-&gt;&gt;用户浏览器: 200返回首页结果视图 3</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1：用户第一次点击：用户点击用QQ方式授权登录按钮</span><br><span class="line">2-1：用户输入Q号和密码点击登录</span><br><span class="line">2-2：用户第二次点击：此处可能用户在浏览器输入qq密码点击授权这个过程</span><br><span class="line">3：之后的过程用户在浏览器端，感知不到，最终完成时在用户看来就是登录成功并进入了豆瓣的首页</span><br><span class="line">4：模拟发起浏览器请求的技术</span><br><span class="line">5：模拟发起浏览器请求的技术</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">第一步：点击qq方式授权登录：</span><br><span class="line">1).实际是向豆瓣服务器发送http:&#x2F;&#x2F;www.douban.com&#x2F;leadToAuthorize的请求</span><br><span class="line">2).豆瓣返回重定向地址，浏览器向访问这个地址（授权，QQ登录框），注意带了callback参数（识别跳回）</span><br><span class="line"></span><br><span class="line">第二步：输入Q号密码授权登录</span><br><span class="line">返回重定向地址 callback code</span><br><span class="line"></span><br><span class="line">第三步：</span><br><span class="line">1).拿code去QQ换token</span><br><span class="line">2).拿token去QQ换用户信息并显示到页面</span><br></pre></td></tr></table></figure>
+<h5 id="3-小爱的逻辑"><a href="#3-小爱的逻辑" class="headerlink" title="3.小爱的逻辑"></a>3.小爱的逻辑</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">用户-&gt;&gt;小爱: （忽略）</span><br><span class="line">小爱-&gt;&gt;加班熊: 请求，给加班熊一个token （第一步）</span><br><span class="line">加班熊-&gt;&gt;用户: token</span><br><span class="line">用户-&gt;&gt;加班熊: token</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E7%99%BE%E7%94%B0/" rel="tag"># 百田</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/20/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/2018.09/" rel="next" title="2018.09">
+                <i class="fa fa-chevron-left"></i> 2018.09
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/02/%E5%AE%9E%E4%B9%A0%E6%80%BB%E7%BB%93/2018.11/" rel="prev" title="2018.11">
+                2018.11 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-08"><span class="nav-text">2018.10.08</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-09"><span class="nav-text">2018.10.09</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-10"><span class="nav-text">2018.10.10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-11"><span class="nav-text">2018.10.11</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-12"><span class="nav-text">2018.10.12</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-17"><span class="nav-text">2018.10.17</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-18"><span class="nav-text">2018.10.18</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-24"><span class="nav-text">2018.10.24</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-25"><span class="nav-text">2018.10.25</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-29"><span class="nav-text">2018.10.29</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2018-10-31"><span class="nav-text">2018.10.31</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">1.是什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E4%BE%8B%E5%AD%90%EF%BC%9A%E8%B1%86%E7%93%A3%E5%92%8CQQ"><span class="nav-text">2.例子：豆瓣和QQ</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E5%B0%8F%E7%88%B1%E7%9A%84%E9%80%BB%E8%BE%91"><span class="nav-text">3.小爱的逻辑</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

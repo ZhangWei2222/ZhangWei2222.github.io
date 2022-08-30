@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言【2020.2.11】更新：决定在毕设项目中采用 Vue + TypeScript 搭建前端项目，在搭建的过程过，完善步骤、记录坑。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue + TypeScript 项目搭建步骤">
+<meta property="og:url" content="https://super-wei.top/2019/11/20/TypeScript/2019/1.%20Vue%20+%20TypeScript%20%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="前言【2020.2.11】更新：决定在毕设项目中采用 Vue + TypeScript 搭建前端项目，在搭建的过程过，完善步骤、记录坑。">
+<meta property="og:locale">
+<meta property="og:image" content="https://segmentfault.com/img/bVXqRW?w=627&amp;h=495">
+<meta property="article:published_time" content="2019-11-20T02:24:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.035Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://segmentfault.com/img/bVXqRW?w=627&amp;h=495">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2019/11/20/TypeScript/2019/1. Vue + TypeScript 项目搭建步骤/"/>
+
+
+
+
+
+  <title>Vue + TypeScript 项目搭建步骤 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2019/11/20/TypeScript/2019/1.%20Vue%20+%20TypeScript%20%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA%E6%AD%A5%E9%AA%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue + TypeScript 项目搭建步骤</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-20T10:24:47+08:00">
+                2019-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/TypeScript/" itemprop="url" rel="index">
+                    <span itemprop="name">TypeScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.3k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  16 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>【2020.2.11】更新：决定在毕设项目中采用 Vue + TypeScript 搭建前端项目，在搭建的过程过，完善步骤、记录坑。</p>
+<a id="more"></a>
+
+
+
+<h2 id="搭建"><a href="#搭建" class="headerlink" title="搭建"></a>搭建</h2><h3 id="起手-Vue-Cli"><a href="#起手-Vue-Cli" class="headerlink" title="起手 Vue-Cli"></a>起手 Vue-Cli</h3><ol>
+<li><p>npm 版本查看及升级</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm -v <span class="comment"># 查看版本</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install -g npm <span class="comment"># 升级版本</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>安装 Vue</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install vue <span class="comment"># 最新稳定版</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install --global vue-cli <span class="comment"># 安装vue-cli脚手架构建工具</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vue -V <span class="comment"># 查看版本号</span></span></span><br></pre></td></tr></table></figure></li>
+<li><p>安装 Webpack</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install --global webpack</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm install --global webpack-cli</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> webpack -v</span></span><br></pre></td></tr></table></figure></li>
+<li><p>新建项目</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vue init webpack 项目名字【选填】</span></span><br></pre></td></tr></table></figure></li>
+<li><p>运行项目，访问 <code>http://localhost:8080/</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm run dev</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="Vue-引入-TypeScript"><a href="#Vue-引入-TypeScript" class="headerlink" title="Vue 引入 TypeScript"></a>Vue 引入 TypeScript</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装vue的官方插件</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> npm i vue-class-component vue-property-decorator --save</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ts-loader typescript</span> </span><br><span class="line"><span class="meta">$</span><span class="bash"> npm i ts-loader typescript tslint tslint-loader tslint-config-standard --save-dev</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：安装完，删掉 <code>node_module</code> ，重新 <code>npm install</code></strong></p>
+<ul>
+<li>**<code>vue-class-component</code>**：强化 <code>Vue</code> 组件，使用 <code>TypeScript</code>/装饰器 增强 <code>Vue</code> 组件</li>
+<li>**<code>vue-property-decorator</code>**：在 <code>vue-class-component</code> 上增强更多的结合 <code>Vue</code> 特性的装饰器</li>
+<li>**<code>ts-loader</code>**：<code>TypeScript</code> 为 <code>Webpack</code> 提供了 <code>ts-loader</code>，其实就是为了让<code>webpack</code>识别 <code>.ts .tsx</code>文件</li>
+<li>**<code>tslint-loader</code>跟<code>tslint</code>**：在<code>.ts .tsx</code>文件 约束代码格式（作用等同于<code>eslint</code>）</li>
+<li>**<code>tslint-config-standard</code>**：<code>tslint</code> 配置 <code>standard</code>风格的约束</li>
+</ul>
+<h3 id="配置-webpack"><a href="#配置-webpack" class="headerlink" title="配置 webpack"></a>配置 <code>webpack</code></h3><p><code>./build/webpack.base.conf.js</code></p>
+<p>配置三个地方：<code>entry</code>、<code>resolve</code>、<code>module</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">entry: &#123;</span><br><span class="line">  app: <span class="string">&#x27;./src/main.ts&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resolve: &#123;</span><br><span class="line">    extensions: [<span class="string">&#x27;.js&#x27;</span>, <span class="string">&#x27;.vue&#x27;</span>, <span class="string">&#x27;.json&#x27;</span>, <span class="string">&#x27;.ts&#x27;</span>],</span><br><span class="line">    alias: &#123;</span><br><span class="line">      <span class="string">&#x27;@&#x27;</span>: resolve(<span class="string">&#x27;src&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>: &#123;</span><br><span class="line">  rules: [</span><br><span class="line">    &#123;</span><br><span class="line">      test: <span class="regexp">/\.(js|vue)$/</span>,</span><br><span class="line">      loader: <span class="string">&#x27;eslint-loader&#x27;</span>,</span><br><span class="line">      enforce: <span class="string">&#x27;pre&#x27;</span>,</span><br><span class="line">      include: [resolve(<span class="string">&#x27;src&#x27;</span>), resolve(<span class="string">&#x27;test&#x27;</span>)],</span><br><span class="line">      options: &#123;</span><br><span class="line">        formatter: <span class="built_in">require</span>(<span class="string">&#x27;eslint-friendly-formatter&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"><span class="comment">// 从这里复制下面的代码就可以了</span></span><br><span class="line">    &#123;</span><br><span class="line">      test: <span class="regexp">/\.ts$/</span>,</span><br><span class="line">      exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">      enforce: <span class="string">&#x27;pre&#x27;</span>,</span><br><span class="line">      loader: <span class="string">&#x27;tslint-loader&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      test: <span class="regexp">/\.tsx?$/</span>,</span><br><span class="line">      loader: <span class="string">&#x27;ts-loader&#x27;</span>,</span><br><span class="line">      exclude: <span class="regexp">/node_modules/</span>,</span><br><span class="line">      options: &#123;</span><br><span class="line">        appendTsSuffixTo: [<span class="regexp">/\.vue$/</span>],</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line"><span class="comment">// 复制以上的</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>ts-loader</code> 会检索当前目录下的 <code>tsconfig.json</code> 文件，根据里面定义的规则来解析<code>.ts</code>文件（就跟<code>.babelrc</code>的作用一样）</p>
+</li>
+<li><p><code>tslint-loader</code> 作用等同于 <code>eslint-loader</code></p>
+</li>
+</ul>
+<h3 id="添加-tsconfig-json"><a href="#添加-tsconfig-json" class="headerlink" title="添加 tsconfig.json"></a>添加 <code>tsconfig.json</code></h3><p>在根路径下创建<code>tsconfig.json</code>文件</p>
+<p>这里有一份参考的 <code>tsconfig.json</code> 配置，完成的配置请点击 <a target="_blank" rel="noopener" href="http://json.schemastore.org/tsconfig">tsconfig.json</a>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="comment">// 编译选项</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="comment">// 输出目录</span></span><br><span class="line">    <span class="attr">&quot;outDir&quot;</span>: <span class="string">&quot;./output&quot;</span>,</span><br><span class="line">    <span class="comment">// 是否包含可以用于 debug 的 sourceMap</span></span><br><span class="line">    <span class="attr">&quot;sourceMap&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 以严格模式解析</span></span><br><span class="line">    <span class="attr">&quot;strict&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 采用的模块系统</span></span><br><span class="line">    <span class="attr">&quot;module&quot;</span>: <span class="string">&quot;esnext&quot;</span>,</span><br><span class="line">    <span class="comment">// 如何处理模块</span></span><br><span class="line">    <span class="attr">&quot;moduleResolution&quot;</span>: <span class="string">&quot;node&quot;</span>,</span><br><span class="line">    <span class="comment">// 编译输出目标 ES 版本</span></span><br><span class="line">    <span class="attr">&quot;target&quot;</span>: <span class="string">&quot;es5&quot;</span>,</span><br><span class="line">    <span class="comment">// 允许从没有设置默认导出的模块中默认导入</span></span><br><span class="line">    <span class="attr">&quot;allowSyntheticDefaultImports&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 将每个文件作为单独的模块</span></span><br><span class="line">    <span class="attr">&quot;isolatedModules&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">// 启用装饰器</span></span><br><span class="line">    <span class="attr">&quot;experimentalDecorators&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 启用设计类型元数据（用于反射）</span></span><br><span class="line">    <span class="attr">&quot;emitDecoratorMetadata&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 在表达式和声明上有隐含的any类型时报错</span></span><br><span class="line">    <span class="attr">&quot;noImplicitAny&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="comment">// 不是函数的所有返回路径都有返回值时报错。</span></span><br><span class="line">    <span class="attr">&quot;noImplicitReturns&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 从 tslib 导入外部帮助库: 比如__extends，__rest等</span></span><br><span class="line">    <span class="attr">&quot;importHelpers&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 编译过程中打印文件名</span></span><br><span class="line">    <span class="attr">&quot;listFiles&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 移除注释</span></span><br><span class="line">    <span class="attr">&quot;removeComments&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;suppressImplicitAnyIndexErrors&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 允许编译javascript文件</span></span><br><span class="line">    <span class="attr">&quot;allowJs&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="comment">// 解析非相对模块名的基准目录</span></span><br><span class="line">    <span class="attr">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">    <span class="comment">// 指定特殊模块的路径</span></span><br><span class="line">    <span class="attr">&quot;paths&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;jquery&quot;</span>: [</span><br><span class="line">        <span class="string">&quot;node_modules/jquery/dist/jquery&quot;</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 编译过程中需要引入的库文件的列表</span></span><br><span class="line">    <span class="attr">&quot;lib&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;dom&quot;</span>,</span><br><span class="line">      <span class="string">&quot;es2015&quot;</span>,</span><br><span class="line">      <span class="string">&quot;es2015.promise&quot;</span></span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="参考配置"><a href="#参考配置" class="headerlink" title="参考配置"></a>参考配置</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;include&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;src/**/*&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">&quot;exclude&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;node_modules&quot;</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;allowSyntheticDefaultImports&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;experimentalDecorators&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;allowJs&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;module&quot;</span>: <span class="string">&quot;esnext&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;target&quot;</span>: <span class="string">&quot;es5&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;moduleResolution&quot;</span>: <span class="string">&quot;node&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;isolatedModules&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;lib&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;dom&quot;</span>,</span><br><span class="line">      <span class="string">&quot;es5&quot;</span>,</span><br><span class="line">      <span class="string">&quot;es2015.promise&quot;</span></span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">&quot;sourceMap&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">&quot;pretty&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="添加-tslint-json"><a href="#添加-tslint-json" class="headerlink" title="添加 tslint.json"></a>添加 <code>tslint.json</code></h3><p>在根路径下创建 <code>tslint.json</code> 文件：引入 <code>ts</code> 的 <code>standard</code> 规范</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;extends&quot;</span>: <span class="string">&quot;tslint-config-standard&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;globals&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;require&quot;</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;defaultSeverity&quot;</span>: <span class="string">&quot;none&quot;</span> <span class="comment">// 关掉 tslint，不然老是报错，好像现在 tslint 已经交给 eslint 来做，tslint 已经不维护了。注意配置后，要重新 run 才会生效</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="让-ts-识别-vue"><a href="#让-ts-识别-vue" class="headerlink" title="让 ts 识别 .vue"></a>让 ts 识别 .vue</h3><p>由于 <code>TypeScript</code> 默认并不支持 <code>*.vue</code> 后缀的文件，所以在 <code>vue</code> 项目中引入的时候需要创建一个 <code>vue-shim.d.ts</code> 文件，放在项目项目对应使用目录下，例如 <code>src/vue-shim.d.ts</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="built_in">module</span> <span class="string">&quot;*.vue&quot;</span> &#123;</span><br><span class="line">  <span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">default</span> Vue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>意思是告诉 <code>TypeScript *.vue</code> 后缀的文件可以交给 <code>vue</code> 模块来处理。</p>
+<p>而在代码中导入 <code>*.vue</code> 文件的时候，需要写上 <code>.vue</code> 后缀。原因还是因为 <code>TypeScript</code> 默认只识别 <code>*.ts</code> 文件，不识别 <code>*.vue</code> 文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import Component from &#39;components&#x2F;component.vue&#39;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="开始修改App-vue文件"><a href="#开始修改App-vue文件" class="headerlink" title="开始修改App.vue文件"></a>开始修改<code>App.vue</code>文件</h3><ol>
+<li>在<code>script</code> 标签上加上 <code>lang=&quot;ts&quot;</code>, 意思是让<code>webpack</code>将这段代码识别为<code>typescript</code> 而非<code>javascript</code></li>
+<li>修改 vue 组件的构造方式( 跟<code>react</code>组件写法有点类似, 详见<a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/guide/typescript.html#%E5%9F%BA%E4%BA%8E%E7%B1%BB%E7%9A%84-Vue-%E7%BB%84%E4%BB%B6">官方</a> )， 如下图</li>
+<li>用<code>vue-property-decorator</code>语法改造之前代码</li>
+</ol>
+<img src="https://segmentfault.com/img/bVXqRW?w=627&amp;h=495" alt="clipboard.png" style="zoom: 80%;" />
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id&#x3D;&quot;app&quot;&gt;</span><br><span class="line">    &lt;img src&#x3D;&quot;.&#x2F;assets&#x2F;logo.png&quot;&gt;</span><br><span class="line">    &lt;router-view&#x2F;&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang&#x3D;&quot;ts&quot;&gt;</span><br><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import Component from &#39;vue-class-component&#39;</span><br><span class="line"></span><br><span class="line">@Component(&#123;&#125;)</span><br><span class="line">export default class App extends Vue &#123;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">#app &#123;</span><br><span class="line">  font-family: &#39;Avenir&#39;, Helvetica, Arial, sans-serif;</span><br><span class="line">  -webkit-font-smoothing: antialiased;</span><br><span class="line">  -moz-osx-font-smoothing: grayscale;</span><br><span class="line">  text-align: center;</span><br><span class="line">  color: #2c3e50;</span><br><span class="line">  margin-top: 60px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p>接下来用相同的方式修改HelloWorld.vue即可</p>
+<p>或者（两种写法）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HelloWorld.vue</span></span><br><span class="line">&lt;script lang=<span class="string">&quot;ts&quot;</span>&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; Vue, Component &#125; <span class="keyword">from</span> <span class="string">&#x27;vue-property-decorator&#x27;</span></span><br><span class="line"></span><br><span class="line">@Component(&#123;&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> <span class="keyword">extends</span> <span class="title">Vue</span> </span>&#123;</span><br><span class="line">  msg:string = <span class="string">&#x27;Welcome to Your Vue.js AppAAA&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="降级-ts-loader-至3-5-0"><a href="#降级-ts-loader-至3-5-0" class="headerlink" title="降级 ts-loader 至3.5.0"></a>降级 <code>ts-loader</code> 至3.5.0</h3><p>此时直接 <code>npm run dev</code> 是会报错的</p>
+<blockquote>
+<p>Module build failed: Error: You may be using an old version of webpack; please check you’re using at least version 4</p>
+</blockquote>
+<p>这是由于 ts-loader 的版本较高的原因，所以需要将 ts-loader 降级到3.5.0</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm i ts-loader@3.5.0 --save-dev</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="修改-main-ts"><a href="#修改-main-ts" class="headerlink" title="修改 main.ts"></a>修改 <code>main.ts</code></h3><p>再次 <code>npm run dev</code> ，可能会看到</p>
+<blockquote>
+<p>warning in ./src/main.ts<br>[10, 1]: unused expression, expected an assignment or function call</p>
+</blockquote>
+<p>那么看看 <code>main.ts</code>, 改为 ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">export default new Vue(&#123;</span><br><span class="line">  el: &#39;#app&#39;,</span><br><span class="line">  router,</span><br><span class="line">  components: &#123; App &#125;,</span><br><span class="line">  template: &#39;&lt;App&#x2F;&gt;&#39;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="npm-run-dev"><a href="#npm-run-dev" class="headerlink" title="npm run dev"></a>npm run dev</h3><p>这个时候应该 毛闷题 了！</p>
+<h3 id="支持-es6-es7"><a href="#支持-es6-es7" class="headerlink" title="支持 es6 / es7"></a>支持 es6 / es7</h3><p>在 <code>tsconfig.json</code>中，添加对<code>es6 / es7</code>的支持，更多的配置请见<a target="_blank" rel="noopener" href="https://tslang.cn/docs/handbook/compiler-options.html">tsconfig - 编译选项</a></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&quot;lib&quot;: [</span><br><span class="line">    &quot;dom&quot;,</span><br><span class="line">    &quot;es5&quot;,</span><br><span class="line">    &quot;es6&quot;,</span><br><span class="line">    &quot;es7&quot;,</span><br><span class="line">    <span class="string">&quot;es2015.promise&quot;</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="接入-Vuex"><a href="#接入-Vuex" class="headerlink" title="接入 Vuex"></a>接入 Vuex</h3><ol>
+<li><p>安装 Vuex </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i vuex vuex-class --save</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>vuex-class</strong> ：在 vue-class-component 写法中 绑定 vuex</li>
+</ul>
+</li>
+<li><p>在 src 目录下，新建一个 <code>store</code> 目录，在目录下新建一个 <code>index.ts</code>，配置和之前写法一样</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">&quot;vuex&quot;</span>;</span><br><span class="line"></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  strict: <span class="literal">true</span>,</span><br><span class="line">  state: &#123;</span><br><span class="line">    count: <span class="number">1</span></span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;</span><br><span class="line">    <span class="function"><span class="title">getStateCount</span>(<span class="params">state</span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> state.count + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    <span class="function"><span class="title">add</span>(<span class="params">state</span>)</span> &#123;</span><br><span class="line">      state.count = state.count + <span class="number">1</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="title">reduction</span>(<span class="params">state</span>)</span> &#123;</span><br><span class="line">      state.count = state.count - <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    <span class="function"><span class="title">addFun</span>(<span class="params">context</span>)</span> &#123;</span><br><span class="line">      context.commit(<span class="string">&quot;add&quot;</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="title">reductionFun</span>(<span class="params">context</span>)</span> &#123;</span><br><span class="line">      context.commit(<span class="string">&quot;reduction&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// modules: &#123; a: moduleA, b: moduleB &#125;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> store;</span><br></pre></td></tr></table></figure></li>
+<li><p>在 <code>main.ts</code> 引入</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>; </span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&quot;./store&quot;</span>; <span class="comment">// 添加</span></span><br><span class="line"></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* eslint-disable no-new */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">&quot;#app&quot;</span>,</span><br><span class="line">  router,</span><br><span class="line">  store, <span class="comment">// 添加</span></span><br><span class="line">  components: &#123; App &#125;,</span><br><span class="line">  template: <span class="string">&quot;&lt;App/&gt;&quot;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<h4 id="引用例子"><a href="#引用例子" class="headerlink" title="引用例子"></a>引用例子</h4><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> Component <span class="keyword">from</span> <span class="string">&#x27;vue-class-component&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">    State,</span><br><span class="line">    Getter,</span><br><span class="line">    Action,</span><br><span class="line">    Mutation,</span><br><span class="line">    <span class="keyword">namespace</span></span><br><span class="line">&#125; from &#x27;vuex-class&#x27;</span><br><span class="line"></span><br><span class="line">const ModuleGetter = <span class="keyword">namespace</span>(&#x27;path/to/module&#x27;, Getter)</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">export class MyComp extends Vue &#123;</span><br><span class="line">    <span class="meta">@State</span>(<span class="string">&#x27;foo&#x27;</span>) stateFoo</span><br><span class="line">    <span class="meta">@State</span>(<span class="function"><span class="params">state</span> =&gt;</span> state.bar) stateBar</span><br><span class="line">    <span class="meta">@Getter</span>(<span class="string">&#x27;foo&#x27;</span>) getterFoo</span><br><span class="line">    <span class="meta">@Action</span>(<span class="string">&#x27;foo&#x27;</span>) actionFoo</span><br><span class="line">    <span class="meta">@Mutation</span>(<span class="string">&#x27;foo&#x27;</span>) mutationFoo</span><br><span class="line">    <span class="meta">@ModuleGetter</span>(<span class="string">&#x27;foo&#x27;</span>) moduleGetterFoo</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If the argument is omitted, use the property name</span></span><br><span class="line">    <span class="comment">// for each state/getter/action/mutation type</span></span><br><span class="line">    <span class="meta">@State</span> foo</span><br><span class="line">    <span class="meta">@Getter</span> bar</span><br><span class="line">    <span class="meta">@Action</span> baz</span><br><span class="line">    <span class="meta">@Mutation</span> qux</span><br><span class="line"></span><br><span class="line">    created () &#123;</span><br><span class="line">        <span class="built_in">this</span>.stateFoo <span class="comment">// -&gt; store.state.foo</span></span><br><span class="line">        <span class="built_in">this</span>.stateBar <span class="comment">// -&gt; store.state.bar</span></span><br><span class="line">        <span class="built_in">this</span>.getterFoo <span class="comment">// -&gt; store.getters.foo</span></span><br><span class="line">        <span class="built_in">this</span>.actionFoo(&#123; <span class="attr">value</span>: <span class="literal">true</span> &#125;) <span class="comment">// -&gt; store.dispatch(&#x27;foo&#x27;, &#123; value: true &#125;)</span></span><br><span class="line">        <span class="built_in">this</span>.mutationFoo(&#123; <span class="attr">value</span>: <span class="literal">true</span> &#125;) <span class="comment">// -&gt; store.commit(&#x27;foo&#x27;, &#123; value: true &#125;)</span></span><br><span class="line">        <span class="built_in">this</span>.moduleGetterFoo <span class="comment">// -&gt; store.getters[&#x27;path/to/module/foo&#x27;]</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="接入-SCSS"><a href="#接入-SCSS" class="headerlink" title="接入 SCSS"></a>接入 SCSS</h3><ol>
+<li><p>安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install node-sass --save-dev</span><br><span class="line">npm install sass-loader --save-dev</span><br></pre></td></tr></table></figure></li>
+<li><p>在 <code>./build/webpack.base.conf.js</code> 的 <code>module</code> 添加如下模块</p>
+ <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  test: /\.scss$/,</span><br><span class="line">  loaders: [&quot;style&quot;, &quot;css&quot;, &quot;sass&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>安装后，运行时报错</p>
+</li>
+</ol>
+<blockquote>
+<p>Modele build failed: TypeError: this.getResolve is not a function at Object.loader…</p>
+</blockquote>
+<p>这是因为当前sass的版本太高，webpack编译时出现了错误，这个时候只需要换成低版本的就行，很简单，如下，找到 <code>package.json</code> 文件，里面的 “sass-loader”的版本更换掉就行了。</p>
+<p>可以将 **”sass-loader”: “^8.0.0”，更换成 “sass-loader”: “^7.3.1”**，最后重新 run 以下就好了</p>
+<h3 id="接入-Axios"><a href="#接入-Axios" class="headerlink" title="接入 Axios"></a>接入 Axios</h3><ol>
+<li><p>安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save axios vue-axios</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>main.ts</code>引入</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&quot;axios&quot;</span>; <span class="comment">// 添加</span></span><br><span class="line"><span class="keyword">import</span> VueAxios <span class="keyword">from</span> <span class="string">&quot;vue-axios&quot;</span>; <span class="comment">// 添加</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> router <span class="keyword">from</span> <span class="string">&quot;./router/index&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&quot;./store&quot;</span>;</span><br><span class="line"></span><br><span class="line">Vue.use(VueAxios, axios); <span class="comment">// 添加</span></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* eslint-disable no-new */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">&quot;#app&quot;</span>,</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  components: &#123; App &#125;,</span><br><span class="line">  template: <span class="string">&quot;&lt;App/&gt;&quot;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><code>Axios</code> 是一个库，并不是 vue 中的第三方插件，使用时不能通过 <code>Vue.use()</code> 安装插件</p>
+</li>
+</ol>
+<p>在 <code>mian.js</code> 中引用 <code>axios，vue-axios</code>，通过全局方法 <code>Vue.use() </code>使用插件，就相当于调用 <code>install</code> 方法</p>
+<h3 id="接入-Element"><a href="#接入-Element" class="headerlink" title="接入 Element"></a>接入 Element</h3><ol>
+<li><p>安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i element-ui -S</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>main.ts</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&quot;vue&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">&quot;element-ui&quot;</span>; <span class="comment">// 添加</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;element-ui/lib/theme-chalk/index.css&quot;</span>; <span class="comment">// 添加</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">&quot;./App.vue&quot;</span>;</span><br><span class="line"></span><br><span class="line">Vue.use(ElementUI); <span class="comment">// 添加</span></span><br><span class="line">Vue.config.productionTip = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* eslint-disable no-new */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">&quot;#app&quot;</span>,</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  components: &#123; App &#125;,</span><br><span class="line">  template: <span class="string">&quot;&lt;App/&gt;&quot;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<h3 id="接入-Express-NodeJs"><a href="#接入-Express-NodeJs" class="headerlink" title="接入 Express + NodeJs"></a>接入 Express + NodeJs</h3><ol>
+<li><p>安装</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express cors body-parser mysql</span><br></pre></td></tr></table></figure></li>
+<li><p>新建一个 <code>server.ts</code></p>
+ <figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&quot;use strict&quot;</span>;</span><br><span class="line"><span class="comment">/* 引入express框架 */</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&quot;express&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 引入cors */</span></span><br><span class="line"><span class="keyword">const</span> cors = <span class="built_in">require</span>(<span class="string">&quot;cors&quot;</span>);</span><br><span class="line">app.use(cors());</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 引入body-parser */</span></span><br><span class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">&quot;body-parser&quot;</span>);</span><br><span class="line">app.use(bodyParser.json());</span><br><span class="line">app.use(</span><br><span class="line">  bodyParser.urlencoded(&#123;</span><br><span class="line">    extended: <span class="literal">false</span></span><br><span class="line">  &#125;)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 引入mysql */</span></span><br><span class="line"><span class="keyword">const</span> mysql = <span class="built_in">require</span>(<span class="string">&quot;mysql&quot;</span>);</span><br><span class="line"><span class="keyword">const</span> conn = mysql.createConnection(&#123;</span><br><span class="line">  host: <span class="string">&quot;101.133.132.172&quot;</span>,</span><br><span class="line">  user: <span class="string">&quot;root&quot;</span>,</span><br><span class="line">  password: <span class="string">&quot;123456&quot;</span>,</span><br><span class="line">  database: <span class="string">&quot;hostel&quot;</span>,</span><br><span class="line">  multipleStatements: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br><span class="line">conn.connect();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 监听端口 */</span></span><br><span class="line">app.listen(<span class="number">4444</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;——————————服务已启动——————————&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">&quot;/&quot;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  res.send(<span class="string">&#x27;&lt;p style=&quot;color:red&quot;&gt;服务已启动&lt;/p&gt;&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<h3 id="使用-nodemon-热加载-NodeJs文件"><a href="#使用-nodemon-热加载-NodeJs文件" class="headerlink" title="使用 nodemon 热加载 NodeJs文件"></a>使用 nodemon 热加载 NodeJs文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g  nodemon</span><br></pre></td></tr></table></figure>
+<p>安装后只要<code>nodemon server.ts</code>即可</p>
+<p>运行时，发现有报错，需要安装一个<code>@type/node</code>，以及在 <code>tsconfig.json</code> 的<code>compilerOptions</code>配置<code>&quot;types&quot;: [&quot;node&quot;]</code>，跟着提示走就好了。</p>
+<p>但是可能还会报：</p>
+<blockquote>
+<p>Type error: Cannot compile namespaces when the ‘–isolatedModules’ flag is provided.</p>
+</blockquote>
+<p>那么，在 <code>tsconfig.json</code> 的<code>compilerOptions</code>配置<code>&quot;isolatedModules&quot;: false</code>，就没问题</p>
+<h3 id="取消-eslint-校验"><a href="#取消-eslint-校验" class="headerlink" title="取消 eslint 校验"></a>取消 eslint 校验</h3><p>实在是烦…先取消了</p>
+<p>在根目录创建<code>vue.config.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  lintOnSave: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="统一代码格式"><a href="#统一代码格式" class="headerlink" title="统一代码格式"></a>统一代码格式</h3><p>为了快速编码，决定启用 保存后自动格式化，需要在 <code>首选项-设置</code> 添加</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// #每次保存的时候自动格式化</span></span><br><span class="line">&quot;editor.formatOnSave&quot;: true,</span><br></pre></td></tr></table></figure>
+<p>这里有个坑，之前开启了 eslint 校验，又开了 prettier ，vetur，导致格式化和报错一直打架，因为方便完成自己的毕设，所以关掉了 eslint，但是格式化又在打架，查阅，发现 prettier 在存在 vetur 的前提下，并不生效，所以我决定把 prettier 先关掉！</p>
+<p>下面只要注重 Vetur 的配置就好了，同样在 <code>首选项-设置</code>  找  <code>Vetur</code>，想要改啥配置，百度一下吧~</p>
+<h4 id="查阅资料"><a href="#查阅资料" class="headerlink" title="查阅资料"></a>查阅资料</h4><p><a target="_blank" rel="noopener" href="https://www.jb51.net/article/169682.htm">vscode中eslint插件的配置（prettier配置无效）</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000015315545">使用ESLint+Prettier来统一前端代码风格</a></p>
+<h2 id="插件使用指南"><a href="#插件使用指南" class="headerlink" title="插件使用指南"></a>插件使用指南</h2><h3 id="vue-class-component"><a href="#vue-class-component" class="headerlink" title="vue-class-component"></a>vue-class-component</h3><p><a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-class-component">vue-class-component</a> 对 <code>Vue</code> 组件进行了一层封装，让 <code>Vue</code> 组件语法在结合了 <code>TypeScript</code> 语法之后更加扁平化：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;input v-model&#x3D;&quot;msg&quot;&gt;</span><br><span class="line">    &lt;p&gt;msg: &#123;&#123; msg &#125;&#125;&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;p&gt;computed msg: &#123;&#123; computedMsg &#125;&#125;&lt;&#x2F;p&gt;</span><br><span class="line">    &lt;button @click&#x3D;&quot;greet&quot;&gt;Greet&lt;&#x2F;button&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang&#x3D;&quot;ts&quot;&gt;</span><br><span class="line">  import Vue from &#39;vue&#39;</span><br><span class="line">  import Component from &#39;vue-class-component&#39;</span><br><span class="line"></span><br><span class="line">  @Component</span><br><span class="line">  export default class App extends Vue &#123;</span><br><span class="line">    &#x2F;&#x2F; 初始化数据</span><br><span class="line">    msg &#x3D; 123</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 声明周期钩子</span><br><span class="line">    mounted () &#123;</span><br><span class="line">      this.greet()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 计算属性</span><br><span class="line">    get computedMsg () &#123;</span><br><span class="line">      return &#39;computed &#39; + this.msg</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; 方法</span><br><span class="line">    greet () &#123;</span><br><span class="line">      alert(&#39;greeting: &#39; + this.msg)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<p>上面的代码跟下面的代码作用是一样的</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  data () &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      msg: <span class="number">123</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 声明周期钩子</span></span><br><span class="line">  mounted () &#123;</span><br><span class="line">    <span class="built_in">this</span>.greet()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 计算属性</span></span><br><span class="line">  computed: &#123;</span><br><span class="line">    computedMsg () &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">&#x27;computed &#x27;</span> + <span class="built_in">this</span>.msg</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 方法</span></span><br><span class="line">  methods: &#123;</span><br><span class="line">    greet () &#123;</span><br><span class="line">      alert(<span class="string">&#x27;greeting: &#x27;</span> + <span class="built_in">this</span>.msg)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="vue-property-decorator"><a href="#vue-property-decorator" class="headerlink" title="vue-property-decorator"></a>vue-property-decorator</h3><p><a target="_blank" rel="noopener" href="https://github.com/kaorun343/vue-property-decorator">vue-property-decorator</a> 是在 <code>vue-class-component</code> 上增强了更多的结合 <code>Vue</code> 特性的装饰器，新增了这 7 个装饰器：</p>
+<ul>
+<li><code>@Emit</code></li>
+<li><code>@Inject</code></li>
+<li><code>@Model</code></li>
+<li><code>@Prop</code></li>
+<li><code>@Provide</code></li>
+<li><code>@Watch</code></li>
+<li><code>@Component</code> (从 <code>vue-class-component</code> 继承)</li>
+</ul>
+<p>在这里列举几个常用的<code>@Prop/@Watch/@Component</code>, 更多信息，详见<a target="_blank" rel="noopener" href="https://github.com/kaorun343/vue-property-decorator">官方文档</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Component, Emit, Inject, Model, Prop, Provide, Vue, Watch &#125; from &#39;vue-property-decorator&#39;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">export class MyComponent extends Vue &#123;</span><br><span class="line">  </span><br><span class="line">  @Prop()</span><br><span class="line">  propA: number &#x3D; 1</span><br><span class="line"></span><br><span class="line">  @Prop(&#123; default: &#39;default value&#39; &#125;)</span><br><span class="line">  propB: string</span><br><span class="line"></span><br><span class="line">  @Prop([String, Boolean])</span><br><span class="line">  propC: string | boolean</span><br><span class="line"></span><br><span class="line">  @Prop(&#123; type: null &#125;)</span><br><span class="line">  propD: any</span><br><span class="line"></span><br><span class="line">  @Watch(&#39;child&#39;)</span><br><span class="line">  onChildChanged(val: string, oldVal: string) &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码相当于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">export default &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    checked: Boolean,</span><br><span class="line">    propA: Number,</span><br><span class="line">    propB: &#123;</span><br><span class="line">      type: String,</span><br><span class="line">      default: &#39;default value&#39;</span><br><span class="line">    &#125;,</span><br><span class="line">    propC: [String, Boolean],</span><br><span class="line">    propD: &#123; type: null &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    onChildChanged(val, oldVal) &#123; &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    &#39;child&#39;: &#123;</span><br><span class="line">      handler: &#39;onChildChanged&#39;,</span><br><span class="line">      immediate: false,</span><br><span class="line">      deep: false</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000011744210">vue + typescript 项目起手式</a></p>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000011878086">vue + typescript 进阶篇</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/19/Vue/Element/3.%20%E8%A1%A8%E5%8D%95%E6%A0%B7%E5%BC%8F%E6%9B%B4%E6%94%B9/" rel="next" title="表单样式更改">
+                <i class="fa fa-chevron-left"></i> 表单样式更改
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/20/Git/2019/8.%20%E5%9C%A8%E4%B8%80%E5%8F%B0%E7%94%B5%E8%84%91%E4%BD%BF%E7%94%A8%E4%B8%A4%E4%B8%AAgithub%E8%B4%A6%E5%8F%B7/" rel="prev" title="在一台电脑使用两个github账号">
+                在一台电脑使用两个github账号 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA"><span class="nav-text">搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%B7%E6%89%8B-Vue-Cli"><span class="nav-text">起手 Vue-Cli</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue-%E5%BC%95%E5%85%A5-TypeScript"><span class="nav-text">Vue 引入 TypeScript</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-webpack"><span class="nav-text">配置 webpack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-tsconfig-json"><span class="nav-text">添加 tsconfig.json</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%85%8D%E7%BD%AE"><span class="nav-text">参考配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-tslint-json"><span class="nav-text">添加 tslint.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A9-ts-%E8%AF%86%E5%88%AB-vue"><span class="nav-text">让 ts 识别 .vue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E4%BF%AE%E6%94%B9App-vue%E6%96%87%E4%BB%B6"><span class="nav-text">开始修改App.vue文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%8D%E7%BA%A7-ts-loader-%E8%87%B33-5-0"><span class="nav-text">降级 ts-loader 至3.5.0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-main-ts"><span class="nav-text">修改 main.ts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#npm-run-dev"><span class="nav-text">npm run dev</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81-es6-es7"><span class="nav-text">支持 es6 &#x2F; es7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5-Vuex"><span class="nav-text">接入 Vuex</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E4%BE%8B%E5%AD%90"><span class="nav-text">引用例子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5-SCSS"><span class="nav-text">接入 SCSS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5-Axios"><span class="nav-text">接入 Axios</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5-Element"><span class="nav-text">接入 Element</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A5%E5%85%A5-Express-NodeJs"><span class="nav-text">接入 Express + NodeJs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-nodemon-%E7%83%AD%E5%8A%A0%E8%BD%BD-NodeJs%E6%96%87%E4%BB%B6"><span class="nav-text">使用 nodemon 热加载 NodeJs文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E6%B6%88-eslint-%E6%A0%A1%E9%AA%8C"><span class="nav-text">取消 eslint 校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E4%B8%80%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="nav-text">统一代码格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E9%98%85%E8%B5%84%E6%96%99"><span class="nav-text">查阅资料</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97"><span class="nav-text">插件使用指南</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-class-component"><span class="nav-text">vue-class-component</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-property-decorator"><span class="nav-text">vue-property-decorator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

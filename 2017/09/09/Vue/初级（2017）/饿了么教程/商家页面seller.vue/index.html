@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="饿了么教程," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="主体结构html代码 1234567891011121314151617181920212223&lt;div class&#x3D;&quot;seller&quot; ref&#x3D;&quot;seller&quot;&gt;    &lt;div class&#x3D;&quot;seller-content&quot;&gt;      &lt;!--overview部分--&gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="商家页面seller.vue">
+<meta property="og:url" content="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%AE%B6%E9%A1%B5%E9%9D%A2seller.vue/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="主体结构html代码 1234567891011121314151617181920212223&lt;div class&#x3D;&quot;seller&quot; ref&#x3D;&quot;seller&quot;&gt;    &lt;div class&#x3D;&quot;seller-content&quot;&gt;      &lt;!--overview部分--&gt;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-09-09T07:15:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.057Z">
+<meta property="article:author" content="Wei Zhang">
+<meta property="article:tag" content="饿了么教程">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2017/09/09/Vue/初级（2017）/饿了么教程/商家页面seller.vue/"/>
+
+
+
+
+
+  <title>商家页面seller.vue | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%AE%B6%E9%A1%B5%E9%9D%A2seller.vue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">商家页面seller.vue</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-09T15:15:47+08:00">
+                2017-09-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.7k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  13 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="主体结构"><a href="#主体结构" class="headerlink" title="主体结构"></a>主体结构</h3><p>html代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;seller&quot; ref&#x3D;&quot;seller&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;seller-content&quot;&gt;</span><br><span class="line">      &lt;!--overview部分--&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;overview&quot;&gt;</span><br><span class="line">    </span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;split&gt;&lt;&#x2F;split&gt;</span><br><span class="line">      &lt;!--bulltin部分--&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;bulletin&quot;&gt;</span><br><span class="line">    </span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;split&gt;&lt;&#x2F;split&gt;</span><br><span class="line">      &lt;!--pics部分--&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;pics&quot;&gt;</span><br><span class="line">    </span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">      &lt;split&gt;&lt;&#x2F;split&gt;</span><br><span class="line">      &lt;!--info部分--&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;info&quot;&gt;</span><br><span class="line">    </span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<p>seller-contentdiv是能够扩大高度的,能够被内容增加而撑高,而seller div是固定的高度的,从而形成滚动</p>
+<p>js代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">import BScroll from &#39;better-scroll&#39;;</span><br><span class="line">import split from &#39;..&#x2F;split&#x2F;split&#39;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    seller: &#123; &#x2F;&#x2F;app.vue里面router-view会传入一个seller</span><br><span class="line">      type: Object</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123; &#x2F;&#x2F;当seller变动的时候会触发</span><br><span class="line">    &#39;seller&#39;() &#123;</span><br><span class="line">      this.$nextTick(() &#x3D;&gt; &#123;</span><br><span class="line">        this._initScroll();</span><br><span class="line">        this._initPics();</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted() &#123; &#x2F;&#x2F;在dom被渲染之后触发</span><br><span class="line">    this.$nextTick(() &#x3D;&gt; &#123;</span><br><span class="line">      this._initScroll();</span><br><span class="line">      this._initPics();</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    _initScroll() &#123;</span><br><span class="line">      if (!this.scroll) &#123;</span><br><span class="line">        this.scroll &#x3D; new BScroll(this.$refs.seller, &#123;</span><br><span class="line">          click: true</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        this.scroll.refresh();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    _initPics() &#123;</span><br><span class="line">      &#x2F;&#x2F;详细代码在下面,这里暂时先忽略</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123;</span><br><span class="line">    split</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用watch方法是为了监听数据seller的变化,因为当打开页面的时候,seller是异步获取的,并不一定是能够马上获取,没有seller的数据,相关dom就无法被渲染,并且bscroll是基于dom执行的,所以需要监听seller的变化然后来重新执行相关的初始化函数</li>
+<li>使用mounted方法是为了保证相关dom渲染完成,因为bscroll是基于dom执行的,但是当切换页面的时候,dom会重新渲染,但未必能够马上完成,所以需要在mounted方法里面重新执行相关的初始化函数</li>
+<li>关于watch和mounted的使用要基于vue的生命周期来理解vue生命周期</li>
+</ul>
+<p>css代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.seller</span><br><span class="line">  position: absolute</span><br><span class="line">  top: 174px &#x2F;&#x2F;给header留空间</span><br><span class="line">  bottom: 0</span><br><span class="line">  left: 0</span><br><span class="line">  width: 100%</span><br><span class="line">  overflow: hidden &#x2F;&#x2F;隐藏多余部分,因为需要滚动</span><br></pre></td></tr></table></figure>
+<h3 id="overview部分"><a href="#overview部分" class="headerlink" title="overview部分"></a>overview部分</h3><p>html部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;overview&quot;&gt;</span><br><span class="line">  &lt;h1 class&#x3D;&quot;title&quot;&gt;&#123;&#123;seller.name&#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;desc border-1px&quot;&gt;</span><br><span class="line">    &lt;star :size&#x3D;&quot;36&quot; :score&#x3D;&quot;seller.score&quot;&gt;&lt;&#x2F;star&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;text&quot;&gt;(&#123;&#123;seller.ratingCount&#125;&#125;)&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;text&quot;&gt;月售&#123;&#123;seller.sellCount&#125;&#125;单&lt;&#x2F;span&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">  &lt;!--列表处理remark内容--&gt;</span><br><span class="line">  &lt;ul class&#x3D;&quot;remark&quot;&gt;</span><br><span class="line">  &lt;!--使用一个block块包裹内容--&gt;</span><br><span class="line">    &lt;li class&#x3D;&quot;block&quot;&gt;</span><br><span class="line">    &lt;!--标题用h2标签--&gt;</span><br><span class="line">      &lt;h2&gt;起送价&lt;&#x2F;h2&gt;</span><br><span class="line">      &lt;!--用content块包裹内容--&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;content&quot;&gt;</span><br><span class="line">      &lt;!--用span代表特殊字体--&gt;</span><br><span class="line">        &lt;span class&#x3D;&quot;stress&quot;&gt;&#123;&#123;seller.minPrice&#125;&#125;&lt;&#x2F;span&gt;元</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;li&gt;</span><br><span class="line">    &lt;li class&#x3D;&quot;block&quot;&gt;</span><br><span class="line">      &lt;h2&gt;商家配送&lt;&#x2F;h2&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;content&quot;&gt;</span><br><span class="line">        &lt;span class&#x3D;&quot;stress&quot;&gt;&#123;&#123;seller.deliveryPrice&#125;&#125;&lt;&#x2F;span&gt;元</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;li&gt;</span><br><span class="line">    &lt;li class&#x3D;&quot;block&quot;&gt;</span><br><span class="line">      &lt;h2&gt;平均配送时间&lt;&#x2F;h2&gt;</span><br><span class="line">      &lt;div class&#x3D;&quot;content&quot;&gt;</span><br><span class="line">        &lt;span class&#x3D;&quot;stress&quot;&gt;&#123;&#123;seller.deliveryTime&#125;&#125;&lt;&#x2F;span&gt;分钟</span><br><span class="line">      &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;&#x2F;li&gt;</span><br><span class="line">  &lt;&#x2F;ul&gt;</span><br><span class="line">  &lt;!--收藏按钮--&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;favorite&quot; @click&#x3D;&quot;toggleFavorite&quot;&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;icon-favorite&quot; :class&#x3D;&quot;&#123;&#39;active&#39;:favorite&#125;&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;span class&#x3D;&quot;text&quot;&gt;&#123;&#123;favoriteText&#125;&#125;&lt;&#x2F;span&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<p>js部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">import BScroll from &#39;better-scroll&#39;;</span><br><span class="line">&#x2F;&#x2F;引入一个利用html5的localstorage的存储模块</span><br><span class="line">import &#123; saveToLocal, loadFromLocal &#125; from &#39;common&#x2F;js&#x2F;store&#39;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    seller: &#123;</span><br><span class="line">      type: Object</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      favorite: (() &#x3D;&gt; &#123; </span><br><span class="line">      &#x2F;&#x2F;利用localstorage读取这个属性</span><br><span class="line">        return loadFromLocal(this.seller.id, &#39;favorite&#39;, false);</span><br><span class="line">      &#125;)()&#x2F;&#x2F;vue需要返回的data必须是函数,所以加上()</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    favoriteText() &#123; &#x2F;&#x2F;通过favorite的值来计算favoriteText的值</span><br><span class="line">      return this.favorite ? &#39;已收藏&#39; : &#39;收藏&#39;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    toggleFavorite(event) &#123;</span><br><span class="line">      if (!event._constructed) &#123;</span><br><span class="line">        return;</span><br><span class="line">      &#125;</span><br><span class="line">      &#x2F;&#x2F;通过取反来设置切换</span><br><span class="line">      this.favorite &#x3D; !this.favorite;</span><br><span class="line">      &#x2F;&#x2F;利用localstorage存储这个属性</span><br><span class="line">      saveToLocal(this.seller.id, &#39;favorite&#39;, this.favorite);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>store.js参考:split,formatDate,store,util组件</p>
+<p>css部分</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">.overview</span><br><span class="line">position: relative &#x2F;&#x2F;设置相对布局参考位置</span><br><span class="line">padding: 18px</span><br><span class="line">.title</span><br><span class="line">  margin-bottom: 8px</span><br><span class="line">  line-height: 14px</span><br><span class="line">  color: rgb(7, 17, 27)</span><br><span class="line">  font-size: 14px</span><br><span class="line">.desc</span><br><span class="line">  padding-bottom: 18px</span><br><span class="line">  border-1px(rgba(7, 17, 27, 0.1))</span><br><span class="line">  font-size: 0</span><br><span class="line">  .star</span><br><span class="line">    display: inline-block</span><br><span class="line">    margin-right: 8px</span><br><span class="line">    vertical-align: top &#x2F;&#x2F;行内对齐</span><br><span class="line">  .text</span><br><span class="line">    display: inline-block</span><br><span class="line">    margin-right: 12px</span><br><span class="line">    line-height: 18px</span><br><span class="line">    vertical-align: top &#x2F;&#x2F;行内对齐</span><br><span class="line">    font-size: 10px</span><br><span class="line">    color: rgb(77, 85, 93)</span><br><span class="line">.remark</span><br><span class="line">  display: flex &#x2F;&#x2F;flex布局</span><br><span class="line">  padding-top: 18px</span><br><span class="line">  .block</span><br><span class="line">    flex: 1 &#x2F;&#x2F;flex布局等分区域</span><br><span class="line">    text-align: center</span><br><span class="line">    border-right: 1px solid rgba(7, 17, 27, 0.1)</span><br><span class="line">    &amp;:last-child</span><br><span class="line">      border: none</span><br><span class="line">    h2</span><br><span class="line">      margin-bottom: 4px</span><br><span class="line">      line-height: 10px</span><br><span class="line">      font-size: 10px</span><br><span class="line">      color: rgb(147, 153, 159)</span><br><span class="line">    .content &#x2F;&#x2F;设置该块的公共属性</span><br><span class="line">      line-height: 24px</span><br><span class="line">      font-size: 10px</span><br><span class="line">      color: rgb(7, 17, 27)</span><br><span class="line">      .stress &#x2F;&#x2F;特殊大小再插入class覆盖</span><br><span class="line">        font-size: 24px</span><br><span class="line">.favorite</span><br><span class="line">  position: absolute</span><br><span class="line">  width: 50px &#x2F;&#x2F;设置一个固定宽度,被text-align使用</span><br><span class="line">  right: 11px</span><br><span class="line">  top: 18px</span><br><span class="line">  text-align: center</span><br><span class="line">  .icon-favorite</span><br><span class="line">    display: block</span><br><span class="line">    margin-bottom: 4px</span><br><span class="line">    line-height: 24px</span><br><span class="line">    font-size: 24px</span><br><span class="line">    color: #d4d6d9</span><br><span class="line">    &amp;.active</span><br><span class="line">      color: rgb(240, 20, 20)</span><br><span class="line">  .text</span><br><span class="line">    line-height: 10px</span><br><span class="line">    font-size: 10px</span><br><span class="line">    color: rgb(77, 85, 93)</span><br></pre></td></tr></table></figure>
+<h3 id="bulletin部分"><a href="#bulletin部分" class="headerlink" title="bulletin部分"></a>bulletin部分</h3><p>html代码</p>
+<p>公告与活动</p>
+<blockquote>
+<p>classMap的原理(classMap使用在之前的header组件使用过Header.vue)</p>
+</blockquote>
+<ul>
+<li>seller.supports的结构是这样的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">“supports”: [</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;type&quot;: 0,</span><br><span class="line">    &quot;description&quot;: &quot;在线支付满28减5&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;type&quot;: 1,</span><br><span class="line">    &quot;description&quot;: &quot;VC无限橙果汁全场8折&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;type&quot;: 2,</span><br><span class="line">    &quot;description&quot;: &quot;单人精彩套餐&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;type&quot;: 3,</span><br><span class="line">    &quot;description&quot;: &quot;该商家支持发票,请下单写好发票抬头&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    &quot;type&quot;: 4,</span><br><span class="line">    &quot;description&quot;: &quot;已加入“外卖保”计划,食品安全保障&quot;</span><br><span class="line">  &#125;</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+<ul>
+<li>classMap是[‘decrease’, ‘discount’, ‘special’, ‘invoice’, ‘guarantee’]这样的,这个顺序是按照设计需要和数据结构排的,例如type为0对应在线支付满28减5</li>
+<li>如果要获取对应的class,就可以classMap[seller.supports[index].type],例如seller.supports[0].type就是0,那么就是classMap[0]就是decrease这个class</li>
+<li>如果要获取对应的description就可以seller.supports[index].description,例如seller.supports[0].description就直接知道了supports数组的第一个元素的description属性的值了</li>
+<li>js代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import split from &#39;..&#x2F;split&#x2F;split&#39;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    seller: &#123;</span><br><span class="line">      type: Object</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created() &#123; &#x2F;&#x2F;使用自建的一个classMap数组来对应不同的类别</span><br><span class="line">    this.classMap &#x3D; [&#39;decrease&#39;, &#39;discount&#39;, &#39;special&#39;, &#39;invoice&#39;, &#39;guarantee&#39;];</span><br><span class="line">  &#125;,</span><br><span class="line">  components: &#123;</span><br><span class="line">    split</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>使用created方法是为了在加载的时候第一时间完成,因为vue的渲染需要this.classMap属性(created是vue的生命周期的第一个)</p>
+<p>css代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">@import “..&#x2F;..&#x2F;common&#x2F;stylus&#x2F;mixin.styl”</span><br><span class="line">.bulletin</span><br><span class="line">  padding: 18px 18px 0 18px</span><br><span class="line">  .title</span><br><span class="line">    margin-bottom: 8px</span><br><span class="line">    line-height: 14px</span><br><span class="line">    color: rgb(7, 17, 27)</span><br><span class="line">    font-size: 14px</span><br><span class="line">  .content-wrapper</span><br><span class="line">    padding: 0 12px 16px 12px</span><br><span class="line">    border-1px(rgba(7, 17, 27, 0.1))</span><br><span class="line">    .content</span><br><span class="line">      line-height: 24px</span><br><span class="line">      font-size: 12px</span><br><span class="line">      color: rgb(240, 20, 20)</span><br><span class="line">  .supports</span><br><span class="line">    .support-item</span><br><span class="line">      padding: 16px 12px</span><br><span class="line">      border-1px(rgba(7, 17, 27, 0.1))</span><br><span class="line">      font-size: 0</span><br><span class="line">      &amp;:last-child</span><br><span class="line">        border-none() &#x2F;&#x2F;需要引入一个mixin,处理没边框的问题</span><br><span class="line">    .icon</span><br><span class="line">      display: inline-block</span><br><span class="line">      width: 16px</span><br><span class="line">      height: 16px</span><br><span class="line">      vertical-align: top</span><br><span class="line">      margin-right: 6px</span><br><span class="line">      background-size: 16px 16px</span><br><span class="line">      background-repeat: no-repeat</span><br><span class="line">      &amp;.decrease &#x2F;&#x2F;使用设计要求的大小的图标</span><br><span class="line">        bg-image(&#39;decrease_4&#39;) &#x2F;&#x2F;使用mixin处理这些图标</span><br><span class="line">      &amp;.discount</span><br><span class="line">        bg-image(&#39;discount_4&#39;)</span><br><span class="line">      &amp;.guarantee</span><br><span class="line">        bg-image(&#39;guarantee_4&#39;)</span><br><span class="line">      &amp;.invoice</span><br><span class="line">        bg-image(&#39;invoice_4&#39;)</span><br><span class="line">      &amp;.special</span><br><span class="line">        bg-image(&#39;special_4&#39;)</span><br><span class="line">    .text</span><br><span class="line">      line-height: 16px</span><br><span class="line">      font-size: 12px</span><br><span class="line">      color: rgb(7, 17, 27)</span><br></pre></td></tr></table></figure>
+<h3 id="pics部分"><a href="#pics部分" class="headerlink" title="pics部分"></a>pics部分</h3><p>html代码</p>
+<p>商家实景</p>
+<ul>
+<li>ref获取picWrapper是为了滚动图片需要,父DOM是picWrapper,子DOM是picList</li>
+<li>ref获取picList是为了计算图片列表的总长度,用来设置图片列表的横向滚动,因为滚动的触发条件是子DOM比父DOM要”大”的时候才会触发,由于图片的数量是未知的,所以需要去计算,然后写入到picList</li>
+</ul>
+<p>js代码</p>
+<p>_initPics() { //编程习惯的前置下划线,代表内部使用的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">if (this.seller.pics) &#123;</span><br><span class="line">  let picWidth &#x3D; 120; &#x2F;&#x2F;</span><br><span class="line">  let margin &#x3D; 6;</span><br><span class="line">  &#x2F;&#x2F;这是图片列表的总长度</span><br><span class="line">  let width &#x3D; (picWidth + margin) * this.seller.pics.length - margin;</span><br><span class="line">  &#x2F;&#x2F;设置图片列表的宽度等于列表的总长度</span><br><span class="line">  this.$refs.picList.style.width &#x3D; width + &#39;px&#39;;</span><br><span class="line">  &#x2F;&#x2F;异步绑定滚动</span><br><span class="line">  this.$nextTick(() &#x3D;&gt; &#123;</span><br><span class="line">    if (!this.picScroll) &#123;</span><br><span class="line">      this.picScroll &#x3D; new BScroll(this.$refs.picWrapper, &#123;</span><br><span class="line">        scrollX: true, &#x2F;&#x2F;bscroll的横向滚动属性</span><br><span class="line">        eventPassthrough: &#39;vertical&#39; &#x2F;&#x2F;bscroll的过滤垂直滚动</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      this.picScroll.refresh();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一般来说,当某页面本身是垂直滚动的时候,中间的某个DOM需要做横向滚动的话,需要处理滚动坐标的变化,例如手势滚动的时候有x,y坐标,是向上,下,左还是右会区分</li>
+<li>图片列表的总长度是单个图片的宽度+单个图片的外边距的和乘以图片的数量,再减去最后一个图片的外边距</li>
+<li>BScroll插件需要增加一个属性scrollX: true来传入横向的滚动坐标,也需要增加一个属性eventPassthrough: ‘vertical’过滤垂直的滚动,前者已经解释过,后者是因为需要横向滚动的页面是内嵌在垂直滚动的页面的里面的,所以会造成外面的垂直滚动事件也会传入到横向滚动的页面,为了避免影响横向滚动,所以需要屏蔽垂直滚动的事件</li>
+<li>我们平时在做这种滚动内嵌滚动的时候也可以参考这个处理方法.</li>
+<li>另外异步绑定滚动的常规做法,先判断是否已经有BScroll实例了,然后再确定是否需要刷新</li>
+</ul>
+<p>css代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">.pics</span><br><span class="line">padding: 18px</span><br><span class="line">.title</span><br><span class="line">  margin-bottom: 12px</span><br><span class="line">  line-height: 14px</span><br><span class="line">  color: rgb(7, 17, 27)</span><br><span class="line">  font-size: 14px</span><br><span class="line">.pic-wrapper</span><br><span class="line">  width: 100% &#x2F;&#x2F;图片列表区域是屏幕宽度</span><br><span class="line">  overflow: hidden &#x2F;&#x2F;隐藏多余部分</span><br><span class="line">  white-space: nowrap  &#x2F;&#x2F;连续的空白符会被合并</span><br><span class="line">  .pic-list</span><br><span class="line">    font-size: 0 &#x2F;&#x2F;行内元素取消间隙</span><br><span class="line">    .pic-item</span><br><span class="line">      display: inline-block</span><br><span class="line">      margin-right: 6px</span><br><span class="line">      width: 120px</span><br><span class="line">      height: 90px</span><br><span class="line">      &amp;:last-child &#x2F;&#x2F;最后一个图片没有外边距</span><br><span class="line">        margin: 0</span><br></pre></td></tr></table></figure>
+<h3 id="info部分"><a href="#info部分" class="headerlink" title="info部分"></a>info部分</h3><p>html代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;info&quot;&gt;</span><br><span class="line">  &lt;h1 class&#x3D;&quot;title border-1px&quot;&gt;商家信息&lt;&#x2F;h1&gt;</span><br><span class="line">  &lt;ul&gt;</span><br><span class="line">    &lt;li class&#x3D;&quot;info-item&quot; v-for&#x3D;&quot;info in seller.infos&quot;&gt;&#123;&#123;info&#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">  &lt;&#x2F;ul&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<p>css代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">.info</span><br><span class="line">padding: 18px 18px 0 18px</span><br><span class="line">color: rgb(7, 17, 27)</span><br><span class="line">.title</span><br><span class="line">  padding-bottom: 12px</span><br><span class="line">  line-height: 14px</span><br><span class="line">  border-1px(rgba(7, 17, 27, 0.1))</span><br><span class="line">  font-size: 14px</span><br><span class="line">.info-item</span><br><span class="line">  padding: 16px 12px</span><br><span class="line">  line-height: 16px</span><br><span class="line">  border-1px(rgba(7, 17, 27, 0.1)) &#x2F;&#x2F;1像素的border 的mixin</span><br><span class="line">  font-size: 12px</span><br><span class="line">  &amp;:last-child</span><br><span class="line">    border-none() &#x2F;&#x2F;没有border的mixin</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/" rel="tag"># 饿了么教程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E6%98%9F%E6%98%9F%E7%BB%84%E4%BB%B6star.vue/" rel="next" title="星星组件star.vue">
+                <i class="fa fa-chevron-left"></i> 星星组件star.vue
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/09/Vue/%E5%88%9D%E7%BA%A7%EF%BC%882017%EF%BC%89/%E9%A5%BF%E4%BA%86%E4%B9%88%E6%95%99%E7%A8%8B/%E5%95%86%E5%93%81%E8%AF%A6%E6%83%85%E9%A1%B5food.vue/" rel="prev" title="商品详情页food.vue">
+                商品详情页food.vue <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-text">主体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#overview%E9%83%A8%E5%88%86"><span class="nav-text">overview部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bulletin%E9%83%A8%E5%88%86"><span class="nav-text">bulletin部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pics%E9%83%A8%E5%88%86"><span class="nav-text">pics部分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#info%E9%83%A8%E5%88%86"><span class="nav-text">info部分</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

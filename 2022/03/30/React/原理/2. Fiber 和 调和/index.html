@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="什么是 Fiber ?React 新一代调和（Reconcilation）引擎，同时也是一种数据结构 React 的 虚拟 dom，最小粒度的执行单元，可以设置不同的优先级 Fiber 保存了哪些信息？12345678910111213141516171819202122232425262728293031function FiberNode()&amp;#123;  this.tag &#x3D; tag;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fiber 与 调和">
+<meta property="og:url" content="https://super-wei.top/2022/03/30/React/%E5%8E%9F%E7%90%86/2.%20Fiber%20%E5%92%8C%20%E8%B0%83%E5%92%8C/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="什么是 Fiber ?React 新一代调和（Reconcilation）引擎，同时也是一种数据结构 React 的 虚拟 dom，最小粒度的执行单元，可以设置不同的优先级 Fiber 保存了哪些信息？12345678910111213141516171819202122232425262728293031function FiberNode()&amp;#123;  this.tag &#x3D; tag;">
+<meta property="og:locale">
+<meta property="og:image" content="https://api2.mubu.com/v3/document_image/8c2495a5-ca5e-4c4c-8fa0-ee697dbdda07-193252.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203301643630.png">
+<meta property="og:image" content="https://super-wei.top/Users/bytedance/Library/Application%20Support/typora-user-images/image-20220330164501964.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203311654364.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203311659037.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203311745715.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203311809609.png">
+<meta property="article:published_time" content="2022-03-30T08:01:37.000Z">
+<meta property="article:modified_time" content="2022-03-31T12:34:55.984Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://api2.mubu.com/v3/document_image/8c2495a5-ca5e-4c4c-8fa0-ee697dbdda07-193252.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2022/03/30/React/原理/2. Fiber 和 调和/"/>
+
+
+
+
+
+  <title>Fiber 与 调和 | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2022/03/30/React/%E5%8E%9F%E7%90%86/2.%20Fiber%20%E5%92%8C%20%E8%B0%83%E5%92%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Fiber 与 调和</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-30T16:01:37+08:00">
+                2022-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.8k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是-Fiber"><a href="#什么是-Fiber" class="headerlink" title="什么是 Fiber ?"></a>什么是 Fiber ?</h2><p>React 新一代调和（Reconcilation）引擎，同时也是一种数据结构</p>
+<p>React 的 虚拟 dom，最小粒度的执行单元，可以设置不同的优先级</p>
+<h3 id="Fiber-保存了哪些信息？"><a href="#Fiber-保存了哪些信息？" class="headerlink" title="Fiber 保存了哪些信息？"></a>Fiber 保存了哪些信息？</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FiberNode</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.tag = tag;                  <span class="comment">// fiber 标签 证明是什么类型fiber。</span></span><br><span class="line">  <span class="built_in">this</span>.key = key;                  <span class="comment">// key调和子节点时候用到。 </span></span><br><span class="line">  <span class="built_in">this</span>.type = <span class="literal">null</span>;                <span class="comment">// dom元素是对应的元素类型，比如div，组件指向组件对应的类或者函数。  </span></span><br><span class="line">  <span class="built_in">this</span>.stateNode = <span class="literal">null</span>;           <span class="comment">// 指向对应的真实dom元素，类组件指向组件实例，可以被ref获取。</span></span><br><span class="line"> </span><br><span class="line">  <span class="built_in">this</span>.return = <span class="literal">null</span>;              <span class="comment">// 指向父级fiber</span></span><br><span class="line">  <span class="built_in">this</span>.child = <span class="literal">null</span>;               <span class="comment">// 指向子级fiber</span></span><br><span class="line">  <span class="built_in">this</span>.sibling = <span class="literal">null</span>;             <span class="comment">// 指向兄弟fiber </span></span><br><span class="line">  <span class="built_in">this</span>.index = <span class="number">0</span>;                  <span class="comment">// 索引</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.ref = <span class="literal">null</span>;                 <span class="comment">// ref指向，ref函数，或者ref对象。</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.pendingProps = pendingProps;<span class="comment">// 在一次更新中，代表element创建</span></span><br><span class="line">  <span class="built_in">this</span>.memoizedProps = <span class="literal">null</span>;       <span class="comment">// 记录上一次更新完毕后的props</span></span><br><span class="line">  <span class="built_in">this</span>.updateQueue = <span class="literal">null</span>;         <span class="comment">// 类组件存放setState更新队列，函数组件存放</span></span><br><span class="line">  <span class="built_in">this</span>.memoizedState = <span class="literal">null</span>;       <span class="comment">// 类组件保存state信息，函数组件保存hooks信息，dom元素为null</span></span><br><span class="line">  <span class="built_in">this</span>.dependencies = <span class="literal">null</span>;        <span class="comment">// context或是时间的依赖项</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.mode = mode;                <span class="comment">//描述fiber树的模式，比如 ConcurrentMode 模式</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.effectTag = NoEffect;       <span class="comment">// effect标签，用于收集effectList</span></span><br><span class="line">  <span class="built_in">this</span>.nextEffect = <span class="literal">null</span>;          <span class="comment">// 指向下一个effect</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.firstEffect = <span class="literal">null</span>;         <span class="comment">// 第一个effect</span></span><br><span class="line">  <span class="built_in">this</span>.lastEffect = <span class="literal">null</span>;          <span class="comment">// 最后一个effect</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.expirationTime = NoWork;    <span class="comment">// 通过不同过期时间，判断任务是否过期， 在v17版本用lane表示。</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">this</span>.alternate = <span class="literal">null</span>;           <span class="comment">//双缓存树，指向缓存的fiber。更新阶段，两颗树互相交替。</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="element、fiber、dom三种什么关系？"><a href="#element、fiber、dom三种什么关系？" class="headerlink" title="element、fiber、dom三种什么关系？"></a>element、fiber、dom三种什么关系？</h3><p><strong>element</strong></p>
+<ul>
+<li><p>React 视图层在代码层级上的表象</p>
+</li>
+<li><p>开发者写的 jsx 语法，写的元素结构，都会被创建成 element 对象的形式</p>
+</li>
+<li><p>上面保存了 props ， children 等信息</p>
+</li>
+</ul>
+<p><strong>dom</strong></p>
+<ul>
+<li>元素在浏览器上给用户直观的表象</li>
+</ul>
+<p><strong>fiber</strong></p>
+<ul>
+<li><p>element 和真实 DOM 之间的交流枢纽站</p>
+</li>
+<li><p>一方面每一个类型 element 都会有一个与之对应的 fiber 类型，element 变化引起更新流程都是通过 fiber 层面做一次调和改变，然后对于元素，形成新的 DOM 做视图渲染</p>
+<p><img src="https://api2.mubu.com/v3/document_image/8c2495a5-ca5e-4c4c-8fa0-ee697dbdda07-193252.jpg" alt="img"></p>
+</li>
+</ul>
+<p>element 与 fiber 之间的对应关系</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> FunctionComponent = <span class="number">0</span>;       <span class="comment">// 对应函数组件</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> ClassComponent = <span class="number">1</span>;          <span class="comment">// 对应的类组件</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> IndeterminateComponent = <span class="number">2</span>;  <span class="comment">// 初始化的时候不知道是函数组件还是类组件 </span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> HostRoot = <span class="number">3</span>;                <span class="comment">// Root Fiber 可以理解为跟元素 ， 通过reactDom.render()产生的根元素</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> HostPortal = <span class="number">4</span>;              <span class="comment">// 对应  ReactDOM.createPortal 产生的 Portal </span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> HostComponent = <span class="number">5</span>;           <span class="comment">// dom 元素 比如 &lt;div&gt;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> HostText = <span class="number">6</span>;                <span class="comment">// 文本节点</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> Fragment = <span class="number">7</span>;                <span class="comment">// 对应 &lt;React.Fragment&gt; </span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> Mode = <span class="number">8</span>;                    <span class="comment">// 对应 &lt;React.StrictMode&gt;   </span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> ContextConsumer = <span class="number">9</span>;         <span class="comment">// 对应 &lt;Context.Consumer&gt;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> ContextProvider = <span class="number">10</span>;        <span class="comment">// 对应 &lt;Context.Provider&gt;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> ForwardRef = <span class="number">11</span>;             <span class="comment">// 对应 React.ForwardRef</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> Profiler = <span class="number">12</span>;               <span class="comment">// 对应 &lt;Profiler/ &gt;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> SuspenseComponent = <span class="number">13</span>;      <span class="comment">// 对应 &lt;Suspense&gt;</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> MemoComponent = <span class="number">14</span>;          <span class="comment">// 对应 React.memo 返回的组件</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="Fiber-架构解决了什么问题？"><a href="#Fiber-架构解决了什么问题？" class="headerlink" title="Fiber 架构解决了什么问题？"></a>Fiber 架构解决了什么问题？</h2><p>主要解决的是同步递归渲染造成的页面卡顿问题</p>
+<p>在 React v15 以及之前的版本，React 对于虚拟 DOM 是采用递归方式遍历更新的，递归一旦开始，中途无法中断</p>
+<p>每一个 fiber 可以根据自身的过期时间expirationTime（ v17 版本叫做优先级 lane ）来判断是否还有空间时间执行更新，如果没有时间更新，就要把主动权交给浏览器去渲染，做一些动画，重排（ reflow ），重绘 repaints 之类的事情，这样就能给用户感觉不是很卡</p>
+<p>然后等浏览器空余时间，在通过 scheduler （调度器），再次恢复执行单元上来</p>
+<h2 id="Fiber-root-和-root-fiber-有什么区别？"><a href="#Fiber-root-和-root-fiber-有什么区别？" class="headerlink" title="Fiber root 和 root fiber 有什么区别？"></a>Fiber root 和 root fiber 有什么区别？</h2><p><code>fiberRoot</code>：首次构建应用， 创建一个 fiberRoot ，作为整个 React 应用的根基</p>
+<p><code>rootFiber</code>：通过 ReactDOM.render 渲染出来的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">Index</span>/&gt;</span></span>, <span class="built_in">document</span>.getElementById(<span class="string">&#x27;app&#x27;</span>))</span><br></pre></td></tr></table></figure>
+<p>一个 React 应用可以有多 ReactDOM.render 创建的 rootFiber ，但是只能有一个 fiberRoot（应用根节点）</p>
+<h2 id="不同fiber-之间如何建立起关联的？"><a href="#不同fiber-之间如何建立起关联的？" class="headerlink" title="不同fiber 之间如何建立起关联的？"></a>不同fiber 之间如何建立起关联的？</h2><p>每一个 fiber 是通过以下三个属性建立起联系的</p>
+<ul>
+<li><p>return： 指向父级 Fiber 节点</p>
+</li>
+<li><p>child： 指向子 Fiber 节点</p>
+</li>
+<li><p>sibling：指向兄弟 fiber 节点</p>
+</li>
+</ul>
+<img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203301643630.png" style="zoom: 50%;" />
+
+<img src="/Users/bytedance/Library/Application Support/typora-user-images/image-20220330164501964.png" alt="image-20220330164501964" style="zoom:33%;" />
+
+
+
+<h2 id="React-调和流程？"><a href="#React-调和流程？" class="headerlink" title="React 调和流程？"></a>React 调和流程？</h2><p>调和指的是将虚拟 DOM 映射到真实 DOM 的过程</p>
+<p>包括 render 阶段 和 commit 阶段</p>
+<p><strong>render 阶段在执行过程中允许被打断，而 commit 阶段则总是同步执行的。</strong></p>
+<h3 id="触发调和过程的方式"><a href="#触发调和过程的方式" class="headerlink" title="触发调和过程的方式"></a>触发调和过程的方式</h3><p>在React 中有以下几种操作会触发调和过程： </p>
+<ul>
+<li>ReactDom.render() 和 ReactNativeRenderer.render()</li>
+<li>setState() </li>
+<li>forceUpdate() 的调用</li>
+<li>componentWillMount 和componentWillReceiveProp 中直接修改了state（地址）</li>
+<li>hooks 中的useReducer 和 useState 返回的钩子函数</li>
+</ul>
+<h2 id="两大阶段-render-和-commit-都做了哪些事情？"><a href="#两大阶段-render-和-commit-都做了哪些事情？" class="headerlink" title="两大阶段 render 和 commit 都做了哪些事情？"></a>两大阶段 render 和 commit 都做了哪些事情？</h2><h3 id="render阶段"><a href="#render阶段" class="headerlink" title="render阶段"></a>render阶段</h3><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ol>
+<li><p>生成新的 <code>fiber</code> 节点，通过 <code>diff</code> 算法对比节点差异创建出用于更新操作的 <code>workinprogressFiber</code> 树，给需要更新的 <code>fiber</code> 打上相对应的 <code>effectTag</code>，并且生成用于更新的 <code>effectList</code> 链表</p>
+<ul>
+<li>具体可以拆分为 <code>beginWork</code> 以及 <code>completeWork</code> 两个阶段，通过深度优先遍历的形式来进行这两个阶段</li>
+</ul>
+</li>
+<li><p>相比于 <code>react15</code> 的递归处理虚拟 dom 节点，<code>Reconciler</code> 通过链表的形式改成了循环处理。每处理完一个 <code>fiber</code> 节点都会检查时间是否充足或者是否有高优先级任务</p>
+</li>
+</ol>
+<h4 id="具体做了什么"><a href="#具体做了什么" class="headerlink" title="具体做了什么"></a>具体做了什么</h4><img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203311654364.png" alt="image-20220331165439170" style="zoom: 33%;" />
+
+<p><strong>workLoop</strong></p>
+<ul>
+<li>整个 fiber 的遍历开始</li>
+<li>执行每一个单元（fiber）的调度器</li>
+<li>如果渲染没有被中断，那么 workLoop 会遍历一遍 fiber 树</li>
+</ul>
+<p><strong>performUnitOfWork</strong></p>
+<p>包括两个阶段 beginWork 和 completeUnitOfWork</p>
+<p><code>beginWork</code></p>
+<ul>
+<li><p>是向下调和的过程</p>
+</li>
+<li><p>就是由 fiberRoot 按照 child 指针逐层向下调和，期间会执行函数组件，实例类组件，diff 调和子节点，打不同effectTag<img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203311659037.png" alt="image-20220331165933010"></p>
+</li>
+</ul>
+<p><code>completeUnitOfWork</code></p>
+<ul>
+<li>是向上归并的过程</li>
+<li>如果有兄弟节点，会返回 sibling 兄弟，没有返回 return 父级，一直返回到 fiebrRoot </li>
+<li>期间可以形成effectList</li>
+<li>completeWork：对于初始化流程会创建 DOM ，对于 DOM 元素进行事件收集，处理style，className等</li>
+</ul>
+<p>这么一上一下，构成了整个 fiber 树的调和</p>
+<h4 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h4><p>render 阶段当一个任务执行到一半被打断后，下一次渲染线程抢回主动权时，这个任务被重启的形式是“重复执行一遍整个任务”而非“接着上次执行到的那行代码往下走”。这就导致 render 阶段的生命周期都是有可能被重复执行的。</p>
+<p>因此 React 16 需要废弃以下生命周期：</p>
+<ul>
+<li>componentWillMount</li>
+<li>componentWillUpdate</li>
+<li>componentWillReceiveProps</li>
+</ul>
+<p>这些生命周期都处于 render 阶段，因此都可能重复被执行，但是这些生命周期中可能会有setState()、fetch 发起异步请求、操作真实 DOM 等操作，而这些操作可能会伴随着生命周期的重启而被重复执行，可能会造成严重后果（例如一个付款的操作被重复执行），因此需要废弃。</p>
+<h3 id="commit阶段"><a href="#commit阶段" class="headerlink" title="commit阶段"></a>commit阶段</h3><h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><ol>
+<li><p>当前阶段不会被打断，会根据上面两阶段生成的 <code>effectList</code> 一口气执行完成渲染操作</p>
+</li>
+<li><p>遍历 <code>render</code> 阶段生成的 <code>effectList</code> ，<code>effectList</code> 上的 <code>Fiber</code> 节点保存着对应的 <code>props</code> 变化。之后会遍历 <code>effectList</code> 进行对应的 dom 操作和生命周期、hooks 回调或销毁函数</p>
+</li>
+<li><p>通过双缓存的技术 <code>workInProgress Fiber</code> 完成渲染后会变为 <code>current Fiber</code> 树</p>
+</li>
+</ol>
+<h4 id="具体做了什么-1"><a href="#具体做了什么-1" class="headerlink" title="具体做了什么"></a>具体做了什么</h4><p>主要做的事就是执行effectList，更新DOM，执行生命周期，获取ref等操作</p>
+<img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203311745715.png" alt="image-20220331174523687" style="zoom: 25%;" />
+
+<p><strong>Before mutation（执行 DOM 操作前）</strong></p>
+<ul>
+<li>执行 getSnapshotBeforeUpdate</li>
+<li>异步调用 useEffect</li>
+</ul>
+<p><strong>Mutation（执行 DOM 操作）</strong></p>
+<ul>
+<li>置空 ref</li>
+<li>进行真实的 DOM 操作</li>
+</ul>
+<p><strong>Layout（执行 DOM 操作后）</strong></p>
+<ul>
+<li>对于类组件，会执行生命周期，setState 的callback</li>
+<li>对于函数组件会执行 useLayoutEffect 钩子</li>
+<li>如果有 ref ，会重新赋值 ref</li>
+</ul>
+<h2 id="什么是双缓冲树？-有什么作用？"><a href="#什么是双缓冲树？-有什么作用？" class="headerlink" title="什么是双缓冲树？ 有什么作用？"></a>什么是双缓冲树？ 有什么作用？</h2><p>双缓冲树：在内存中构建并直接替换的技术</p>
+<p>canvas 绘制动画的时候，如果上一帧计算量比较大，导致清除上一帧画面到绘制当前帧画面之间有较长间隙，就会出现白屏。为了解决这个问题，canvas 在内存中绘制当前动画，绘制完毕后直接用当前帧替换上一帧画面，由于省去了两帧替换间的计算时间，不会出现从白屏到出现画面的闪烁情况</p>
+<p>React 用 workInProgress 树(内存中构建的树) 和 current (渲染树) 来实现更新逻辑</p>
+<ul>
+<li><p>双缓存一个在内存中构建，一个渲染视图，两颗树用 alternate 指针相互指向，在下一次渲染的时候，直接复用缓存树做为下一次渲染树，上一次的渲染树又作为缓存树</p>
+</li>
+<li><p>这样可以防止只用一颗树更新状态的丢失的情况，又加快了 DOM 节点的替换与更新</p>
+<blockquote>
+<p>对于状态丢失的补充：两颗树一个是用于渲染，另外一个在缓存中存在，如果用一颗fiber树，在更新中，如果存在更新失败，更新中断等情况，那么这种状态是不可逆的，而这种双缓冲树正好可以快速更新，又实在的保存上一次渲染的状态。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>概念介绍</strong></p>
+<p><code>workInProgress</code></p>
+<ul>
+<li><p>正在内存中构建的 Fiber 树</p>
+</li>
+<li><p>反映将要变化的UI</p>
+</li>
+<li><p>在一次更新中，所有的更新都是发生在 workInProgress 树上。在一次更新之后，workInProgress 树上的状态是最新的状态，那么它将变成 current 树用于渲染视图</p>
+</li>
+</ul>
+<p><code>current</code></p>
+<ul>
+<li>反映当前屏幕的UI</li>
+</ul>
+<p><code>alternate </code></p>
+<ul>
+<li>内存中和渲染中的fiber两者用这个属性相互指向</li>
+</ul>
+<h2 id="Fiber-深度遍历流程？"><a href="#Fiber-深度遍历流程？" class="headerlink" title="Fiber 深度遍历流程？"></a>Fiber 深度遍历流程？</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      xiao</span><br><span class="line">      &lt;p&gt;chen&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ReactDOM.render(<span class="xml"><span class="tag">&lt;<span class="name">App</span> /&gt;</span></span>, <span class="built_in">document</span>.getElementById(<span class="string">&quot;root&quot;</span>)); </span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/ZhangWei2222/PictureBed/master/img/202203311809609.png" alt="img"></p>
+<p>可以看到，遍历的过程中会从应用的根节点 rootFiber 开始，依次执行 beginWork（向下调和） 和completeWork（向上归并），最后形成一颗Fiber树，每个节点以 child 和 return 相连。</p>
+<blockquote>
+<p>注意：当遍历到只有一个子节点的 Fiber 时，该 Fiber 节点的子节点不会执行 beginWork 和 completeWork，如图中的 ‘chen’ 文本节点。这是 react 的一种优化手段</p>
+</blockquote>
+<h2 id="Fiber的调和能中断吗？-如何中断？"><a href="#Fiber的调和能中断吗？-如何中断？" class="headerlink" title="Fiber的调和能中断吗？ 如何中断？"></a>Fiber的调和能中断吗？ 如何中断？</h2><p>render 阶段在执行过程中允许被打断，而 commit 阶段则总是同步执行的</p>
+<p>Fiber 有优先级的概念</p>
+<blockquote>
+<p>首先，<strong>每个更新任务都会被赋予一个优先级</strong>。当更新任务抵达调度器时，高优先级的更新任务（记为 A）会更快地被调度进 Reconciler 层；此时若有新的更新任务（记为 B）抵达调度器，调度器会检查它的优先级，若发现 B 的优先级高于当前任务 A，那么当前处于 Reconciler 层的 A 任务就会被<strong>中断</strong>，调度器会将 B 任务推入 Reconciler 层。当 B 任务完成渲染后，新一轮的调度开始，之前被中断的<strong>A 任务将会被重新推入 Reconciler 层，重新执行，这便是所谓“可恢复”</strong>。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/09/React/2022/2.%20useMemo%E3%80%81useCallback%E3%80%81useEffect%E5%8C%BA%E5%88%AB/" rel="next" title="useMemo、useCallback、useEffect区别">
+                <i class="fa fa-chevron-left"></i> useMemo、useCallback、useEffect区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/03/30/React/%E5%8E%9F%E7%90%86/1.%20%E4%BA%8B%E4%BB%B6%E5%8E%9F%E7%90%86/" rel="prev" title="事件原理">
+                事件原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Fiber"><span class="nav-text">什么是 Fiber ?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber-%E4%BF%9D%E5%AD%98%E4%BA%86%E5%93%AA%E4%BA%9B%E4%BF%A1%E6%81%AF%EF%BC%9F"><span class="nav-text">Fiber 保存了哪些信息？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#element%E3%80%81fiber%E3%80%81dom%E4%B8%89%E7%A7%8D%E4%BB%80%E4%B9%88%E5%85%B3%E7%B3%BB%EF%BC%9F"><span class="nav-text">element、fiber、dom三种什么关系？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fiber-%E6%9E%B6%E6%9E%84%E8%A7%A3%E5%86%B3%E4%BA%86%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="nav-text">Fiber 架构解决了什么问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fiber-root-%E5%92%8C-root-fiber-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-text">Fiber root 和 root fiber 有什么区别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8D%E5%90%8Cfiber-%E4%B9%8B%E9%97%B4%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E8%B5%B7%E5%85%B3%E8%81%94%E7%9A%84%EF%BC%9F"><span class="nav-text">不同fiber 之间如何建立起关联的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-%E8%B0%83%E5%92%8C%E6%B5%81%E7%A8%8B%EF%BC%9F"><span class="nav-text">React 调和流程？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E8%B0%83%E5%92%8C%E8%BF%87%E7%A8%8B%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-text">触发调和过程的方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E5%A4%A7%E9%98%B6%E6%AE%B5-render-%E5%92%8C-commit-%E9%83%BD%E5%81%9A%E4%BA%86%E5%93%AA%E4%BA%9B%E4%BA%8B%E6%83%85%EF%BC%9F"><span class="nav-text">两大阶段 render 和 commit 都做了哪些事情？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#render%E9%98%B6%E6%AE%B5"><span class="nav-text">render阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88"><span class="nav-text">具体做了什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB"><span class="nav-text">扩展阅读</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#commit%E9%98%B6%E6%AE%B5"><span class="nav-text">commit阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%81%9A%E4%BA%86%E4%BB%80%E4%B9%88-1"><span class="nav-text">具体做了什么</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8C%E7%BC%93%E5%86%B2%E6%A0%91%EF%BC%9F-%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8%EF%BC%9F"><span class="nav-text">什么是双缓冲树？ 有什么作用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fiber-%E6%B7%B1%E5%BA%A6%E9%81%8D%E5%8E%86%E6%B5%81%E7%A8%8B%EF%BC%9F"><span class="nav-text">Fiber 深度遍历流程？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fiber%E7%9A%84%E8%B0%83%E5%92%8C%E8%83%BD%E4%B8%AD%E6%96%AD%E5%90%97%EF%BC%9F-%E5%A6%82%E4%BD%95%E4%B8%AD%E6%96%AD%EF%BC%9F"><span class="nav-text">Fiber的调和能中断吗？ 如何中断？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

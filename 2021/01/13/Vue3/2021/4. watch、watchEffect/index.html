@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="watchwatch 函数用来侦听特定的数据源，并在回调函数中执行副作用。默认情况是懒执行的，也就是说仅在侦听的源变更时才执行回调。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue3-watch、watchEffect">
+<meta property="og:url" content="https://super-wei.top/2021/01/13/Vue3/2021/4.%20watch%E3%80%81watchEffect/index.html">
+<meta property="og:site_name" content="Wei Zhang&#39;s Blog">
+<meta property="og:description" content="watchwatch 函数用来侦听特定的数据源，并在回调函数中执行副作用。默认情况是懒执行的，也就是说仅在侦听的源变更时才执行回调。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-01-13T06:42:47.000Z">
+<meta property="article:modified_time" content="2022-03-14T08:29:45.059Z">
+<meta property="article:author" content="Wei Zhang">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://super-wei.top/2021/01/13/Vue3/2021/4. watch、watchEffect/"/>
+
+
+
+
+
+  <title>Vue3-watch、watchEffect | Wei Zhang's Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?6b84e82d64204f777295ad7493af8ba2";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Wei Zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/01/13/Vue3/2021/4.%20watch%E3%80%81watchEffect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vue3-watch、watchEffect</h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-01-13T14:42:47+08:00">
+                2021-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue3/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue3</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.6k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h2><p>watch 函数用来侦听特定的数据源，并在回调函数中执行副作用。默认情况是懒执行的，也就是说仅在侦听的源变更时才执行回调。</p>
+<a id="more"></a>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 监听 ref、reactive </span></span><br><span class="line"><span class="keyword">const</span> count = ref(<span class="number">2</span>)</span><br><span class="line">watch(</span><br><span class="line">  () =&gt; <span class="built_in">Math</span>.abs(count.value),</span><br><span class="line">  (newVal, oldVal) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`count的绝对值发生了变化！count=<span class="subst">$&#123;newVal&#125;</span>`</span>)</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br><span class="line">count.value = -<span class="number">2</span> <span class="comment">// 没有触发watch</span></span><br><span class="line">count.value = <span class="number">1</span> <span class="comment">// count的绝对值发生了变化！count=1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> count = ref(<span class="number">2</span>)</span><br><span class="line">watch(count, <span class="function">(<span class="params">newVal, oldVal</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`count值发生了变化！count=<span class="subst">$&#123;newVal&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br><span class="line">count.value = -<span class="number">1</span> <span class="comment">// count的绝对值发生了变化！count=-1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 监听多个数据</span></span><br><span class="line"><span class="keyword">const</span> preNum = ref(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"><span class="keyword">const</span> aftNum = ref(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">watch([preNum, aftNum], <span class="function">(<span class="params">[newPre, newAft], [oldPre, oldAft]</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;数据改变了&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line">preNum.value = <span class="string">&#x27;123&#x27;</span> <span class="comment">// 数据改变了</span></span><br><span class="line">aftNum.value = <span class="string">&#x27;123&#x27;</span> <span class="comment">// 数据改变了</span></span><br></pre></td></tr></table></figure>
+<p>注意上面的代码，第一个参数传入的 state 对象，第二个参数是回调函数，只要 state 中任意的属性发生改变都会执行回调函数。deep 在监听 reactive 响应式数据的时候会置为 true，即递归地监听对象及其所有嵌套属性的变化。如果想要深度侦听 ref 类型的响应式数据，则需要手动将 deep 置为 true</p>
+<h3 id="监听对象属性"><a href="#监听对象属性" class="headerlink" title="监听对象属性"></a>监听对象属性</h3><p>现在是监听整个对象，当然我们也可以监听对象上的某个属性，注意下面代码的写法：第一个是是对象属性，第二个参数是回调函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;button @click&#x3D;&quot;change&quot;&gt;count is: &#123;&#123; state.count &#125;&#125;&lt;&#x2F;button&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; reactive, watch &#125; from &#39;vue&#39;</span><br><span class="line">export default &#123;</span><br><span class="line">  setup () &#123;</span><br><span class="line">    let state &#x3D; reactive(&#123;count: 0&#125;)</span><br><span class="line">    let change &#x3D; () &#x3D;&gt; state.count++;</span><br><span class="line">    watch(() &#x3D;&gt; state.count, (oldVlaue, newValue) &#x3D;&gt; &#123; &#x2F;&#x2F; 可以写多个watch</span><br><span class="line">      console.log(oldVlaue, newValue, &#39;改变&#39;)</span><br><span class="line">    &#125;)</span><br><span class="line">    return &#123; state, change &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><p>通过下面的代码，我们可以发现 <code>watch</code> 和 <code>watchEffect</code> 函数还接收一个 <code>options</code> 参数，这个参数默认为 <code>Object.freeze(&#123;&#125;)</code> 也就是一个被冻结的，无法添加任何属性的空对象。如果 <code>options</code> 不为空，那么它可以包含五个有效属性：immediate、deep、flush、onTrack 和 onTrigger，我们来看看这五个属性的作用。</p>
+<ul>
+<li><p>immediate：表示立即执行。默认是惰性监听，仅在侦听源发生更改时调用</p>
+</li>
+<li><p>deep：在监听 <code>reactive</code> 响应式数据的时候会置为 <code>true</code>，即递归地监听对象及其所有嵌套属性的变化。如果想要深度侦听 <code>ref</code> 类型的响应式数据，则需要手动将 <code>deep</code> 置为 <code>true</code></p>
+</li>
+<li><p><code>flush</code> 有三个有效值：<code>pre</code>、<code>sync</code> 和 <code>post</code>。</p>
+<ul>
+<li><code>pre</code> 为默认值，表示在组件更新前执行侦听回调</li>
+<li><code>post</code> 表示在更新后调用</li>
+<li> <code>sync</code> 则强制同步执行回调，因为一些数据往往会在短时间内改变多次，这样的强制同步是效率低下的，不推荐使用</li>
+</ul>
+</li>
+<li><p>onTrack、onTrigger 都是回调函数</p>
+<blockquote>
+<p>注意：<code>onTrack</code> 和 <code>onTrigger</code> 只能在开发模式下进行调试时使用，不能再生产模式下使用。</p>
+</blockquote>
+<ul>
+<li><code>onTrack</code> 将在响应式 <code>property</code> 或 <code>ref</code> 作为依赖项被追踪的时候调用</li>
+<li><code>onTrigger</code> 将在依赖项变更导致 <code>watchEffect</code> 回调触发时被调用</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">watch</span>(<span class="params">source, cb, options</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 传入的cb不是函数就输出提示</span></span><br><span class="line">  <span class="keyword">if</span> ( !shared.isFunction(cb)) &#123;</span><br><span class="line">    warn(<span class="string">`\`watch(fn, options?)\` signature has been moved to a separate API. `</span> +</span><br><span class="line">         <span class="string">`Use \`watchEffect(fn, options?)\` instead. \`watch\` now only `</span> +</span><br><span class="line">         <span class="string">`supports \`watch(source, cb, options?) signature.`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> doWatch(source, cb, options);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doWatch</span>(<span class="params">source, cb, </span></span></span><br><span class="line"><span class="function"><span class="params">  &#123; immediate, deep, flush, onTrack, onTrigger &#125; = shared.EMPTY_OBJ, <span class="comment">// 默认为Object.freeze(&#123;&#125;)</span></span></span></span><br><span class="line"><span class="function"><span class="params">	instance = currentInstance <span class="comment">// 当前调用组件暴露出来的一个变量，方便该侦听器找到自己对应的组件，默认为null</span></span></span></span><br><span class="line"><span class="function"><span class="params"> &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">if</span> ( !cb) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">if</span> (immediate !== <span class="literal">undefined</span>) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">      warn(<span class="string">`watch() &quot;immediate&quot; option is only respected when using the `</span> +</span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="string">`watch(source, callback, options?) signature.`</span>);</span></span></span><br><span class="line"><span class="function"><span class="params">    &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">if</span> (deep !== <span class="literal">undefined</span>) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">      warn(<span class="string">`watch() &quot;deep&quot; option is only respected when using the `</span> +</span></span></span><br><span class="line"><span class="function"><span class="params">           <span class="string">`watch(source, callback, options?) signature.`</span>);</span></span></span><br><span class="line"><span class="function"><span class="params">    &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="regexp">//</span> 提示非法数据源，合法的数据源是：getter/effect <span class="keyword">function</span>、ref、reactive object、array</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">const</span> warnInvalidSource = (s) =&gt; &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    warn(<span class="string">`Invalid watch source: `</span>, s, <span class="string">`A watch source can only be a getter/effect function, a ref, `</span> +</span></span></span><br><span class="line"><span class="function"><span class="params">         <span class="string">`a reactive object, or an array of these types.`</span>);</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;;</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">let</span> getter; <span class="regexp">//</span> 去获取要监听的数据</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">let</span> forceTrigger = <span class="literal">false</span>; <span class="regexp">//</span> 否需要强制更新</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">if</span> (reactivity.isRef(source)) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="regexp">//</span> 如果监听的是响应式ref数据</span></span></span><br><span class="line"><span class="function"><span class="params">    getter = () =&gt; source.value;</span></span></span><br><span class="line"><span class="function"><span class="params">    forceTrigger = !!source._shallow;</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">else</span> <span class="keyword">if</span> (reactivity.isReactive(source)) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="regexp">//</span> 如果监听的是响应式reactive对象</span></span></span><br><span class="line"><span class="function"><span class="params">    getter = () =&gt; source;</span></span></span><br><span class="line"><span class="function"><span class="params">    deep = <span class="literal">true</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">else</span> <span class="keyword">if</span> (shared.isArray(source)) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="regexp">//</span> 如果监听由响应式数据组成的数组</span></span></span><br><span class="line"><span class="function"><span class="params">    getter = () =&gt; source.map(s =&gt; &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="regexp">//</span> 遍历数组再对各个值进行类型判断</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">if</span> (reactivity.isRef(s)) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">return</span> s.value;</span></span></span><br><span class="line"><span class="function"><span class="params">      &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">else</span> <span class="keyword">if</span> (reactivity.isReactive(s)) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="regexp">//</span> 如果是监听一个reactive类型数据，使用traverse递归监听属性</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">return</span> traverse(s);</span></span></span><br><span class="line"><span class="function"><span class="params">      &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">else</span> <span class="keyword">if</span> (shared.isFunction(s)) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="regexp">//</span> callWithErrorHandling是调用传入的函数，如果出错有相应的处理，就报错</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">return</span> callWithErrorHandling(s, instance, <span class="number">2</span> <span class="regexp">/* WATCH_GETTER */</span>);</span></span></span><br><span class="line"><span class="function"><span class="params">      &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="keyword">else</span> &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">        warnInvalidSource(s);</span></span></span><br><span class="line"><span class="function"><span class="params">      &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">    &#125;);</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">else</span> <span class="keyword">if</span> (shared.isFunction(source)) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="regexp">//</span> 如果source是一个getter函数</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">if</span> (cb) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="regexp">//</span> 进入这里说明是watch而不是watchEffect</span></span></span><br><span class="line"><span class="function"><span class="params">      getter = () =&gt; callWithErrorHandling(source, instance, <span class="number">2</span> <span class="regexp">/* WATCH_GETTER */</span>);</span></span></span><br><span class="line"><span class="function"><span class="params">    &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">else</span> &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">      <span class="regexp">//</span> 如果没有传递cb函数，说明使用的是watchEffect方法</span></span></span><br><span class="line"><span class="function"><span class="params">      getter = () =&gt; &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="regexp">//</span> instance是一个全局变量，可以理解为当前执行这个方法的组件</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">if</span> (instance &amp;&amp; instance.isUnmounted) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">          <span class="keyword">return</span>;</span></span></span><br><span class="line"><span class="function"><span class="params">        &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="regexp">//</span> cleanup是注册的清理函数,清除依赖</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">if</span> (cleanup) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">          cleanup();</span></span></span><br><span class="line"><span class="function"><span class="params">        &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">return</span> callWithErrorHandling(source, instance, <span class="number">3</span> <span class="regexp">/* WATCH_CALLBACK */</span>, [onInvalidate]);</span></span></span><br><span class="line"><span class="function"><span class="params">      &#125;;</span></span></span><br><span class="line"><span class="function"><span class="params">    &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">else</span> &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="regexp">//</span> 其余情况 getter 为空函数，并发出警告</span></span></span><br><span class="line"><span class="function"><span class="params">    getter = shared.NOOP;</span></span></span><br><span class="line"><span class="function"><span class="params">    warnInvalidSource(source);</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;</span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">if</span> (cb &amp;&amp; deep) &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="regexp">//</span> 如果传递了cb函数，并且为深层次监听，则使用traverse递归监听属性</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> baseGetter = getter;</span></span></span><br><span class="line"><span class="function"><span class="params">    getter = () =&gt; traverse(baseGetter());</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">let</span> cleanup;</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">const</span> onInvalidate = (fn) =&gt; &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">    cleanup = runner.options.onStop = () =&gt; &#123;</span></span></span><br><span class="line"><span class="function"><span class="params">      callWithErrorHandling(fn, instance, <span class="number">4</span> <span class="regexp">/* WATCH_CLEANUP */</span>);</span></span></span><br><span class="line"><span class="function"><span class="params">    &#125;;</span></span></span><br><span class="line"><span class="function"><span class="params">  &#125;;</span></span></span><br><span class="line"><span class="function"><span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="regexp">//</span> <span class="keyword">in</span> SSR there is no need to setup an actual effect, and it should be noop</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="regexp">//</span> unless it<span class="string">&#x27;s eager</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  if ( isInSSRComponentSetup) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    // 服务端渲染的逻辑</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    if (!cb) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      getter();</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    else if (immediate) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      callWithAsyncErrorHandling(cb, instance, 3 /* WATCH_CALLBACK */, [</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        getter(),</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        undefined,</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        onInvalidate</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      ]);</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    return shared.NOOP;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string"></span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string"></span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  let oldValue = shared.isArray(source) ? [] : INITIAL_WATCHER_VALUE;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  // 调度方法，在数据源改变后  因为响应式系统的trigger调用，内部会将数据源的新旧值传入cb中调用</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  const job = () =&gt; &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">   // runner是一个effect，传入的函数是上面的getter，也就是说我们调用effect就可以获得getter的返回值</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">   // 当这个runner被取消之后，我们什么也不执行直接return</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    if (!runner.active) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      return;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    if (cb) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      // 有cb说明我们使用的是watch而不是watchEffect</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      // watch(source, cb)</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      // 调用runner =&gt; getter =&gt; 数据源的最新值</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      const newValue = runner();</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      // 如果是 deep 或 forceTrigger 或有值更新</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      if (deep || forceTrigger || shared.hasChanged(newValue, oldValue)) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        // 当回调再次执行前先清除副作用</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        if (cleanup) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">          cleanup();</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        // 触发 watch api 的回调，并将 newValue、oldValue、onInvalidate 传入</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        callWithAsyncErrorHandling(cb, instance, 3 /* WATCH_CALLBACK */, [</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">          newValue,</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">          // 在监听数据首次发生更改时将undefined置为旧值</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">          oldValue === INITIAL_WATCHER_VALUE ? undefined : oldValue,</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">          onInvalidate</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        ]);</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        oldValue = newValue; // 触发回调后，更新 oldValue</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    else &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      // watchEffect</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      runner();</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">   // 是否允许自动触发</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  /**allowRecurse就是允许递归调用，也就是说watch是可以在里面修改值，达到重新触发watch的目的</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      比如说</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  watch(count, (newVal, oldVal) =&gt; &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      if (newVal % 2) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      count.value = newVal + 1</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;)*/</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  job.allowRecurse = !!cb;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">	/*scheduler是调度器的意思，当effect被trigger触发的时候，会判断有没有调度器，</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  如果有就会调用这个调度器而不是直接调用effect本身*/</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  let scheduler;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">	// 根据flush来判断更新的时机，sync代表同步更新，直接将 job 赋值给 scheduler，这样这个调度器函数就会直接执行</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">	// 而如果是pre或者post，那么就要放入微任务队列里面去，让事件循环调度它。	</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">	//注意这里第一次调用的时候，根据文档描述，如果是pre，初始化依然是立刻调用</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  if (flush === &#x27;</span>sync<span class="string">&#x27;) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    scheduler = job; // 这个调度器函数会立即被执行</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  else if (flush === &#x27;</span>post<span class="string">&#x27;) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    // 调度器会将任务推入一个延迟执行的队列中</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    scheduler = () =&gt; queuePostRenderEffect(job, instance &amp;&amp; instance.suspense);</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  else &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    // default: &#x27;</span>pre<span class="string">&#x27;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    scheduler = () =&gt; &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      if (!instance || instance.isMounted) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        queuePreFlushCb(job);</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      else &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        // 在 pre 选型中，第一次调用必须发生在组件挂载之前</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      	// 所以这次调用是同步的</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">        job();</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string"></span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">// 记录getter为待收集依赖</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  const runner = reactivity.effect(getter, &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    lazy: true,</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    onTrack,</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    onTrigger,</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    scheduler // 依赖被触发时的调度方法</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;);</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">	// 这个方法将effect和当前的组件“绑定”，就是将effect推入到组件的effect队列里面</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  recordInstanceBoundEffect(runner, instance);</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  // 初始运行</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  if (cb) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    if (immediate) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      // 如果immediate为true，则可以一开始就执行监听回调函数</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      job();</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    else &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      /*在这里进行了依赖收集(track)，将oldValue也就是传入watch里面的那个旧值记录*/</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      oldValue = runner();</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  else if (flush === &#x27;</span>post<span class="string">&#x27;) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    /*如果不是watch，并且flush是post，应该放在下一个&quot;tick&quot;中执行这个watchEffect</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  这个方法，就是将effect推入到post队列中，在之后微任务执行会检查post队列，如果有</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  任务就执行，那个时候就会执行这个effect去追踪依赖*/</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    queuePostRenderEffect(runner, instance &amp;&amp; instance.suspense);</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  else &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    /*默认的watchEffect我们直接调用这个effect就好了*/</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    runner();</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string"></span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string"></span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">	// 返回一个函数，用以显式的结束侦听</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  return () =&gt; &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    reactivity.stop(runner);</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    if (instance) &#123;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">      shared.remove(instance.effects, runner); //remove就是将这个effect从组件的effect队列里面移除</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">    &#125;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">  &#125;;</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string">&#125;</span></span></span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="watchEffect"><a href="#watchEffect" class="headerlink" title="watchEffect"></a>watchEffect</h2><p>其实与 watch 类似的 API 还有一个就是：watchEffect，立即执行传入的一个函数，并响应式追踪其依赖，并在其依赖变更时重新运行该函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> count = ref(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">const</span> obj = reactive(&#123; <span class="attr">a</span>: <span class="number">0</span> &#125;)</span><br><span class="line"><span class="keyword">const</span> stop = watchEffect(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`count或obj发生了变化, count=<span class="subst">$&#123;count.value&#125;</span>, obj.a=<span class="subst">$&#123;obj.a&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// count或obj发生了变化,count=0,obj.a=0</span></span><br><span class="line">count.value++ <span class="comment">// count或obj发生了变化,count=1,obj.a=0</span></span><br><span class="line">obj.a++ <span class="comment">// count或obj发生了变化,count=1,obj.a=1</span></span><br><span class="line">stop()</span><br><span class="line">count.value++ <span class="comment">// no log</span></span><br></pre></td></tr></table></figure>
+<h3 id="watch的区别"><a href="#watch的区别" class="headerlink" title="watch的区别"></a>watch的区别</h3><p>1、watch 是需要传入侦听的数据源，而 watchEffect 是自动收集数据源作为依赖。</p>
+<p>2、watch 可以访问侦听状态变化前后的值，而 watchEffect 没有。</p>
+<p>3、watch 是属性改变的时候执行（可以设置 immediate:true 立即执行一次），而 watchEffect 是默认会执行一次，然后属性改变也会执行。</p>
+<h3 id="源码-1"><a href="#源码-1" class="headerlink" title="源码"></a>源码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">watchEffect</span>(<span class="params">effect, options</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> doWatch(effect, <span class="literal">null</span>, options); <span class="comment">// 和 watch 区别是 第二个参数为null，即传入的回调函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/01/13/JavaScript/2021/3.%20!%E4%B8%8E!!/" rel="next" title="js-!与!!">
+                <i class="fa fa-chevron-left"></i> js-!与!!
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/01/28/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/2021/1.%20%E6%8F%92%E4%BB%B6/" rel="prev" title="webpack-插件">
+                webpack-插件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+        
+    <script src="https://utteranc.es/client.js"
+        repo="ZhangWei2222/ZhangWei2222.github.io"
+        issue-term="title"
+        label="Comment"
+        theme="preferred-color-scheme"
+        crossorigin="anonymous"
+        async>
+    </script>
+
+    </div>
+
+  
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description">一期一会</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/ZhangWei2222" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:985983437@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#watch"><span class="nav-text">watch</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%91%E5%90%AC%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="nav-text">监听对象属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81"><span class="nav-text">源码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#watchEffect"><span class="nav-text">watchEffect</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#watch%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">watch的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81-1"><span class="nav-text">源码</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wei Zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">682.8k</span>
+  
+</div>
+  <div id="sitetime"></div>
+  <script language=javascript>
+    function siteTime(){
+      window.setTimeout("siteTime()", 1000);
+      var seconds = 1000;
+      var minutes = seconds * 60;
+      var hours = minutes * 60;
+      var days = hours * 24;
+      var years = days * 365;
+      var today = new Date();
+      var todayYear = today.getFullYear();
+      var todayMonth = today.getMonth()+1;
+      var todayDate = today.getDate();
+      var todayHour = today.getHours();
+      var todayMinute = today.getMinutes();
+      var todaySecond = today.getSeconds();
+      /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+      year - 作为date对象的年份，为4位年份值
+      month - 0-11之间的整数，做为date对象的月份
+      day - 1-31之间的整数，做为date对象的天数
+      hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+      minutes - 0-59之间的整数，做为date对象的分钟数
+      seconds - 0-59之间的整数，做为date对象的秒数
+      microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+      var t1 = Date.UTC(2017,08,12,15,15,47); //建站时间
+      var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+      var diff = t2-t1;
+      var diffYears = Math.floor(diff/years);
+      var diffDays = Math.floor((diff/days)-diffYears*365);
+      var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+      var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+      var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+      document.getElementById("sitetime").innerHTML=" 已运行"+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+    }
+    siteTime();
+  </script>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      &nbsp;本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      &nbsp;本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.json";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title ? data.title.trim() : '';
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
