@@ -285,6 +285,553 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/09/11/Babel/3.%20%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/09/11/Babel/3.%20%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/" itemprop="url">Babel-工作流程</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-11T18:42:47+08:00">
+                2021-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Babel/" itemprop="url" rel="index">
+                    <span itemprop="name">Babel</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  435 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Babel 的三个主要处理步骤分别是： 解析（parse）、转换（transform）、生成（generate）</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/09/11/Babel/3.%20%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/09/11/Babel/2.%20%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/09/11/Babel/2.%20%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/" itemprop="url">Babel-抽象语法树</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-11T18:21:47+08:00">
+                2021-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Babel/" itemprop="url" rel="index">
+                    <span itemprop="name">Babel</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  826 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Babel插件就是作用于抽象语法树。</p>
+<p>首先我们编写的代码在编译阶段解析成抽象语法树（AST），然后经过一系列的遍历和转换，然后再将转换后的抽象语法树生成为常规的js代码。</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/12/24/167dfa8949b0401a~tplv-t2oaga2asx-watermark.awebp" alt="img"></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/09/11/Babel/2.%20%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/09/10/Babel/1.%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/09/10/Babel/1.%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/" itemprop="url">Babel-使用手册</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-10T13:02:47+08:00">
+                2021-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Babel/" itemprop="url" rel="index">
+                    <span itemprop="name">Babel</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Babel 的用途：</p>
+<ul>
+<li><p>一个 JS 编译器，可以帮我们把最新标准编写的 JS 代码编译成向下兼容的 JS 代码，这样我们就可以在旧的浏览器环境中进行开发</p>
+</li>
+<li><p>支持语法扩展，能支持像 React 所用的 JSX 语法</p>
+</li>
+<li><p>支持用于静态类型检查的流式语法（Flow Syntax）</p>
+</li>
+</ul>
+<blockquote>
+<p>Babel 的一切都是简单的插件，谁都可以创建自己的插件，利用 Babel 的全部威力去做任何事情；自身被分解成了数个核心模块，任何人都可以利用它们来创建下一代的 JavaScript 工具。</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/09/10/Babel/1.%20%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/09/07/%E6%89%93%E5%8C%85%E5%B7%A5%E5%85%B7/Webpack/2021/2.%20%E6%89%8B%E5%86%99loader/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -630,552 +1177,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/09/01/JavaScript/2021/32.%20setTimeout%E7%AC%AC%E4%B8%89%E4%B8%AA%E5%8F%82%E6%95%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/09/01/JavaScript/2021/32.%20setTimeout%E7%AC%AC%E4%B8%89%E4%B8%AA%E5%8F%82%E6%95%B0/" itemprop="url">setTimeout第三个参数</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-01T08:44:47+08:00">
-                2021-09-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
-                    <span itemprop="name">JavaScript</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  157 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>定时器启动时候，第三个以后的参数是作为第一个<code>func()</code>的参数传进去</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/09/01/JavaScript/2021/32.%20setTimeout%E7%AC%AC%E4%B8%89%E4%B8%AA%E5%8F%82%E6%95%B0/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/08/30/%E6%B5%8F%E8%A7%88%E5%99%A8/2021/7.%20fetch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/08/30/%E6%B5%8F%E8%A7%88%E5%99%A8/2021/7.%20fetch/" itemprop="url">fetch</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-30T15:29:37+08:00">
-                2021-08-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/" itemprop="url" rel="index">
-                    <span itemprop="name">浏览器</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1.1k 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  4 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-fetch是一种用于资源获取的技术,被用于替代XHR,返回是一个Promise。
-
-对于axios和fetch的最大不同的使用方式来说 不同的就是传递数据的方式不同。axios放在data里以对象方式传递，fetch放在body属性中 以字符串方式传递
-Headersfetch中灵活配置heade
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/08/30/%E6%B5%8F%E8%A7%88%E5%99%A8/2021/7.%20fetch/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2021/08/30/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84/1.%20%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%B3%95/7.%20%E5%9C%A8%E6%9C%89%E5%BA%8F%E5%8F%AF%E9%87%8D%E5%A4%8D%E6%95%B0%E7%BB%84%E6%9F%A5%E6%89%BE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/08/30/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84/1.%20%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%B3%95/7.%20%E5%9C%A8%E6%9C%89%E5%BA%8F%E5%8F%AF%E9%87%8D%E5%A4%8D%E6%95%B0%E7%BB%84%E6%9F%A5%E6%89%BE/" itemprop="url">在有序可重复数组查找</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-30T08:31:48+08:00">
-                2021-08-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" itemprop="url" rel="index">
-                    <span itemprop="name">数据结构</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  308 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="含重复元素，求-target的最小一个"><a href="#含重复元素，求-target的最小一个" class="headerlink" title="含重复元素，求=target的最小一个"></a>含重复元素，求=target的最小一个</h2><p>给定一个有序（非降序）数组A，可含有重复元素，求最小的i使得A[i]等于target，不存在则返回-1</p>
-<p>例如：[2,4,6,8,8,8,9] 求8得最小位置3</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/08/30/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%95%B0%E7%BB%84/1.%20%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E6%B3%95/7.%20%E5%9C%A8%E6%9C%89%E5%BA%8F%E5%8F%AF%E9%87%8D%E5%A4%8D%E6%95%B0%E7%BB%84%E6%9F%A5%E6%89%BE/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/18/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/190/">190</a><a class="extend next" rel="next" href="/page/20/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/18/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><span class="page-number current">19</span><a class="page-number" href="/page/20/">20</a><span class="space">&hellip;</span><a class="page-number" href="/page/191/">191</a><a class="extend next" rel="next" href="/page/20/">&gt;</a>
   </nav>
 
 
@@ -1225,7 +1231,7 @@ Headersfetch中灵活配置heade
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-count">951</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1314,7 +1320,7 @@ Headersfetch中灵活配置heade
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">682.8k</span>
+    <span title="Site words total count">684.2k</span>
   
 </div>
   <div id="sitetime"></div>

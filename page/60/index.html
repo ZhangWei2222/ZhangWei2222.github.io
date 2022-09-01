@@ -285,6 +285,555 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/4.%20%E5%85%B6%E4%BB%96%E5%B0%8F%E6%94%B9%E5%8F%98/2.%20data%20%E5%BA%94%E5%A7%8B%E7%BB%88%E5%A3%B0%E6%98%8E%E4%B8%BA%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/4.%20%E5%85%B6%E4%BB%96%E5%B0%8F%E6%94%B9%E5%8F%98/2.%20data%20%E5%BA%94%E5%A7%8B%E7%BB%88%E5%A3%B0%E6%98%8E%E4%B8%BA%E5%87%BD%E6%95%B0/" itemprop="url">Vue2迁移-data 应始终声明为函数</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-29T15:29:47+08:00">
+                2020-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue3/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue3</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  491 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><ul>
+<li><strong>非兼容</strong>：<code>data</code> 组件选项声明不再接收纯 JavaScript <code>object</code>，而需要 <code>function</code> 声明。</li>
+</ul>
+<p>当合并来自 mixin 或 extend 的多个 <code>data</code> 返回值时，现在是浅层次合并的而不是深层次合并的(只合并根级属性)。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/4.%20%E5%85%B6%E4%BB%96%E5%B0%8F%E6%94%B9%E5%8F%98/2.%20data%20%E5%BA%94%E5%A7%8B%E7%BB%88%E5%A3%B0%E6%98%8E%E4%B8%BA%E5%87%BD%E6%95%B0/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/4.%20%E5%85%B6%E4%BB%96%E5%B0%8F%E6%94%B9%E5%8F%98/1.%20%E5%9C%A8%20prop%20%E7%9A%84%E9%BB%98%E8%AE%A4%E5%87%BD%E6%95%B0%E4%B8%AD%E8%AE%BF%E9%97%AE%20this/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/4.%20%E5%85%B6%E4%BB%96%E5%B0%8F%E6%94%B9%E5%8F%98/1.%20%E5%9C%A8%20prop%20%E7%9A%84%E9%BB%98%E8%AE%A4%E5%87%BD%E6%95%B0%E4%B8%AD%E8%AE%BF%E9%97%AE%20this/" itemprop="url">Vue2迁移-在 prop 的默认函数中访问 this</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-29T15:28:47+08:00">
+                2020-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue3/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue3</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  123 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  1 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>生成 prop 默认值的工厂函数不再能访问 <code>this</code>。</p>
+<p>替代方案：</p>
+<ul>
+<li><p>把组件接收到的原始 prop 作为参数传递给默认函数；</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://vue-docs-next-zh-cn.netlify.app/guide/composition-api-provide-inject.html">注入</a> API 可以在默认函数中使用。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/4.%20%E5%85%B6%E4%BB%96%E5%B0%8F%E6%94%B9%E5%8F%98/1.%20%E5%9C%A8%20prop%20%E7%9A%84%E9%BB%98%E8%AE%A4%E5%87%BD%E6%95%B0%E4%B8%AD%E8%AE%BF%E9%97%AE%20this/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/3.%20%E6%B8%B2%E6%9F%93%E5%87%BD%E6%95%B0/3.%20%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Wei Zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/3.%20%E6%B8%B2%E6%9F%93%E5%87%BD%E6%95%B0/3.%20%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4/" itemprop="url">Vue2迁移-自定义指令</a></h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-29T15:22:47+08:00">
+                2020-12-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue3/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue3</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  522 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          2.x 语法在 Vue 2，自定义指令是通过使用下面列出的钩子来创建的，这些钩子都是可选的
+
+bind - 指令绑定到元素后发生。只发生一次。
+inserted - 元素插入父 DOM 后发生。
+update - 当元素更新，但子元素尚未更新时，将调用此钩子。
+componentUpdated - 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/3.%20%E6%B8%B2%E6%9F%93%E5%87%BD%E6%95%B0/3.%20%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8C%87%E4%BB%A4/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/3.%20%E6%B8%B2%E6%9F%93%E5%87%BD%E6%95%B0/2.%20$attrs%20%E5%8C%85%E6%8B%AC%20class%20&%20style/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -629,554 +1178,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/2.%20%E7%BB%84%E4%BB%B6/1.%20%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/2.%20%E7%BB%84%E4%BB%B6/1.%20%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6/" itemprop="url">Vue2迁移-异步组件</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-29T15:15:47+08:00">
-                2020-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue3/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue3</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  411 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>以下是对变化的高层次概述：</p>
-<ul>
-<li>新的 <code>defineAsyncComponent</code> 助手方法，用于显式地定义异步组件</li>
-<li><code>component</code> 选项重命名为 <code>loader</code></li>
-<li>Loader 函数本身不再接收 <code>resolve</code> 和 <code>reject</code> 参数，且必须返回一个 Promise</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/2.%20%E7%BB%84%E4%BB%B6/1.%20%E5%BC%82%E6%AD%A5%E7%BB%84%E4%BB%B6/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/1.%20%E6%A8%A1%E6%9D%BF%E6%8C%87%E4%BB%A4/6.%20v-for%20%E4%B8%AD%E7%9A%84%20Ref%20%E6%95%B0%E7%BB%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/1.%20%E6%A8%A1%E6%9D%BF%E6%8C%87%E4%BB%A4/6.%20v-for%20%E4%B8%AD%E7%9A%84%20Ref%20%E6%95%B0%E7%BB%84/" itemprop="url">Vue2迁移-v-for 中的 Ref 数组</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-29T14:47:47+08:00">
-                2020-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue3/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue3</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  260 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><p>在 Vue 2 中，在 <code>v-for</code> 里使用的 <code>ref</code> attribute 会用 ref 数组填充相应的 <code>$refs</code> property。当存在嵌套的 <code>v-for</code> 时，这种行为会变得不明确且效率低下。</p>
-<p>在 Vue 3 中，这样的用法将不再在 <code>$ref</code> 中自动创建数组。要从单个绑定获取多个 ref，请将 <code>ref</code> 绑定到一个更灵活的函数上 (这是一个新特性)：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-for</span>=<span class="string">&quot;item in list&quot;</span> <span class="attr">:ref</span>=<span class="string">&quot;setItemRef&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/1.%20%E6%A8%A1%E6%9D%BF%E6%8C%87%E4%BB%A4/6.%20v-for%20%E4%B8%AD%E7%9A%84%20Ref%20%E6%95%B0%E7%BB%84/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://super-wei.top/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/1.%20%E6%A8%A1%E6%9D%BF%E6%8C%87%E4%BB%A4/4.%20v-bind%20%E5%90%88%E5%B9%B6%E8%A1%8C%E4%B8%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wei Zhang's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/1.%20%E6%A8%A1%E6%9D%BF%E6%8C%87%E4%BB%A4/4.%20v-bind%20%E5%90%88%E5%B9%B6%E8%A1%8C%E4%B8%BA/" itemprop="url">Vue2迁移-v-bind 合并行为</a></h1>
-        
-
-        <div class="post-meta">
-          
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-29T14:44:47+08:00">
-                2020-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vue3/" itemprop="url" rel="index">
-                    <span itemprop="name">Vue3</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  377 字
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  1 分钟
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h2><ul>
-<li><strong>不兼容</strong>：v-bind 的绑定顺序会影响渲染结果。</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/12/29/Vue3/v3%E8%BF%81%E7%A7%BB%E6%8C%87%E5%8D%97/2.%20%E4%BB%8EVue2%E8%BF%81%E7%A7%BB/1.%20%E6%A8%A1%E6%9D%BF%E6%8C%87%E4%BB%A4/4.%20v-bind%20%E5%90%88%E5%B9%B6%E8%A1%8C%E4%B8%BA/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/59/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/59/">59</a><span class="page-number current">60</span><a class="page-number" href="/page/61/">61</a><span class="space">&hellip;</span><a class="page-number" href="/page/190/">190</a><a class="extend next" rel="next" href="/page/61/">&gt;</a>
+    <a class="extend prev" rel="prev" href="/page/59/">&lt;</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/59/">59</a><span class="page-number current">60</span><a class="page-number" href="/page/61/">61</a><span class="space">&hellip;</span><a class="page-number" href="/page/191/">191</a><a class="extend next" rel="next" href="/page/61/">&gt;</a>
   </nav>
 
 
@@ -1226,7 +1232,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-count">951</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1315,7 +1321,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">682.8k</span>
+    <span title="Site words total count">684.2k</span>
   
 </div>
   <div id="sitetime"></div>

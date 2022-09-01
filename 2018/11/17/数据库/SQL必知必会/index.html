@@ -572,7 +572,7 @@
 <p>11.2.2 日期和时间处理函数</p>
 <p>常用日期和时间处理函数</p>
 <p>函 数 说 明<br>AddDate() 增加一个日期（天、周等）<br>AddTime() 增加一个时间（时、分等）<br>CurDate() 返回当前日期<br>CurTime() 返回当前时间<br>Date() 返回日期时间的日期部分<br>DateDiff() 计算两个日期之差<br>Date_Add() 高度灵活的日期运算函数<br>Date_Format() 返回一个格式化的日期或时间串<br>Day() 返回一个日期的天数部分<br>DayOfWeek() 对于一个日期，返回对应的星期几<br>Hour() 返回一个时间的小时部分<br>Minute() 返回一个时间的分钟部分<br>Month() 返回一个日期的月份部分<br>Now() 返回当前日期和时间<br>Second() 返回一个时间的秒部分<br>Time() 返回一个日期时间的时间部分<br>Year() 返回一个日期的年份部分</p>
-<p>首先需要注意的是MySQL使用的日期格式。无论你什么时候指定一<br>93<br>图灵社区会员 臭豆腐(<a href="mailto:&#83;&#x74;&#x69;&#110;&#107;&#x42;&#67;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#x6d;">&#83;&#x74;&#x69;&#110;&#107;&#x42;&#67;&#x40;&#x67;&#x6d;&#97;&#105;&#108;&#x2e;&#x63;&#111;&#x6d;</a>) 专享 尊重版权<br>72 第 11 章 使用数据处理函数<br>个日期，不管是插入或更新表值还是用WHERE子句进行过滤，日期必须为<br>格式yyyy-mm-dd。因此，2005年9月1日，给出为2005-09-01。</p>
+<p>首先需要注意的是MySQL使用的日期格式。无论你什么时候指定一<br>93<br>图灵社区会员 臭豆腐(<a href="mailto:&#83;&#x74;&#x69;&#x6e;&#x6b;&#66;&#x43;&#x40;&#x67;&#109;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#109;">&#83;&#x74;&#x69;&#x6e;&#x6b;&#66;&#x43;&#x40;&#x67;&#109;&#x61;&#x69;&#108;&#x2e;&#99;&#111;&#109;</a>) 专享 尊重版权<br>72 第 11 章 使用数据处理函数<br>个日期，不管是插入或更新表值还是用WHERE子句进行过滤，日期必须为<br>格式yyyy-mm-dd。因此，2005年9月1日，给出为2005-09-01。</p>
 <p>SELECT cust_id,order_num<br>FROM orders<br>WHERE Date(order_date) = ‘2015-09-01’;</p>
 <p>SELECT cust_id,order_num<br>FROM orders<br>WHERE Year(order_date) = 2015 AND Month(order_date)= 9;</p>
 <p>11.2.3 数值处理函数</p>
@@ -935,7 +935,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">948</span>
+                  <span class="site-state-item-count">951</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1024,7 +1024,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">682.8k</span>
+    <span title="Site words total count">684.2k</span>
   
 </div>
   <div id="sitetime"></div>
